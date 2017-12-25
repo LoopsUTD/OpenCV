@@ -9,9 +9,9 @@ import matplotlib as mat
 """
 Image properties
 """
-rsize=600
+rsize=400
 csize=400
-period=6.0
+period=2.0
 dutycycle=0.5
 cutoff=period*(dutycycle)
 colorvect=np.array([[0,255,0]])
