@@ -40,9 +40,9 @@ def main():
 	elif args.verbose >= 1:
 		loggingLevel = logging.WARNING
 	else:
-		loggingLevel = logging.ERROR
-		#TODO: Comment out the below section for production code
-		#loggingLevel = logging.DEBUG
+		#loggingLevel = logging.ERROR
+		#TODO: Comment out the below section for production code, uncomment the above
+		loggingLevel = logging.DEBUG
 
 	log.setLevel(loggingLevel)
 
@@ -71,13 +71,16 @@ def main():
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
 
 	
-
+##Why does this work? see here:
+#https://stackoverflow.com/questions/10874432/possible-to-change-function-name-in-definition
 def rename(newName):
 	def decorator(f):
 		f.__name__ = newName
 		return f
 	return decorator
 
+##Why use handler functions in a Dictionary for options? See Here:
+#https://stackoverflow.com/questions/3978624/since-python-doesnt-have-a-switch-statement-what-should-i-use
 @rename("Select Test File")
 def selectTestFileHandler():
 	log.info("Selecting Test File")
@@ -110,20 +113,14 @@ def printMainMenu():
 	welcome = "UTDesign Team LOOPS [547] Version: %s \n\n" % VERSION
 	mainmsg = "Please select from the following options:\n"
 
+	#Why use a Dict? Because it's so sneaky clean!!
+	#See links above to see how I made this so slick.
 	options = {1: selectTestFileHandler, 2:adjustLinearActuatorHandler, 3:numLensToTestHandler, 4:calibrateCameraHandler, 5:checkCameraConnectionHandler, 6:runTestHandler, 7: exitThisProgram}
-	#options = []
-	# options.insert(1,selectTestFile.__name__)
-	# options.insert(2,"Adjust Linear Actuator")
-	# options.insert(3,"Change number of Lens to test (default: %d)" % numLensToTest)
-	# options.insert(4, "Calibrate Camera")
-	# options.insert(5, "Get Camera Settings Summary")
-	# options.insert(6, "Run Test")
 
 	print(welcome + mainmsg)
-	#counter = 1
 	for key, opt in options.items():
 		print("\t%d. %s" % (key, opt.__name__))
-		#counter += 1
+
 
 	return options
 
