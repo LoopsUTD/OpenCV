@@ -6,6 +6,7 @@ import readline
 import argparse
 import logging
 import sys #this gets you commandline args
+import step as motor
 
 log = logging.getLogger(__name__)
 VERSION = "0.1"

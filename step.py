@@ -10,7 +10,6 @@ def setpins():
     
 def step(steps,stepPin,dirPin):
     stepsTaken = 0
-    GPIO.output(dirPin,GPIO.HIGH)
     if steps<0:
         GPIO.output(dirPin,GPIO.LOW)
     if steps>0:
@@ -25,7 +24,7 @@ def step(steps,stepPin,dirPin):
     
 if __name__ == "__main__":
     setpins()
-    step(1600,29,31)
-    step(-1600,29,31)
+    step(3200,29,31)
+    step(-3200,29,31)
     time.sleep(1)
     GPIO.cleanup()
