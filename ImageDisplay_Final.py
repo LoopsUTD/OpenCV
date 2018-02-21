@@ -1,10 +1,20 @@
 import numpy as np
 import cv2
-cv2.namedWindow("output", cv2.WINDOW_NORMAL)        # Create window with freedom of dimensions
-im = cv2.imread("DSC03113.jpg")                     # Read image
-imS = cv2.resize(im, (1280, 1024))                    # Resize image
-cv2.imshow("output", imS)                           # Show image
-cv2.moveWindow("output", 1920,-5)
-cv2.waitKey(0)
-   
 
+def display(imagename, x, y):
+	cv2.namedWindow("output", cv2.WINDOW_NORMAL)        
+	im = cv2.imread(imagename)													
+	cv2.imshow("output", im) 
+	height = im.shape[0]
+	width = im.shape[1]
+	cv2.resizeWindow("output", (height, width))
+	cv2.moveWindow("output", x,y)
+	cv2.waitKey(0)
+
+if __name__ == '__main__':
+	imagename = "dsc03113.jpg"
+	x = 1920
+	y = -5
+	display(imagename,x,y)
+	
+	#1920, -5
