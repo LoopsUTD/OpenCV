@@ -1,14 +1,16 @@
 import RPi.GPIO as GPIO
 import time
 
-def setpins():
-    stepPin = 29
-    dirPin = 31
+def setpins(step,dirp):
+    global stepPin 
+    stepPin = step
+    global dirPin 
+    dirPin = dirp
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(stepPin,GPIO.OUT)
     GPIO.setup(dirPin,GPIO.OUT)
     
-def step(steps,stepPin,dirPin):
+def step(steps):
     stepsTaken = 0
     if steps<0:
         GPIO.output(dirPin,GPIO.LOW)
