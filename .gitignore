@@ -1,4 +1,7 @@
 *Env/**
 *.swp
 opencv/**
-
+*.jpg
+*.jpeg
+*.png
+*.raw
