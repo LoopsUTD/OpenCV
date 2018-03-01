@@ -5,3 +5,4 @@ opencv/**
 *.jpeg
 *.png
 *.raw
+*.pyc
