@@ -29,9 +29,12 @@ class StepperMotor:
                 time.sleep(.0000050)
                 GPIO.output(self.stepPin,GPIO.LOW)
                 time.sleep(.00005)
+            else:
+                return False
             stepsTaken = stepsTaken +1  
 
         GPIO.output(self.stepPin,GPIO.LOW)
+        return True
     
 if __name__ == "__main__":
     motor = stepperMotor(29,31,5,3)
