@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-class stepperMotor:
+class StepperMotor:
     
     def __init__(self,stepPin,dirPin, limit1, limit2):
         self.stepPin = stepPin
