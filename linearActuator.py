@@ -1,9 +1,9 @@
 import stepperMotor
 import sys
-import Tkinter as Tk
+from tkinter import *
 
 class LinearActuator:
-    def __init__i(arg):
+    def __init__(arg):
         self.data=arg
 
 
