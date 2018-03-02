@@ -52,7 +52,7 @@ if __name__ == '__main__':
     from sys import argv
     mode=int(argv[1])
     print ('{}{}'.format('mode: ',mode))
-    motor=motor.stepperMotor(29,31)
+    motor=motor.stepperMotor(29,31,5,3)
     global current
     global home
     global goal
