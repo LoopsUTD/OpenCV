@@ -13,6 +13,7 @@ class LinearActuator:
         success=self.motor.step(target-self.current)
         self.current=target
         return success
+
     def findLimits(self):
         success=self.moveTo(self.current)
         while(success):
@@ -24,29 +25,41 @@ class LinearActuator:
         while(success):
             success=self.moveTo(self.current+1)
             self.top=self.current
-        self.middle=(self.bottom+self.top)/2
-        self.moveTo(self.middle)
+        self.home=(self.bottom+self.top)/2
+        self.moveTo(self.home)
     
         print('{}{}{}{}'.format('Bottom: ', self.bottom,'\nTop: ', self.top))
 
+    
+    def manualAdjust(self,stepSize):
+        root = Tk()
+        def moveUp(event):
+            self.moveTo(self.current+stepSize)
+        def moveDown(event):
+            self.moveTo(self.current-stepSize)
+        def setHome(event):
+            self.home=self.current
+        
+        frame = Frame(root,width=100,height=100)
+        label = Label(root,text='Move with arrow keys, Press space to set home.')
+        label.pack()
+        frame.bind('<Up>', moveUp)
+        frame.bind('<Down>', moveDown)
+        frame.bind('<space>', setHome)
+        frame.focus_set()
+        frame.pack()
+        root.mainloop()
+    
+    def moveIntoPath(self):
+        self.moveTo(self.home)
+    def moveOutOfPath(self):
+        self.moveTo(self.bottom+100)
+    
 
 if __name__ == "__main__":
-    root =  Tk()
     actuator=LinearActuator()
     actuator.findLimits()
-    def leftKey(event):
-        print("Left key pressed")
-        actuator.moveTo(actuator.current+100)
-        
-     
-    def rightKey(event):
-        print("Right key pressed")
-        actuator.moveTo(actuator.current-100)
-    frame = Frame(root, width=100, height=100)
-    frame.bind('<Left>', leftKey)
-    frame.bind('<Right>', rightKey)
-    frame.focus_set()
-    frame.pack()
-    #root.mainloop()
-
-
+    actuator.manualAdjust(stepSize=100)
+    actuator.moveIntoPath()
+    actuator.moveOutOfPath()
+    actuator.moveIntoPath()
