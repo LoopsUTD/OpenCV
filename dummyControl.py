@@ -1,4 +1,4 @@
-import step as motor
+import stepperMotor as motor
 import sys
 from pynput import keyboard
 from multiprocessing import Queue
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     from sys import argv
     mode=int(argv[1])
     print ('{}{}'.format('mode: ',mode))
-    motor.setpins(29,31)
+    motor=motor.stepperMotor(29,31)
     global current
     global home
     global goal
