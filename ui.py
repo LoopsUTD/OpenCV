@@ -175,8 +175,8 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 				raise BadInputException
 			if val == 1:
 				if len(testImages) > 0:
-					log.info("user is taking image at: %s with %s" % (defOutFolder, testImages[0]))
-					manualUpdateImage(mainDisplay, testImages[0], root)
+					log.info("user is taking image at: %s with %s" % (defOutFolder, testImages))
+					manualUpdateImage(mainDisplay, testImages, root)
 					target = camera.takePhoto(folderName = defOutFolder)
 					log.info("Image saved at: %s" % target)
 				else:
@@ -194,7 +194,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 3:
 				newImagePath = str(input("enter test image path and file name: (must be exact!)"))
 				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
-				testImages.append(newImagePath)
+				testImages = newImagePath
 				manualUpdateImage(mainDisplay, newImagePath, root)
 				target = camera.takePhoto(folderName = defOutFolder)
 				log.info("Image saved at: %s" % target)
@@ -210,7 +210,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	return camera, actuator
 
 @rename("Initialize the Display")
-def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None):
+def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None, camera = None, actuator = None):
 	log.info("User is manually displaying an image")
 	
 	#How to use tKinter without Mainloop()
