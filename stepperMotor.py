@@ -1,7 +1,11 @@
 import RPi.GPIO as GPIO
 import time
 class StepperMotor:
-    
+   
+    #StepPin: Pin to send signal to pulse pin on stepper driver
+    #diePin: Pin to send signal to dir pin on stepper driver
+    #lim1: Pin to read limit swtich 1
+    #lim2: Pin to read limit switch 2
     def __init__(self,stepPin,dirPin, limit1, limit2):
         self.stepPin = stepPin
         self.dirPin = dirPin
@@ -13,7 +17,7 @@ class StepperMotor:
         GPIO.setup(self.lim1,GPIO.IN)
         GPIO.setup(self.lim2,GPIO.IN)
     
-
+    
     def step(self,steps):
         
         stepsTaken = 0
