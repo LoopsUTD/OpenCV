@@ -10,6 +10,7 @@ class StepperMotor:
         self.stepPin = stepPin
         self.dirPin = dirPin
         GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
         GPIO.setup(self.stepPin,GPIO.OUT)
         GPIO.setup(self.dirPin,GPIO.OUT)
         self.lim1=limit1
