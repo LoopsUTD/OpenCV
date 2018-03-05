@@ -7,6 +7,7 @@ import time
 import gphoto2 as gp
 
 log = logging.getLogger(__name__)
+loggingLevel = 10
 handler = logging.StreamHandler()
 handler.setLevel(loggingLevel)
 #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
