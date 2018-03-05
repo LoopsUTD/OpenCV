@@ -107,12 +107,18 @@ def adjustLinearActuatorHandler(camera = None, actuator = None):
 
 #TODO: Does this need to be here?
 @rename("Move Out Of Way")
-def moveLinearActuatorOutOfWay(actuator):
+def moveLinearActuatorOutOfWay(camera = None, actuator = None):
+	if actuator is None:
+		adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveOutOfPath()
+	return camera, actuator
 
 @rename("Move Into Way")
-def moveLinearActuatorIntoPath(actuator):
+def moveLinearActuatorIntoPath(camera = None, actuator = None):
+	if actuator is None:
+		adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveIntoPath()
+	return camera, actuator
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
