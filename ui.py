@@ -153,7 +153,7 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = none):
+def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = None):
 	if camera is None:
 		camera = Camera()
 	print("Current Output folder is: %s" % defOutFolder)
