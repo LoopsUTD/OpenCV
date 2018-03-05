@@ -5,8 +5,8 @@ import argparse
 import logging
 import sys #this gets you commandline args
 import traceback
-import linearActuator
-import cameraHandling
+from linearActuator import LinearActuator
+from cameraHandling import Camera
 import displayHandling
 
 log = logging.getLogger(__name__)
@@ -65,9 +65,10 @@ def main():
 		selection = input("Enter selection [1-%d]: " % len(opts))
 		log.debug("User entered %s" % selection)
 		try:
-			if int(selection) not in opts:
+			val = int(selection)
+			if val not in opts:
 				raise BadInputException
-			globalCamera, linActuator = opts[val](globalCamera, linActuator) #runs the correct handler function
+			globalCamera, linActuator = opts[val](globalCamera,linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
 			if globalCamera is not None:
@@ -97,10 +98,10 @@ def selectTestFileHandler():
 def adjustLinearActuatorHandler(camera = None, actuator = None):
 	log.info("adjusting Linear Actuator")
 	if actuator is None:
-		actuator = linearActuator()
+		actuator = LinearActuator()
 		actuator.findLimits()
 
-	actuator.manualAdjust(stepsize = 100)
+	actuator.manualAdjust(stepSize = 100)
 	return camera, actuator
 
 #TODO: Does this need to be here?
@@ -124,7 +125,8 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	if camera is None:
 		camera = Camera()
 
-	camera.getCameraSummary()
+	text = camera.getCameraSummary()
+	print(text)
 	return camera, actuator
 
 @rename("Run Test")
@@ -132,7 +134,7 @@ def runTestHandler():
 	log.info("User is trying to run the test")
 
 @rename("Exit")
-def exitThisProgram():
+def exitThisProgram(camera=None,act = None):
 	raise ExitException("User Wants to Exit")
 
 def printMainMenu():
