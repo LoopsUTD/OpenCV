@@ -60,7 +60,7 @@ class LinearActuator:
         frame.bind('<space>',self.goHome)
         frame.focus_set()
         frame.pack()
-        Button(root, text="Quit", command=quit).pack()
+        Button(root, text="Quit", command=root.destroy).pack()
         root.mainloop()
     
     def moveIntoPath(self):
