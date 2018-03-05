@@ -80,6 +80,8 @@ def main():
 				raise BadInputException
 			if val == 1:
 				mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
+			if val == 3:
+				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
 			if val == 5: #TODO: make this explicit for photo menu
 				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
 			else:
@@ -122,6 +124,7 @@ def adjustLinearActuatorHandler(camera = None, actuator = None):
 #TODO: Does this need to be here?
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay(camera = None, actuator = None):
+	log.info("User Moving Linear Actuator Out of The Way")
 	if actuator is None:
 		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveOutOfPath()
@@ -129,6 +132,7 @@ def moveLinearActuatorOutOfWay(camera = None, actuator = None):
 
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath(camera = None, actuator = None):
+	log.info("User Moving Linear Actuator into path")
 	if actuator is None:
 		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveIntoPath()
@@ -141,6 +145,10 @@ def numLensToTestHandler():
 @rename("Calibrate Camera")
 def calibrateCameraHandler(camera = None, actuator = None):
 	log.info("Running Camera Calibration")
+	##DAVID CODE GO HERE
+
+	return camera, actuator
+
 
 @rename("Get Camera Settings and Summary")
 def checkCameraConnectionHandler(camera = None, actuator = None):
@@ -157,7 +165,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	if camera is None:
 		camera = Camera()
 	print("Current Output folder is: %s" % defOutFolder)
-	print("Current test images are: %s" % testImages)
+	print("Current test image is: %s" % testImages)
 	print("Please Select from the following options:\n")
 	myOpts = {
 		1:"Take Photo With First Test Image",
@@ -171,16 +179,16 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	badSelection = True
 	while(badSelection):
 		try:
-			selection = input("enter selection: [1-%d]" % len(myOpts))
+			selection = input("enter selection: [1-%d] " % len(myOpts))
 			val = int(selection)
 			if val not in myOpts:
 				raise BadInputException
 			if val == 1:
 				if len(testImages) > 0:
-					log.info("user is taking image at: %s with %s" % (defOutFolder, testImages))
+					log.info("user is storing image in: %s with test photo: %s" % (defOutFolder, testImages))
 					manualUpdateImage(mainDisplay, testImages, ROOT)
 					target = camera.takePhoto(folderName = defOutFolder)
-					log.info("Image saved at: %s" % target)
+					log.info("photo saved at: %s" % target)
 				else:
 					print("no default test images defined!")
 			if val == 2:

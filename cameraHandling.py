@@ -56,7 +56,7 @@ class Camera:
         #TODO: Make this Object Oriented? 
 
     def takePhoto(self, folderName):
-        log.warning("Need to Enable Photo-Taking")
+        log.info("Capturing Photo...")
         #TODO: ensure capture target is properly setup?
         #self.adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
