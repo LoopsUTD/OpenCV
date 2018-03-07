@@ -40,9 +40,9 @@ def main():
 	elif args.verbose >= 1:
 		loggingLevel = logging.WARNING
 	else:
-		#loggingLevel = logging.ERROR
+		loggingLevel = logging.ERROR
 		#TODO: Comment out the below section for production code, uncomment the above
-		loggingLevel = logging.DEBUG
+		#loggingLevel = logging.DEBUG
 
 	log.setLevel(loggingLevel)
 
@@ -63,7 +63,7 @@ def main():
 				raise Exception
 
 			#badSelection = False
-			opts[val]()
+			opts[val]() #This runs a function stored in a dict with key = to val
 		except ExitException:
 			log.critical("Exiting The Application.")
 			badSelection = False
@@ -123,6 +123,8 @@ def printMainMenu():
 
 
 	return options
+
+
 
 class ExitException(Exception):
 	def __init__(self, *args, **kwargs):
