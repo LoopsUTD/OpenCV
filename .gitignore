@@ -2,7 +2,7 @@
 *Env/**
 *.swp
 *pycache*
-opencv/**
+*opencv/**
 *.jpg
 *.jpeg
 *.png
