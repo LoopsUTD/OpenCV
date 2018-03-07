@@ -16,7 +16,7 @@ def generateCalibrationImages(refImage):
     boardHeight, boardWidth = board.shape[:2]
 
     positions = numpy.zeros((16,2))
-    filenames = [16]
+    filenames = list()  # will contain 16 image file names
 
     for i in range(0,4):
         for j in range(0,4):
@@ -26,6 +26,7 @@ def generateCalibrationImages(refImage):
     print(positions)
 
     for i in range(0,16):
+        #capture jpgs if that will generate sufficient results
         imageDisplay.display(refImage, int(positions[i,1]), int(positions[i,0]))
         #filename = captureImage()
         #filenames[i] = filename
@@ -33,4 +34,5 @@ def generateCalibrationImages(refImage):
     return filenames
 
 if __name__ == '__main__':
+    # this image name is not important.  I was just using what I had on my computer
     print(generateCalibrationImages("dragon_turtle.jpg"))
