@@ -1,0 +1,21 @@
+pkg-config: stable 0.29.2 (bottled)
+Manage compile and link flags for libraries
+https://freedesktop.org/wiki/Software/pkg-config/
+/usr/local/Cellar/pkg-config/0.29.2 (11 files, 627.1KB) *
+  Poured from bottle on 2018-02-14 at 09:22:17
+From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/pkg-config.rb
+libgphoto2: stable 2.5.16 (bottled), HEAD
+Gphoto2 digital camera library
+http://www.gphoto.org/proj/libgphoto2/
+/usr/local/Cellar/libgphoto2/2.5.16 (168 files, 4.4MB) *
+  Poured from bottle on 2018-02-14 at 09:24:54
+From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/libgphoto2.rb
+==> Dependencies
+Build: pkg-config
+Required: libtool, libusb-compat, gd
+Optional: libexif
+==> Options
+--with-libexif
+	Build with libexif support
+--HEAD
+	Install HEAD version
