@@ -1,0 +1,7 @@
+cffi==1.11.4
+gphoto2==1.8.2
+libusb==1.0.21b2
+Pillow==5.0.0
+pycparser==2.18
+PyQt5==5.10
+sip==4.19.7
