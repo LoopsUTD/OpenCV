@@ -44,9 +44,11 @@ def greenscale(image):
 def threshold(image,thresh):
     for a in numpy.nditer(image, op_flags=['readwrite']):
         if a >= thresh:
-            a[...] = 10000
+            a[...] = 255
         else:
-            a[...] = -10000
+            a[...] = 0
+            
+    print(image)
     return image
 
 # INPUT:  Thresholded image
@@ -57,22 +59,20 @@ def segment(image):
     h = len(image)
     w = len(image[1])
 
-    for i in range(1,h-1):
-        for j in range(1,w-1):
-#     for i in range(h-1):
-#         for j in range(w-1):
-            if image[i,j] >= 1:
+    for i in range(h):
+        for j in range(w):
+            if image[i,j] > 0:
                 a = index
-                if image[i-1,j] > 0 and image[i-1,j] < a:
+                if i > 0 and image[i-1,j] and a > image[i-1,j]:
                     a = image[i-1,j]
-                if image[i+1,j] > 0 and image[i+1,j] < a:
+                if i < h - 1 and image[i+1,j] and a > image[i+1,j]:
                     a = image[i+1,j]
-                if image[i,j-1] > 0 and image[i,j-1] < a:
+                if j > 0 and image[i,j-1] and a > image[i,j-1]:
                     a = image[i,j-1]
-                if image[i,j+1] > 0 and image[i,j+1] < a:
+                if j < w - 1 and image[i,j+1] and a > image[i,j+1]:
                     a = image[i,j+1]
                 if a == index:
-                    index = index+1
+                    index = index + 1
                 image[i,j] = a
     print(image)
     print(index)
