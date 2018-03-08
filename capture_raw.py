@@ -6,13 +6,20 @@ import time
 
 import gphoto2 as gp
 
+def initializeCamera():
+    camera = gp.check_result(gp.Camera())
+    camera.init()
+    return camera
+
 def main():
     logging.basicConfig(
         format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
     gp.check_result(gp.use_python_logging())
-    camera = gp.check_result(gp.gp_camera_new())
-    gp.check_result(gp.gp_camera_init(camera))
+    # camera = gp.check_result(gp.gp_camera_new())
+    # gp.check_result(gp.gp_camera_init(camera))
     
+    camera = initializeCamera()
+
     configStartTime = time.time()*1000
      # get configuration tree
     config = gp.check_result(gp.gp_camera_get_config(camera))
@@ -37,12 +44,12 @@ def main():
     camera_file = gp.check_result(gp.gp_camera_file_get(camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_RAW))
     gp.check_result(gp.gp_file_save(camera_file, target))
     saveImgEnd= time.time()*1000
-    subprocess.call(['xdg-open', target])
+    #subprocess.call(['xdg-open', target])
     gp.check_result(gp.gp_camera_exit(camera))
     #print("Config Time: %f" % (endConfig - configStartTime))
     #print("Img Capture Time: %f" % (endImgCap - imgTimeStart))
     #print("Img Save Time: %f" % (saveImgEnd - saveImgStart))
-    return 0
+    return target
 
 if __name__ == "__main__":
     sys.exit(main())

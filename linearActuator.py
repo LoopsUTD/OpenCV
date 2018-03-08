@@ -1,6 +1,7 @@
 import stepperMotor
 import sys
 from tkinter import *
+import logging
 
 class LinearActuator:
     #stepperMotor class from stepperMotor.py

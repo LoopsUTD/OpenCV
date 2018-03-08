@@ -4,26 +4,26 @@ import readline
 import argparse
 import logging
 import sys #this gets you commandline args
+import linearActuator
 
 log = logging.getLogger(__name__)
-VERSION = "0.1"
+VERSION = "0.2"
 numLensToTest = 3
 numOptionsInMenu = 4
 KEEPGOING = True
 
 def main():
+	##LOGGING
 	loggingLevel = logging.DEBUG
 	log.setLevel(loggingLevel)
-
 	handler = logging.StreamHandler()
 	handler.setLevel(loggingLevel)
 	#format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
 	format = logging.Formatter('%(levelname)s -- %(message)s')
 	handler.setFormatter(format)
-
 	log.addHandler(handler)
 
-
+	##INPUT PARSING
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-V", "--Version", action='version', version =('%(prog)s {}').format(VERSION), help="returns version number")
 	#TODO: Decrease default verbosity to a lower number
@@ -48,24 +48,29 @@ def main():
 	log.debug("Input Args: %s" % args)
 	log.debug('tests has the value: %s' % args.tests)
 
+
+	linActuator = None
+	globalCamera = None
+
+
+	## MAIN LOOP
 	opts = printMainMenu()
 	badSelection = True
 	val = 0
-	#Validate input. TODO: Update the validation to autocheck the keys to be more efficient
+	#Validate input.
 	while(badSelection):
 		selection = input("Enter selection [1-%d]: " % len(opts))
 		log.debug("User entered %s" % selection)
 		try:
-			val = int(selection)
-			if val<1 or val > len(opts):
-				raise Exception
-
-			#badSelection = False
-			opts[val]()
+			if selection not in opts:
+				raise BadInputException
+			globalCamera, linActuator = opts[val](globalCamera, linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
+			if globalCamera is not None:
+				globalCamera.close()
 			badSelection = False
-		except:
+		except BadInputException:
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
 
 	
@@ -84,20 +89,32 @@ def selectTestFileHandler():
 	log.info("Selecting Test File")
 
 @rename("Adjust Linear Actuator")
-def adjustLinearActuatorHandler():
+def adjustLinearActuatorHandler(camera = None, actuator):
 	log.info("adjusting Linear Actuator")
+	if actuator is None:
+		actuator = linearActuator()
+		actuator.findLimits()
+
+	actuator.manualAdjust(stepsize = 100)
+	return camera, actuator
+	
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
 	log.info("adjusting number of lens to test")
 
 @rename("Calibrate Camera")
-def calibrateCameraHandler():
+def calibrateCameraHandler(camera, actuator = None):
 	log.info("Running Camera Calibration")
 
 @rename("Get Camera Settings and Summary")
-def checkCameraConnectionHandler():
+def checkCameraConnectionHandler(camera, actuator):
 	log.info("checking to see if camera is connected")
+	if camera is None:
+		camera = Camera()
+
+	camera.getCameraSummary()
+	return camera, actuator
 
 @rename("Run Test")
 def runTestHandler():
@@ -125,6 +142,10 @@ def printMainMenu():
 class ExitException(Exception):
 	def __init__(self, *args, **kwargs):
 		Exception.__init__(self,"user wants to Exit")
+
+class BadInputException(Exception):
+	def __init__(self, *args, **kwargs):
+		Exception.__init__(self,"Invalid Input")
 
 if __name__ == "__main__":
 	main()
