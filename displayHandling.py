@@ -12,7 +12,7 @@ class FullScreenApp(object):
             master.winfo_screenwidth()-pad, master.winfo_screenheight()-pad))
         master.bind('<Escape>',self.toggle_geom)
         master.bind('<space>', self.nextImage)
-        image = Image.open('test.jpg')
+        image = Image.open(self.images[0])
         photo = ImageTk.PhotoImage(image)
         self.label = tk.Label(image=photo)
         self.label.image = photo
@@ -37,5 +37,5 @@ class FullScreenApp(object):
 
 
 root=tk.Tk()
-app=FullScreenApp(root, ['test.jpg', 'second.jpg'])
+app=FullScreenApp(root, ['test.jpg', 'second.jpg']) #pass images into the argument when you create this object.
 root.mainloop()

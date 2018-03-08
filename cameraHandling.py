@@ -73,12 +73,5 @@ class Camera:
         log.info("Camera is exiting")
         self.camera.exit()
 
-
-def initializeCamera():
-    camera = gp.check_result(gp.Camera())
-    camera.init()
-    return camera
-
-
 if __name__ == "__main__":
     print('Potato')

@@ -4,13 +4,16 @@ import readline
 import argparse
 import logging
 import sys #this gets you commandline args
+import traceback
 import linearActuator
+import cameraHandling
+import displayHandling
 
 log = logging.getLogger(__name__)
 VERSION = "0.2"
-numLensToTest = 3
-numOptionsInMenu = 4
-KEEPGOING = True
+numLensToTest = 1
+#numOptionsInMenu = 4
+#KEEPGOING = True
 
 def main():
 	##LOGGING
@@ -72,6 +75,8 @@ def main():
 			badSelection = False
 		except BadInputException:
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
+		except Exception:
+			log.error(traceback.print_exc())
 
 	
 ##Why does this work? see here:
@@ -89,7 +94,7 @@ def selectTestFileHandler():
 	log.info("Selecting Test File")
 
 @rename("Adjust Linear Actuator")
-def adjustLinearActuatorHandler(camera = None, actuator):
+def adjustLinearActuatorHandler(camera = None, actuator = None):
 	log.info("adjusting Linear Actuator")
 	if actuator is None:
 		actuator = linearActuator()
@@ -97,18 +102,24 @@ def adjustLinearActuatorHandler(camera = None, actuator):
 
 	actuator.manualAdjust(stepsize = 100)
 	return camera, actuator
-	
+
+#TODO: Does this need to be here?
+def moveLinearActuatorOutOfWay(actuator):
+	actuator.moveOutOfPath()
+
+def moveLinearActuatorIntoPath(actuator):
+	actuator.moveIntoPath()
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
 	log.info("adjusting number of lens to test")
 
 @rename("Calibrate Camera")
-def calibrateCameraHandler(camera, actuator = None):
+def calibrateCameraHandler(camera = None, actuator = None):
 	log.info("Running Camera Calibration")
 
 @rename("Get Camera Settings and Summary")
-def checkCameraConnectionHandler(camera, actuator):
+def checkCameraConnectionHandler(camera = None, actuator = None):
 	log.info("checking to see if camera is connected")
 	if camera is None:
 		camera = Camera()
