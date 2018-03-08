@@ -35,4 +35,4 @@ def generateCalibrationImages(refImage):
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    print(generateCalibrationImages("dragon_turtle.jpg"))
+    print(generateCalibrationImages("test.jpg"))
