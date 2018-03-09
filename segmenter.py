@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import blob
 
 # INPUT:  name of .png photograph file
 # OUTPUT: array of found blob objects
@@ -17,9 +18,12 @@ def extractObjects(filename):
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
     image = segment(image)
-    cv2.imshow("greenscale",image)
-    cv2.imwrite('segmented.png',image)
+    cv2.imshow("greenscale",image.astype(dtype='uint8'))
     cv2.waitKey(0)
+    
+    
+    
+    cv2.imwrite("output.png",image.astype(dtype='uint8'))
 
 # Sub-functions
 
@@ -47,8 +51,6 @@ def threshold(image,thresh):
             a[...] = 255
         else:
             a[...] = 0
-            
-    print(image)
     return image
 
 # INPUT:  Thresholded image
@@ -58,6 +60,7 @@ def segment(image):
     index = 1
     h = len(image)
     w = len(image[1])
+    image = image.astype(dtype='uint16')
 
     for i in range(h):
         for j in range(w):
@@ -65,18 +68,43 @@ def segment(image):
                 a = index
                 if i > 0 and image[i-1,j] and a > image[i-1,j]:
                     a = image[i-1,j]
-                if i < h - 1 and image[i+1,j] and a > image[i+1,j]:
-                    a = image[i+1,j]
                 if j > 0 and image[i,j-1] and a > image[i,j-1]:
                     a = image[i,j-1]
-                if j < w - 1 and image[i,j+1] and a > image[i,j+1]:
-                    a = image[i,j+1]
                 if a == index:
                     index = index + 1
                 image[i,j] = a
-    print(image)
-    print(index)
+                
+    for i in range(h-1,0,-1):
+        for j in range(w-1,0,-1):
+            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+                image[i,j] = image[i+1,j]
+            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+                image[i,j] = image[i,j+1]
+                
+    for i in range(h):
+        for j in range(w-1,0,-1):
+            if i > 0 and image[i-1,j] and image[i,j] > image[i-1,j]:
+                image[i,j] = image[i-1,j]
+            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+                image[i,j] = image[i,j+1]
+
+    for i in range(h-1,0,-1):                
+        for j in range(w):
+            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+                image[i,j] = image[i+1,j]
+            if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
+                image[i,j] = image[i,j-1]
+
+#     print(index)
     return image
+
+# INPUT:  Image with isolated and labeled segments
+# OUTPUT: Array of blob objects
+
+def segmentInfo(image):
+    blobs = list()
+    
+    return blobs
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
