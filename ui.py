@@ -81,7 +81,7 @@ def main():
 			if val == 1:
 				mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
 			if val == 5: #TODO: make this explicit for photo menu
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay) #runs the correct handler function
+				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
 			else:
 				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
 		except ExitException:
@@ -153,7 +153,7 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None):
+def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = none):
 	if camera is None:
 		camera = Camera()
 	print("Current Output folder is: %s" % defOutFolder)
@@ -178,7 +178,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 1:
 				if len(testImages) > 0:
 					log.info("user is taking image at: %s with %s" % (defOutFolder, testImages))
-					manualUpdateImage(mainDisplay, testImages, root)
+					manualUpdateImage(mainDisplay, testImages, ROOT)
 					target = camera.takePhoto(folderName = defOutFolder)
 					log.info("Image saved at: %s" % target)
 				else:
@@ -197,7 +197,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 				newImagePath = str(input("enter test image path and file name: (must be exact!)"))
 				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
 				testImages = newImagePath
-				manualUpdateImage(mainDisplay, newImagePath, root)
+				manualUpdateImage(mainDisplay, newImagePath, ROOT)
 				target = camera.takePhoto(folderName = defOutFolder)
 				log.info("Image saved at: %s" % target)
 
