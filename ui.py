@@ -74,9 +74,9 @@ def main():
 			if val not in opts:
 				raise BadInputException
 			if val == 1:
-				globalCamera, linActuator = opts[val](mainDisplay = mainDisplay, ROOT = root)
+				mainDisplay = opts[val](mainDisplay = mainDisplay, ROOT = root)
 			if val == 5: #TODO: make this explicit for photo menu
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests) #runs the correct handler function
+				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay) #runs the correct handler function
 			else:
 				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
 		except ExitException:
@@ -148,7 +148,7 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None):
+def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None):
 	if camera is None:
 		camera = Camera()
 	print("Current Output folder is: %s" % defOutFolder)
@@ -191,7 +191,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 3:
 				newImagePath = input("enter test image path and file name: (must be exact!)")
 				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
-				manualUpdateImage(newImagePath, root)
+				manualUpdateImage(mainDisplay = mainDisplay, newImagePath, root)
 				target = camera.takePhoto(foldername = defOutFolder)
 				log.info("Image saved at: %s" % target)
 
@@ -216,9 +216,11 @@ def setupDisplayHandler(ROOT = None, mainDisplay = None, testImages = None):
 		#root=ROOT
 		mainDisplay=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
 		ROOT.update()
+
+	return mainDisplay
 		#root.mainloop()
 
-def manualUpdateImage(newImageFilePath = None, ROOT = None):
+def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
 	if mainDisplay is None:
 		raise BadInputException("Initialize the Display First!")
 	mainDisplay.updateImage(newImageFilePath)
