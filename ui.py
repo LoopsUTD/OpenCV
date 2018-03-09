@@ -15,14 +15,16 @@ VERSION = "0.2"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
-root = tk.Tk()
+
 #numOptionsInMenu = 4
 #KEEPGOING = True
 
 def main():
-	#Shit globals that need to be resolved
+	##Shit globals that need to be resolved
 	DefaultOutputFolder = "RAW/"
 	mainDisplay = None
+	root = tk.Tk()
+
 	##LOGGING
 	loggingLevel = logging.DEBUG
 	log.setLevel(loggingLevel)
@@ -121,14 +123,14 @@ def adjustLinearActuatorHandler(camera = None, actuator = None):
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay(camera = None, actuator = None):
 	if actuator is None:
-		adjustLinearActuatorHandler(camera,actuator)
+		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveOutOfPath()
 	return camera, actuator
 
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath(camera = None, actuator = None):
 	if actuator is None:
-		adjustLinearActuatorHandler(camera,actuator)
+		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
 	actuator.moveIntoPath()
 	return camera, actuator
 
