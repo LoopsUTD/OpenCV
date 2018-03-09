@@ -71,7 +71,7 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
-			globalCamera, linActuator = opts[val](globalCamera,linActuator) #runs the correct handler function
+			globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
 			if globalCamera is not None:
@@ -141,7 +141,7 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	return camera, actuator
 
 @rename("Take Photo")
-def takePhotoHandler(camera, actuator = None):
+def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None):
 	if camera is None:
 		camera = Camera()
 
@@ -216,7 +216,7 @@ def runTestHandler():
 	log.info("User is trying to run the test")
 
 @rename("Exit")
-def exitThisProgram(camera=None,act = None):
+def exitThisProgram(camera=None,actuator = None):
 	raise ExitException("User Wants to Exit")
 
 def printMainMenu():
