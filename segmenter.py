@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import blob
 
 # INPUT:  name of .png photograph file
 # OUTPUT: array of found blob objects
@@ -94,8 +95,16 @@ def segment(image):
             if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
                 image[i,j] = image[i,j-1]
 
-    print(index)
+#     print(index)
     return image
+
+# INPUT:  Image with isolated and labeled segments
+# OUTPUT: Array of blob objects
+
+def segmentInfo(image):
+    blobs = list()
+    
+    return blobs
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
