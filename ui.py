@@ -65,7 +65,7 @@ def main():
 		selection = input("Enter selection [1-%d]: " % len(opts))
 		log.debug("User entered %s" % selection)
 		try:
-			if selection not in opts:
+			if int(selection) not in opts:
 				raise BadInputException
 			globalCamera, linActuator = opts[val](globalCamera, linActuator) #runs the correct handler function
 		except ExitException:

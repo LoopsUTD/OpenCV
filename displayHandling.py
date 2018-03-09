@@ -36,6 +36,6 @@ class FullScreenApp(object):
             return
 
 
-root=tk.Tk()
-app=FullScreenApp(root, ['test.jpg', 'second.jpg']) #pass images into the argument when you create this object.
-root.mainloop()
+# root=tk.Tk()
+# app=FullScreenApp(root, ['test.jpg', 'second.jpg']) #pass images into the argument when you create this object.
+# root.mainloop()

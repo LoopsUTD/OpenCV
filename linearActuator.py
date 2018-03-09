@@ -70,10 +70,10 @@ class LinearActuator:
         self.moveTo(self.bottom+100)
     
 
-if __name__ == "__main__":
-    actuator=LinearActuator()
-    actuator.findLimits()
-    actuator.manualAdjust(stepSize=100)
-    #actuator.moveIntoPath()
-    actuator.moveOutOfPath()
-    actuator.moveIntoPath()
+# if __name__ == "__main__":
+#     actuator=LinearActuator()
+#     actuator.findLimits()
+#     actuator.manualAdjust(stepSize=100)
+#     #actuator.moveIntoPath()
+#     actuator.moveOutOfPath()
+#     actuator.moveIntoPath()
