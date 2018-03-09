@@ -8,7 +8,7 @@ import traceback
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 import displayHandling
-import tkinter as tk 
+import tkinter as tk
 
 log = logging.getLogger(__name__)
 VERSION = "0.2"
