@@ -13,8 +13,8 @@ class FullScreenApp(object):
         master.bind('<Escape>',self.toggle_geom)
        # master.bind('<space>', self.nextImage)
         self.label = tk.Label()
-        if images is not None:
-            image = Image.open(images[0])
+        if self.images is not None:
+            image = Image.open(self.images[0])
             photo = ImageTk.PhotoImage(image)
             self.label.config(image=photo)
             self.label.image = photo

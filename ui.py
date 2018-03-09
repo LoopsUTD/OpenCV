@@ -175,9 +175,9 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 				raise BadInputException
 			if val == 1:
 				if len(testImages) > 0:
-					log.info("user is taking image at: %s" % defOutFolder)
+					log.info("user is taking image at: %s with %s" % (defOutFolder, testImages[0]))
 					manualUpdateImage(mainDisplay, testImages[0], root)
-					target = camera.takePhoto(foldername = defOutFolder)
+					target = camera.takePhoto(folderName = defOutFolder)
 					log.info("Image saved at: %s" % target)
 				else:
 					print("no default test images defined!")
@@ -192,11 +192,11 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 				print("Updated Output folder is: %s" % DefaultOutputFolder)
 				defOutFolder = DefaultOutputFolder
 			if val == 3:
-				newImagePath = input("enter test image path and file name: (must be exact!)")
+				newImagePath = str(input("enter test image path and file name: (must be exact!)"))
 				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
 				testImages.append(newImagePath)
 				manualUpdateImage(mainDisplay, newImagePath, root)
-				target = camera.takePhoto(foldername = defOutFolder)
+				target = camera.takePhoto(folderName = defOutFolder)
 				log.info("Image saved at: %s" % target)
 
 			if val == 4:
