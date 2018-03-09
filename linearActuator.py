@@ -49,6 +49,7 @@ class LinearActuator:
         self.moveTo(self.home)
     
     def manualAdjust(self,stepSize):
+        
         root = Tk()
         frame = Frame(root,width=100,height=100)
         label = Label(root,text='Move with arrow keys, Press x to set home. Press space to got home.')
@@ -61,8 +62,9 @@ class LinearActuator:
         frame.bind('<space>',self.goHome)
         frame.focus_set()
         frame.pack()
-        Button(root, text="Quit", command=root.destroy).pack()
-        root.mainloop()
+        Button(root, text="Quit", command= lambda: root.destroy).pack()
+        
+        #root.mainloop()
     
     def moveIntoPath(self):
         self.moveTo(self.home)
