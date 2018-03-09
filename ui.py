@@ -20,6 +20,9 @@ root = tk.Tk()
 #KEEPGOING = True
 
 def main():
+	#Shit globals that need to be resolved
+	DefaultOutputFolder = "RAW/"
+	mainDisplay = None
 	##LOGGING
 	loggingLevel = logging.DEBUG
 	log.setLevel(loggingLevel)
@@ -74,7 +77,7 @@ def main():
 			if val not in opts:
 				raise BadInputException
 			if val == 1:
-				mainDisplay = opts[val](mainDisplay = mainDisplay, ROOT = root)
+				mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
 			if val == 5: #TODO: make this explicit for photo menu
 				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay) #runs the correct handler function
 			else:
@@ -207,18 +210,18 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	return camera, actuator
 
 @rename("Initialize the Display")
-def setupDisplayHandler(ROOT = None, mainDisplay = None, testImages = None):
+def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None):
 	log.info("User is manually displaying an image")
 	
 	#How to use tKinter without Mainloop()
 	#https://gordonlesti.com/use-tkinter-without-mainloop/
 	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
-	if mainDisplay is None:
+	if mainDisp is None:
 		#root=ROOT
-		mainDisplay=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
+		mainDisp=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
 		ROOT.update()
 
-	return mainDisplay
+	return mainDisp
 		#root.mainloop()
 
 def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
