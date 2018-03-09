@@ -7,7 +7,7 @@ import sys #this gets you commandline args
 import traceback
 from linearActuator import LinearActuator
 from cameraHandling import Camera
-import displayHandling
+from displayHandling import FullScreenApp
 import tkinter as tk
 
 log = logging.getLogger(__name__)
