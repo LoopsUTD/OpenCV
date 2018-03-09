@@ -13,6 +13,7 @@ log = logging.getLogger(__name__)
 VERSION = "0.2"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
+mainDisplay = None
 #numOptionsInMenu = 4
 #KEEPGOING = True
 
@@ -55,6 +56,7 @@ def main():
 
 	linActuator = None
 	globalCamera = None
+	
 
 
 	## MAIN LOOP
@@ -144,10 +146,70 @@ def takePhotoHandler(camera, actuator = None):
 		camera = Camera()
 
 	print("Current Output folder is: %s" % DefaultOutputFolder)
+	print("Current test images are: %s" % args.tests)
+	print("Please Select from the following options:\n")
+	myOpts = {
+		1:"Take Photo With First Test Image"
+		2:"Change Output folder"
+		3:"Take Photo with other test image"
+		4:"Return to Main Menu"
+	}
+	for key, opt in myOpts.items():
+		print("\t%d. %s" % (key, opt))
 
-	camera.takePhoto(folderName = DefaultOutputFolder)
+	badSelection = True
+	while(badSelection):
+		try:
+			selection = input("enter selection: [1-%d]" % len(myOpts))
+			val = int(selection)
+			if val not in myOpts:
+				raise BadInputException
+			if val == 1:
+				if len(args.tests) > 0:
+					log.info("user is taking image at: %s" % DefaultOutputFolder)
+					manualUpdateImage(args.tests[0])
+					target = camera.takePhoto(foldername = DefaultOutputFolder)
+					log.info("Image saved at: %s" % target)
+				else:
+					print("no default test images defined!")
+			if val == 2:
+				newFolderNameRaw = input("Enter new folder name: ")
+				strippedName = newFolderNameRaw.strip()
+				nameWithSlashes = strippedName.replace(' ', '')
+				goodName = nameWithSlashes.replace('\\', '')
+				betterName = goodName.replace("\'", '')
+				bestName = betterName.replace('\"', '')
+				DefaultOutputFolder = bestName
+				print("Updated Output folder is: %s" % DefaultOutputFolder)
+			if val == 3:
+				newImagePath = input("enter test image path and file name: (must be exact!)")
+				log.info("user is taking image at %s with %s" % (DefaultOutputFolder, newImagePath))
+				manualUpdateImage(newImagePath)
+				target = camera.takePhoto(foldername = DefaultOutputFolder)
+					log.info("Image saved at: %s" % target)
+
+			if val == 4:
+				badSelection = False
+		except BadInputException:
+			log.error("Invalid Input! Please Try Again or Enter 4 to return")
+
+	#camera.takePhoto(folderName = DefaultOutputFolder)
 
 	return camera, actuator
+
+@rename("Initialize the Display")
+def setupDisplayHandler(camera = None, actuator = None):
+	log.info("User is manually displaying an image")
+	if mainDisplay is None:
+		root=tk.Tk()
+		mainDisplay=FullScreenApp(root, args.tests) #pass images into the argument when you create this object.
+		root.mainloop()
+
+def manualUpdateImage(newImageFilePath):
+	if mainDisplay is None:
+		raise BadInputException("Initialize the Display First!")
+	mainDisplay.updateImage(newImageFilePath)
+
 
 @rename("Run Test")
 def runTestHandler():
@@ -164,15 +226,17 @@ def printMainMenu():
 	#Why use a Dict? Because it's so sneaky clean!!
 	#See links above to see how I made this so slick.
 	options = {
-		1: selectTestFileHandler, 
+		#1:selectTestFileHandler, 
+		1:setupDisplayHandler,
 		2:adjustLinearActuatorHandler, 
-		3:numLensToTestHandler, 
-		4:calibrateCameraHandler, 
-		5:checkCameraConnectionHandler, 
+		#3:numLensToTestHandler, 
+		3:calibrateCameraHandler, 
+		4:checkCameraConnectionHandler, 
+		5:takePhotoHandler,
 		6:runTestHandler, 
 		7:moveLinearActuatorIntoPath,
 		8:moveLinearActuatorOutOfWay,
-		9: exitThisProgram
+		9:exitThisProgram
 	}
 
 	print(welcome + mainmsg)
