@@ -11,3 +11,9 @@ Other Dependencies:
 		- look up installation at (linuxbrew.sh)[https://linuxbrew.sh] to see what this looks like
 	- after you brew install and make, you will be able to access gphoto2. TODO: update this with the link used to appropriately add gphoto2 to $PATH
 
+
+Links:
+	pi not full screen?
+	https://www.raspberrypi.org/forums/viewtopic.php?t=47152
+
+	
