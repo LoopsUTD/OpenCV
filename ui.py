@@ -149,9 +149,9 @@ def takePhotoHandler(camera, actuator = None):
 	print("Current test images are: %s" % args.tests)
 	print("Please Select from the following options:\n")
 	myOpts = {
-		1:"Take Photo With First Test Image"
-		2:"Change Output folder"
-		3:"Take Photo with other test image"
+		1:"Take Photo With First Test Image",
+		2:"Change Output folder",
+		3:"Take Photo with other test image",
 		4:"Return to Main Menu"
 	}
 	for key, opt in myOpts.items():
