@@ -19,6 +19,10 @@ def extractObjects(filename):
     image = segment(image)
     cv2.imshow("greenscale",image.astype(dtype='uint8'))
     cv2.waitKey(0)
+    
+    
+    
+    cv2.imwrite("output.png",image.astype(dtype='uint8'))
 
 # Sub-functions
 
@@ -63,15 +67,33 @@ def segment(image):
                 a = index
                 if i > 0 and image[i-1,j] and a > image[i-1,j]:
                     a = image[i-1,j]
-#                 if i < h - 1 and image[i+1,j] and a > image[i+1,j]:
-#                     a = image[i+1,j]
                 if j > 0 and image[i,j-1] and a > image[i,j-1]:
                     a = image[i,j-1]
-#                 if j < w - 1 and image[i,j+1] and a > image[i,j+1]:
-#                     a = image[i,j+1]
                 if a == index:
                     index = index + 1
                 image[i,j] = a
+                
+    for i in range(h-1,0,-1):
+        for j in range(w-1,0,-1):
+            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+                image[i,j] = image[i+1,j]
+            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+                image[i,j] = image[i,j+1]
+                
+    for i in range(h):
+        for j in range(w-1,0,-1):
+            if i > 0 and image[i-1,j] and image[i,j] > image[i-1,j]:
+                image[i,j] = image[i-1,j]
+            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+                image[i,j] = image[i,j+1]
+
+    for i in range(h-1,0,-1):                
+        for j in range(w):
+            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+                image[i,j] = image[i+1,j]
+            if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
+                image[i,j] = image[i,j-1]
+
     print(index)
     return image
 
