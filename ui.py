@@ -71,7 +71,10 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
-			globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
+			if val == 5: #TODO: make this explicit for photo menu
+				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests) #runs the correct handler function
+			else:
+				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
 			if globalCamera is not None:
@@ -145,8 +148,8 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	if camera is None:
 		camera = Camera()
 
-	#print("Current Output folder is: %s" % DefaultOutputFolder)
-	print("Current test images are: %s" % args.tests)
+	print("Current Output folder is: %s" % defOutFolder)
+	print("Current test images are: %s" % testImages)
 	print("Please Select from the following options:\n")
 	myOpts = {
 		1:"Take Photo With First Test Image",
@@ -167,7 +170,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 1:
 				if len(args.tests) > 0:
 					log.info("user is taking image at: %s" % DefaultOutputFolder)
-					manualUpdateImage(args.tests[0])
+					manualUpdateImage(testImages[0])
 					target = camera.takePhoto(foldername = DefaultOutputFolder)
 					log.info("Image saved at: %s" % target)
 				else:
