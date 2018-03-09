@@ -49,22 +49,26 @@ class LinearActuator:
         self.moveTo(self.home)
     
     def manualAdjust(self,stepSize):
-        
-        root = Tk()
-        frame = Frame(root,width=100,height=100)
-        label = Label(root,text='Move with arrow keys, Press x to set home. Press space to got home.')
-        label.pack()
-        frame.bind('<Up>', lambda event: self.moveUp(event,stepSize/10)  )
-        frame.bind('<Down>', lambda event: self.moveDown(event,stepSize/10))
-        frame.bind('<w>', lambda event: self.moveUp(event,stepSize)  )
-        frame.bind('<s>', lambda event: self.moveDown(event,stepSize))
-        frame.bind('<x>', self.setHome)
-        frame.bind('<space>',self.goHome)
-        frame.focus_set()
-        frame.pack()
-        Button(root, text="Quit", command= lambda: root.destroy).pack()
-        
-        #root.mainloop()
+        try: #I HATE MYSELF
+            root = Tk()
+            frame = Frame(root,width=100,height=100)
+            label = Label(root,text='Move with arrow keys, Press x to set home. Press space to got home.')
+            label.pack()
+            frame.bind('<Up>', lambda event: self.moveUp(event,stepSize/10)  )
+            frame.bind('<Down>', lambda event: self.moveDown(event,stepSize/10))
+            frame.bind('<w>', lambda event: self.moveUp(event,stepSize)  )
+            frame.bind('<s>', lambda event: self.moveDown(event,stepSize))
+            frame.bind('<x>', self.setHome)
+            frame.bind('<space>',self.goHome)
+            frame.focus_set()
+            frame.pack()
+            Button(root, text="Quit", command=root.destroy).pack()
+            #https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
+            while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
+                root.update()
+                root.update_idletasks()
+        except Exception:
+            return
     
     def moveIntoPath(self):
         self.moveTo(self.home)
