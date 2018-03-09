@@ -28,8 +28,8 @@ def generateCalibrationImages(refImage):
     for i in range(0,16):
         #capture jpgs if that will generate sufficient results
         imageDisplay.display(refImage, int(positions[i,1]), int(positions[i,0]))
-        #filename = captureImage()
-        #filenames[i] = filename
+        filename = capture_raw.capture()
+        filenames[i] = filename
 
     return filenames
 
