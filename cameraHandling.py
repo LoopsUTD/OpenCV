@@ -58,10 +58,10 @@ class Camera:
     def takePhoto(self, folderName):
         log.warning("Need to Enable Photo-Taking")
         #TODO: ensure capture target is properly setup?
-        self.adjustSettings('capturetarget', 1)
-        file_path = gp.check_result(gp.gp_camera_capture(camera, gp.GP_CAPTURE_IMAGE))
+        #self.adjustSettings('capturetarget', 1)
+        file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
         target = os.path.join(folderName, file_path.name)
-        camera_file = gp.check_result(gp.gp_camera_file_get(camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_RAW))
+        camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_RAW))
         gp.check_result(gp.gp_file_save(camera_file, target))
         return target
 
