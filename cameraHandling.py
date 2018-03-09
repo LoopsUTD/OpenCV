@@ -55,12 +55,12 @@ class Camera:
         self._config = self.camera.get_config() #update local config value to match the camera
         #TODO: Make this Object Oriented? 
 
-    def takePhoto(self, path):
+    def takePhoto(self, folderName):
         log.warning("Need to Enable Photo-Taking")
         #TODO: ensure capture target is properly setup?
         adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(camera, gp.GP_CAPTURE_IMAGE))
-        target = os.path.join('RAW/path/', file_path.name)
+        target = os.path.join(folderName, file_path.name)
         camera_file = gp.check_result(gp.gp_camera_file_get(camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_RAW))
         gp.check_result(gp.gp_file_save(camera_file, target))
         return target

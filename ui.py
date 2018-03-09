@@ -12,6 +12,7 @@ import displayHandling
 log = logging.getLogger(__name__)
 VERSION = "0.2"
 numLensToTest = 1
+DefaultOutputFolder = "RAW/"
 #numOptionsInMenu = 4
 #KEEPGOING = True
 
@@ -66,7 +67,7 @@ def main():
 		log.debug("User entered %s" % selection)
 		try:
 			if int(selection) not in opts:
-				raise BadInputException
+				raise BadInputException	
 			globalCamera, linActuator = opts[val](globalCamera, linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
@@ -104,9 +105,11 @@ def adjustLinearActuatorHandler(camera = None, actuator = None):
 	return camera, actuator
 
 #TODO: Does this need to be here?
+@rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay(actuator):
 	actuator.moveOutOfPath()
 
+@rename("Move Into Way")
 def moveLinearActuatorIntoPath(actuator):
 	actuator.moveIntoPath()
 
@@ -127,6 +130,17 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	camera.getCameraSummary()
 	return camera, actuator
 
+@rename("Take Photo")
+def takePhotoHandler(camera, actuator = None):
+	if camera is None:
+		camera = Camera()
+
+	print("Current Output folder is: %s" % DefaultOutputFolder)
+
+	camera.takePhoto(folderName = DefaultOutputFolder)
+
+	return camera, actuator
+
 @rename("Run Test")
 def runTestHandler():
 	log.info("User is trying to run the test")
@@ -141,7 +155,17 @@ def printMainMenu():
 
 	#Why use a Dict? Because it's so sneaky clean!!
 	#See links above to see how I made this so slick.
-	options = {1: selectTestFileHandler, 2:adjustLinearActuatorHandler, 3:numLensToTestHandler, 4:calibrateCameraHandler, 5:checkCameraConnectionHandler, 6:runTestHandler, 7: exitThisProgram}
+	options = {
+		1: selectTestFileHandler, 
+		2:adjustLinearActuatorHandler, 
+		3:numLensToTestHandler, 
+		4:calibrateCameraHandler, 
+		5:checkCameraConnectionHandler, 
+		6:runTestHandler, 
+		7:moveLinearActuatorIntoPath,
+		8:moveLinearActuatorOutOfWay,
+		9: exitThisProgram
+	}
 
 	print(welcome + mainmsg)
 	for key, opt in options.items():
