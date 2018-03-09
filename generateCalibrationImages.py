@@ -1,6 +1,7 @@
 import tkinter
 import numpy
 import cv2
+import capture_raw
 import imageDisplay
 
 # INPUT: 'calib.png', the name of the checkerboard/calibration image, as a string
