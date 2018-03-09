@@ -14,6 +14,7 @@ VERSION = "0.2"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
+root = tk.Tk()
 #numOptionsInMenu = 4
 #KEEPGOING = True
 
@@ -71,6 +72,8 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
+			if val == 1:
+				globalCamera, linActuator = opts[val](mainDisplay = mainDisplay, ROOT = root)
 			if val == 5: #TODO: make this explicit for photo menu
 				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests) #runs the correct handler function
 			else:
@@ -170,7 +173,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 1:
 				if len(args.tests) > 0:
 					log.info("user is taking image at: %s" % DefaultOutputFolder)
-					manualUpdateImage(testImages[0])
+					manualUpdateImage(testImages[0], root)
 					target = camera.takePhoto(foldername = DefaultOutputFolder)
 					log.info("Image saved at: %s" % target)
 				else:
@@ -187,7 +190,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 3:
 				newImagePath = input("enter test image path and file name: (must be exact!)")
 				log.info("user is taking image at %s with %s" % (DefaultOutputFolder, newImagePath))
-				manualUpdateImage(newImagePath)
+				manualUpdateImage(newImagePath, root)
 				target = camera.takePhoto(foldername = DefaultOutputFolder)
 				log.info("Image saved at: %s" % target)
 
@@ -201,17 +204,23 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 	return camera, actuator
 
 @rename("Initialize the Display")
-def setupDisplayHandler(camera = None, actuator = None):
+def setupDisplayHandler(ROOT = None, mainDisplay = None, testImages = None):
 	log.info("User is manually displaying an image")
+	
+	#How to use tKinter without Mainloop()
+	#https://gordonlesti.com/use-tkinter-without-mainloop/
+	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
 	if mainDisplay is None:
-		root=tk.Tk()
-		mainDisplay=FullScreenApp(root, args.tests) #pass images into the argument when you create this object.
-		root.mainloop()
+		#root=ROOT
+		mainDisplay=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
+		ROOT.update()
+		#root.mainloop()
 
-def manualUpdateImage(newImageFilePath):
+def manualUpdateImage(newImageFilePath = None, ROOT = None):
 	if mainDisplay is None:
 		raise BadInputException("Initialize the Display First!")
 	mainDisplay.updateImage(newImageFilePath)
+	ROOT.update()
 
 
 @rename("Run Test")
