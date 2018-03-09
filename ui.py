@@ -174,7 +174,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val not in myOpts:
 				raise BadInputException
 			if val == 1:
-				if len(args.tests) > 0:
+				if len(testImages) > 0:
 					log.info("user is taking image at: %s" % defOutFolder)
 					manualUpdateImage(mainDisplay, testImages[0], root)
 					target = camera.takePhoto(foldername = defOutFolder)

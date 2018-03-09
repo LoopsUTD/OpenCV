@@ -12,11 +12,13 @@ class FullScreenApp(object):
             master.winfo_screenwidth()-pad, master.winfo_screenheight()-pad))
         master.bind('<Escape>',self.toggle_geom)
        # master.bind('<space>', self.nextImage)
-        image = Image.open(self.images[0])
-        photo = ImageTk.PhotoImage(image)
-        self.label = tk.Label(image=photo)
-        self.label.image = photo
-        self.label.pack()
+        self.label = tk.Label()
+        if images is not None:
+            image = Image.open(images[0])
+            photo = ImageTk.PhotoImage(image)
+            self.label.config(image=photo)
+            self.label.image = photo
+            self.label.pack()
         #image = Tk.PhotoImage(file='test.png')            
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
