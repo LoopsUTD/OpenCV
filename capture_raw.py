@@ -11,7 +11,7 @@ def initializeCamera():
     camera.init()
     return camera
 
-def main():
+def capture():
     logging.basicConfig(
         format='%(levelname)s: %(name)s: %(message)s', level=logging.WARNING)
     gp.check_result(gp.use_python_logging())
@@ -52,4 +52,4 @@ def main():
     return target
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(capture())
