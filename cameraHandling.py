@@ -20,7 +20,7 @@ class Camera:
         log.info("Initializing...")
         self.camera = gp.Camera()
         self.camera.init()
-        _initializeConfig()
+        self._initializeConfig()
 
 
     def _initializeConfig(self):
