@@ -198,6 +198,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 			if val == 4:
 				badSelection = False
 		except BadInputException:
+			traceback.print_exc()
 			log.error("Invalid Input! Please Try Again or Enter 4 to return")
 
 	#camera.takePhoto(folderName = DefaultOutputFolder)
