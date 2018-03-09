@@ -17,8 +17,7 @@ def extractObjects(filename):
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
     image = segment(image)
-    cv2.imshow("greenscale",image)
-    cv2.imwrite('segmented.png',image)
+    cv2.imshow("greenscale",image.astype(dtype='uint8'))
     cv2.waitKey(0)
 
 # Sub-functions
@@ -47,8 +46,6 @@ def threshold(image,thresh):
             a[...] = 255
         else:
             a[...] = 0
-            
-    print(image)
     return image
 
 # INPUT:  Thresholded image
@@ -58,6 +55,7 @@ def segment(image):
     index = 1
     h = len(image)
     w = len(image[1])
+    image = image.astype(dtype='uint16')
 
     for i in range(h):
         for j in range(w):
@@ -65,16 +63,15 @@ def segment(image):
                 a = index
                 if i > 0 and image[i-1,j] and a > image[i-1,j]:
                     a = image[i-1,j]
-                if i < h - 1 and image[i+1,j] and a > image[i+1,j]:
-                    a = image[i+1,j]
+#                 if i < h - 1 and image[i+1,j] and a > image[i+1,j]:
+#                     a = image[i+1,j]
                 if j > 0 and image[i,j-1] and a > image[i,j-1]:
                     a = image[i,j-1]
-                if j < w - 1 and image[i,j+1] and a > image[i,j+1]:
-                    a = image[i,j+1]
+#                 if j < w - 1 and image[i,j+1] and a > image[i,j+1]:
+#                     a = image[i,j+1]
                 if a == index:
                     index = index + 1
                 image[i,j] = a
-    print(image)
     print(index)
     return image
 
