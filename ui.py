@@ -140,12 +140,12 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	print(text)
 	return camera, actuator
 
-@rename("Take Photo")
+@rename("Take Photo Menu")
 def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None):
 	if camera is None:
 		camera = Camera()
 
-	print("Current Output folder is: %s" % DefaultOutputFolder)
+	#print("Current Output folder is: %s" % DefaultOutputFolder)
 	print("Current test images are: %s" % args.tests)
 	print("Please Select from the following options:\n")
 	myOpts = {
@@ -186,7 +186,7 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 				log.info("user is taking image at %s with %s" % (DefaultOutputFolder, newImagePath))
 				manualUpdateImage(newImagePath)
 				target = camera.takePhoto(foldername = DefaultOutputFolder)
-					log.info("Image saved at: %s" % target)
+				log.info("Image saved at: %s" % target)
 
 			if val == 4:
 				badSelection = False
