@@ -40,8 +40,8 @@ class TestHandler():
 		self.actuator = LinearActuator.getInstance() #This should already have been initialized, but it will re-initialize if it hasn't been.
 		self.display = FullScreenApp.getInstance()
 
-    def printMainMenu(self):
-    	print("Current Output folder is: %s" % self.defOutFolder)
+	def printMainMenu(self):
+		print("Current Output folder is: %s" % self.defOutFolder)
 		print("Current test image is: %s" % self.testImages)
 		print("Please Select from the following options:\n")
 		self.myOpts = {
