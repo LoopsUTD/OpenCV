@@ -37,7 +37,7 @@ class TestHandler():
 
 		#Initialize Singleton Variables and store a memory pointer in this object.
 		self.camera = Camera()
-		self.actuator = LinearActuator() #This should already have been initialized, but it will re-initialize if it hasn't been.
+		self.actuator, firstTime = LinearActuator() #This should already have been initialized, but it will re-initialize if it hasn't been.
 		self.display = FullScreenApp()
 
 	def printMainMenu(self):

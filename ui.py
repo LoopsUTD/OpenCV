@@ -127,10 +127,9 @@ def setupDisplayHandler():
 def adjustLinearActuatorHandler():
 	log.info("adjusting Linear Actuator")
 	
-	LinearActuator()
-	#actuator.findLimits()
-
-	#actuator.manualAdjust(stepSize = 100)
+	actuator, firstTime = LinearActuator()
+	actuator.findLimits()
+	actuator.manualAdjust(stepSize = 100)
 	
 # @rename("Select Test File")
 # def selectTestFileHandler():
@@ -141,13 +140,15 @@ def adjustLinearActuatorHandler():
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-	actuator = LinearActuator()
+	actuator, firstTime = LinearActuator()
+	if(fistTime):
+		adjustLinearActuatorHandler()
 	actuator.moveOutOfPath()
 
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath():
 	log.info("User Moving Linear Actuator into path")	
-	actuator = LinearActuator()
+	actuator, firstTime = LinearActuator()
 	actuator.moveIntoPath()
 
 

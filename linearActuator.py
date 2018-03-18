@@ -14,13 +14,15 @@ class LinearActuator:
         self.home=0
         self.current=self.home
         self.goal=self.home
-        LinearActuator.findLimits(self)
-        LinearActuator.manualAdjust(self, stepSize = 100)
+        #LinearActuator.findLimits(self)
+        #LinearActuator.manualAdjust(self, stepSize = 100)
     
     def __new__(cls):
+        firstInitialization = False
         if not cls._singletonInstance:
             cls._singletonInstance = cls.__init__(cls)
-        return cls._singletonInstance
+            firstInitialization = True
+        return cls._singletonInstance, firstInitialization
 
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
