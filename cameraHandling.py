@@ -24,10 +24,10 @@ class Camera(object):
         self.camera.init()
         self._initializeConfig()
 
-    def __new__(cls, val):
+    def __new__(cls):
         if not Camera._singletonInstance:
             Camera._singletonInstance = object.__new__(cls)
-        Camera._singletonInstance.val = val
+        #Camera._singletonInstance.val = val
         return Camera._singletonInstance
 
     def _initializeConfig(self):
