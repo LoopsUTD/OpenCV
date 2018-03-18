@@ -66,9 +66,9 @@ class TestHandler():
 		goodName = nameWithSlashes.replace('\\', '')
 		betterName = goodName.replace("\'", '')
 		bestName = betterName.replace('\"', '')
-		DefaultOutputFolder = bestName
-		print("Updated Output folder is: %s" % DefaultOutputFolder)
-		self.defOutFolder = DefaultOutputFolder
+		defaultOutputFolder = bestName
+		print("Updated Output folder is: %s" % defaultOutputFolder)
+		self.defOutFolder = defaultOutputFolder
 
 	def takePhotoOtherImage(self):
 		newImagePath = str(input("enter path to test image: (must be exact!)"))

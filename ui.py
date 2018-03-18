@@ -13,7 +13,7 @@ import tkinter as tk
 
 
 log = logging.getLogger(__name__)
-VERSION = "0.2"
+VERSION = "0.4a"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
@@ -63,12 +63,6 @@ def main():
 	log.debug("Input Args: %s" % args)
 	log.debug('tests has the value: %s' % args.tests)
 
-
-	#linActuator = None
-	#globalCamera = None
-	
-
-
 	## MAIN LOOP
 	opts = printMainMenu()
 	badSelection = True
@@ -93,7 +87,7 @@ def main():
 		except Exception:
 			log.error(traceback.print_exc())
 
-
+#Main Menu Options
 		# #1:selectTestFileHandler, 
 		# 1:setupDisplayHandler,
 		# 2:adjustLinearActuatorHandler, 
