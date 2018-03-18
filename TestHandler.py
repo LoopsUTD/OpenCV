@@ -50,8 +50,10 @@ class TestHandler():
 			3:self.takePhotoOtherImage,
 			4:self.exit
 		}
-		for key, opt in myOpts.items():
+		for key, opt in self.myOpts.items():
 			print("\t%d. %s" % (key, opt))
+
+
 
 	#@rename("Take Photo With First Test Image")
 	def takePhotoNow(self):
