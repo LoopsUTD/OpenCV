@@ -7,7 +7,7 @@ import time
 import gphoto2 as gp
 
 
-class Camera:
+class Camera(Object):
     _singletonInstance = None
     def __init__(self):
         #self.singletonInstance = None
@@ -24,10 +24,11 @@ class Camera:
         self.camera.init()
         self._initializeConfig()
 
-    def __new__(cls):
-        if not cls._singletonInstance:
-            cls._singletonInstance = cls.__init__(cls)
-        return cls._singletonInstance
+    def __new__(cls, val):
+        if not Camera._singletonInstance:
+            Camera._singletonInstance = object.__new__(cls)
+        Camera._singletonInstance.val = val
+        return Camera._singletonInstance
 
     def _initializeConfig(self):
         self._config = self.camera.get_config()
