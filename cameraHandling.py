@@ -8,6 +8,7 @@ import gphoto2 as gp
 
 
 class Camera:
+    _singletonInstance = None
     def __init__(self):
         #self.singletonInstance = None
         self.log = logging.getLogger(__name__)

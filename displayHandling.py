@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import traceback
 
 class FullScreenApp(tk.Tk):
+    _singletonInstance = None
     def __init__(self, images=None, *args, **kwargs):
         self.master = tk.Tk.__init__(self, *args, **kwargs)
         #self.master=tk

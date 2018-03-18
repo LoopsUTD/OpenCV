@@ -4,6 +4,7 @@ from tkinter import *
 import logging
 
 class LinearActuator:
+    _singletonInstance = None
     #stepperMotor class from stepperMotor.py
     #home - adjustable position to return to (in steps)
     #current - current position (in steps_
