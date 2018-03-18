@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import traceback
 
 class FullScreenApp(tk.Tk):
-    _singletonInstance = None
+    singletonInstance = None
     def __init__(self, images=None, *args, **kwargs):
         self.master = tk.Tk()#.__init__(self, *args, **kwargs)
         #self.master=tk
@@ -24,9 +24,9 @@ class FullScreenApp(tk.Tk):
         #image = Tk.PhotoImage(file='test.png')            
     
     def __new__(cls):
-        if not FullScreenApp._singletonInstance:
-            FullScreenApp._singletonInstance = object.__new__(cls)
-        return FullScreenApp._singletonInstance
+        if not FullScreenApp.singletonInstance:
+            FullScreenApp.singletonInstance = object.__new__(cls)
+        return FullScreenApp.singletonInstance
 
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
