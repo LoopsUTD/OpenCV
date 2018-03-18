@@ -16,7 +16,7 @@ class TestHandler():
 		self.log = logging.getLogger(__name__)
 		handler = logging.StreamHandler()
 		if logLevelDefault is None:
-        	handler.setLevel(10)
+        	handler.setLevel(logging.INFO)
         else:
         	handler.setLevel(logLevelDefault)
         format = logging.Formatter('%(levelname)s -- %(message)s')

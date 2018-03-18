@@ -8,7 +8,9 @@ import traceback
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 from displayHandling import FullScreenApp
+from TestHandler import TestHandler
 import tkinter as tk
+
 
 log = logging.getLogger(__name__)
 VERSION = "0.2"
@@ -80,14 +82,7 @@ def main():
 			if val not in opts:
 				raise BadInputException
 			opts[val]()
-			# if val == 1:
-			# 	mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
-			# if val == 3:
-			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			# if val == 5: #TODO: make this explicit for photo menu
-			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			# else:
-			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
+
 		except ExitException:
 			log.critical("Exiting The Application.")
 			if globalCamera is not None:
@@ -187,7 +182,7 @@ def calibrateCameraHandler(camera = None, actuator = None):
 
 
 @rename("Get Camera Settings and Summary")
-def checkCameraConnectionHandler(camera = None, actuator = None):
+def checkCameraConnectionHandler():
 	log.info("checking to see if camera is connected")
 	camera = Camera.getInstance()
 	text = camera.getCameraSummary()
@@ -201,65 +196,25 @@ def checkCameraConnectionHandler(camera = None, actuator = None):
 	# return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = None):
-	if camera is None:
-		camera = Camera.getInstance()
-	print("Current Output folder is: %s" % defOutFolder)
-	print("Current test image is: %s" % testImages)
-	print("Please Select from the following options:\n")
-	myOpts = {
-		1:"Take Photo With First Test Image",
-		2:"Change Output folder",
-		3:"Take Photo with other test image",
-		4:"Return to Main Menu"
-	}
-	for key, opt in myOpts.items():
-		print("\t%d. %s" % (key, opt))
+def takePhotoHandler():
+	testhandling = TestHandler(logLevelDefault = logging.DEBUG)
+	testhandling.printMainMenu()
 
 	badSelection = True
 	while(badSelection):
 		try:
 			selection = input("enter selection: [1-%d] " % len(myOpts))
 			val = int(selection)
-			if val not in myOpts:
+			if val not in testhandling.myOpts:
 				raise BadInputException
-			if val == 1:
-				if len(testImages) > 0:
-					log.info("user is storing image in: %s with test photo: %s" % (defOutFolder, testImages))
-					manualUpdateImage(mainDisplay, testImages, ROOT)
-					target = camera.takePhoto(folderName = defOutFolder)
-					log.info("photo saved at: %s" % target)
-				else:
-					print("no default test images defined!")
-			if val == 2:
-				newFolderNameRaw = input("Enter new folder name: ")
-				strippedName = newFolderNameRaw.strip()
-				nameWithSlashes = strippedName.replace(' ', '')
-				goodName = nameWithSlashes.replace('\\', '')
-				betterName = goodName.replace("\'", '')
-				bestName = betterName.replace('\"', '')
-				DefaultOutputFolder = bestName
-				print("Updated Output folder is: %s" % DefaultOutputFolder)
-				defOutFolder = DefaultOutputFolder
-			if val == 3:
-				newImagePath = str(input("enter test image path and file name: (must be exact!)"))
-				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
-				testImages = newImagePath
-				manualUpdateImage(mainDisplay, newImagePath, ROOT)
-				target = camera.takePhoto(folderName = defOutFolder)
-				log.info("Image saved at: %s" % target)
-
 			if val == 4:
 				badSelection = False
+
+			testhandling.myOpts[val]()
+
 		except BadInputException:
 			traceback.print_exc()
 			log.error("Invalid Input! Please Try Again or Enter 4 to return")
-
-	#camera.takePhoto(folderName = DefaultOutputFolder)
-
-	return camera, actuator
-
-
 
 
 # @rename("Initialize the Display")
