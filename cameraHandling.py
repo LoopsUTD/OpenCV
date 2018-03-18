@@ -23,6 +23,10 @@ class Camera:
         self.camera.init()
         self._initializeConfig()
 
+    def __new__(cls):
+        if not cls._singletonInstance:
+            cls._singletonInstance = cls.__init__(cls)
+        return cls._singletonInstance
 
     def _initializeConfig(self):
         self._config = self.camera.get_config()
@@ -70,11 +74,6 @@ class Camera:
         self.log.info("Return Camera Summary:")
         return self.camera.get_summary()
 
-    def getInstance(self):
-        if self._singletonInstance is None:
-            self._singletonInstance = self.__init__()
-        
-        return self._singletonInstance
 
     def close(self):
         self.log.info("Camera is exiting")

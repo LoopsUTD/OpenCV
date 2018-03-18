@@ -22,6 +22,11 @@ class FullScreenApp(tk.Tk):
             self.master.update()
         #image = Tk.PhotoImage(file='test.png')            
     
+    def __new__(cls):
+    if not cls._singletonInstance:
+        cls._singletonInstance = cls.__init__(cls)
+    return cls._singletonInstance
+
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
         print(geom,self._geom)
@@ -43,10 +48,6 @@ class FullScreenApp(tk.Tk):
             traceback.print_exc()
             return
 
-    def getInstance(self):
-        if self._singletonInstance is None:
-            self._singletonInstance = self.__init__()
-        return self._singletonInstance
 
 # root=tk.Tk()
 # app=FullScreenApp(root, ['test.jpg', 'second.jpg']) #pass images into the argument when you create this object.

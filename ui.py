@@ -26,7 +26,7 @@ def main():
 	#DefaultOutputFolder = "RAW/"
 	#mainDisplay = None
 	#root = tk.Tk()
-	#FullScreenApp.getInstance()
+	#FullScreenApp()
 
 	##LOGGING
 	loggingLevel = logging.DEBUG
@@ -121,13 +121,13 @@ def rename(newName):
 @rename("Initialize the Display")
 def setupDisplayHandler():
 	log.info("initializing the Display Handler...")	
-	FullScreenApp.getInstance()
+	FullScreenApp()
 
 @rename("Initialize Linear Actuator")
 def adjustLinearActuatorHandler():
 	log.info("adjusting Linear Actuator")
 	
-	LinearActuator.getInstance()
+	LinearActuator()
 	#actuator.findLimits()
 
 	#actuator.manualAdjust(stepSize = 100)
@@ -141,13 +141,13 @@ def adjustLinearActuatorHandler():
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-	actuator = LinearActuator.getInstance()
+	actuator = LinearActuator()
 	actuator.moveOutOfPath()
 
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath():
 	log.info("User Moving Linear Actuator into path")	
-	actuator = LinearActuator.getInstance()
+	actuator = LinearActuator()
 	actuator.moveIntoPath()
 
 
@@ -166,7 +166,7 @@ def calibrateCameraHandler(camera = None, actuator = None):
 @rename("Get Camera Settings and Summary")
 def checkCameraConnectionHandler():
 	log.info("checking to see if camera is connected")
-	camera = Camera.getInstance()
+	camera = Camera()
 	text = camera.getCameraSummary()
 	print(text)
 

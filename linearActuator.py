@@ -16,6 +16,11 @@ class LinearActuator:
         self.findLimits()
         self.manualAdjust(stepSize = 100)
     
+    def __new__(cls):
+    if not cls._singletonInstance:
+        cls._singletonInstance = cls.__init__(cls)
+    return cls._singletonInstance
+
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
         success=self.motor.step(target-self.current)
@@ -76,11 +81,6 @@ class LinearActuator:
         self.moveTo(self.home)
     def moveOutOfPath(self):
         self.moveTo(self.bottom+100)
-
-    def getInstance(self):
-        if self._singletonInstance is None:
-            self._singletonInstance = self.__init__()
-        return self._singletonInstance
     
 
 # if __name__ == "__main__":
