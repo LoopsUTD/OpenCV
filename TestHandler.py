@@ -16,28 +16,29 @@ class TestHandler():
 		self.log = logging.getLogger(__name__)
 		handler = logging.StreamHandler()
 		if logLevelDefault is None:
-        	handler.setLevel(logging.INFO)
-        else:
-        	handler.setLevel(logLevelDefault)
-        format = logging.Formatter('%(levelname)s -- %(message)s')
-        handler.setFormatter(format)
-        self.log.addHandler(handler)
-        self.log.info("Initializing Test Handler")
+			handler.setLevel(logging.INFO)
+		else:
+			handler.setLevel(logLevelDefault)
+		format = logging.Formatter('%(levelname)s -- %(message)s')
+		handler.setFormatter(format)
+		self.log.addHandler(handler)
+		self.log.info("Initializing Test Handler")
 
-        #Set Default variables:
-        if testImages is None:
-        	self.testImages = ['test.jpg']
-        else:
-        	self.testImages = testImages
+		#Set Default variables:
+		if testImages is None:
+			self.testImages = ['test.jpg']
+		else:
+			self.testImages = testImages
 
-        if defOutFolder is None:
-        	self.defOutFolder = "RAW/"
-        else:
-        	self.defOutFolder = defOutFolder
+		if defOutFolder is None:
+			self.defOutFolder = "RAW/"
+		else:
+			self.defOutFolder = defOutFolder
 
-        self.camera = Camera.getInstance()
-        self.actuator = LinearActuator.getInstance() #This should already have been initialized, but it will re-initialize if it hasn't been.
-        self.display = FullScreenApp.getInstance()
+		#Initialize Singleton Variables and store a memory pointer in this object.
+		self.camera = Camera.getInstance()
+		self.actuator = LinearActuator.getInstance() #This should already have been initialized, but it will re-initialize if it hasn't been.
+		self.display = FullScreenApp.getInstance()
 
     def printMainMenu(self):
     	print("Current Output folder is: %s" % self.defOutFolder)
