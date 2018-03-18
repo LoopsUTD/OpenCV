@@ -5,7 +5,7 @@ import traceback
 class FullScreenApp(object):
     def __init__(self, master, images = None, **kwargs):
         self.master=master
-        pad=3
+        pad=0
         self.images = images
         self._geom='200x200+0+0'
         master.geometry("{0}x{1}+0+0".format(
@@ -20,6 +20,7 @@ class FullScreenApp(object):
             self.label.image = photo
             self.label.pack()
         #image = Tk.PhotoImage(file='test.png')            
+    
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
         print(geom,self._geom)
@@ -48,9 +49,11 @@ class FullScreenApp(object):
             traceback.print_exc()
             return
 
-    def getInstance(self):
+    def getInstance(self, master = None):
         if self._singletonInstance is None:
-            self._singletonInstance = self.__init__()
+            if master is None:
+                raise Exception("Invalid Input Parameters - Need to pass in a 'Root'") #TODO: Make this class a derivative of TK
+            self._singletonInstance = self.__init__(master)
         return self._singletonInstance
 
 # root=tk.Tk()

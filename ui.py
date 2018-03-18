@@ -24,6 +24,7 @@ def main():
 	DefaultOutputFolder = "RAW/"
 	mainDisplay = None
 	root = tk.Tk()
+	FullScreenApp.getInstance(root)
 
 	##LOGGING
 	loggingLevel = logging.DEBUG
@@ -78,14 +79,16 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
-			if val == 1:
-				mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
-			if val == 3:
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			if val == 5: #TODO: make this explicit for photo menu
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			else:
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
+
+			opts[val](ROOT = root, )
+			# if val == 1:
+			# 	mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
+			# if val == 3:
+			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
+			# if val == 5: #TODO: make this explicit for photo menu
+			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
+			# else:
+			# 	globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
 		except ExitException:
 			log.critical("Exiting The Application.")
 			if globalCamera is not None:
@@ -95,6 +98,19 @@ def main():
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
 		except Exception:
 			log.error(traceback.print_exc())
+
+
+		# #1:selectTestFileHandler, 
+		# 1:setupDisplayHandler,
+		# 2:adjustLinearActuatorHandler, 
+		# #3:numLensToTestHandler, 
+		# 3:calibrateCameraHandler, 
+		# 4:checkCameraConnectionHandler, 
+		# 5:takePhotoHandler,
+		# 6:runTestHandler, 
+		# 7:moveLinearActuatorIntoPath,
+		# 8:moveLinearActuatorOutOfWay,
+		# 9:exitThisProgram
 
 	
 ##Why does this work? see here:
@@ -107,6 +123,21 @@ def rename(newName):
 
 ##Why use handler functions in a Dictionary for options? See Here:
 #https://stackoverflow.com/questions/3978624/since-python-doesnt-have-a-switch-statement-what-should-i-use
+
+	#How to use tKinter without Mainloop()
+	#https://gordonlesti.com/use-tkinter-without-mainloop/
+	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
+
+
+
+@rename("Initialize the Display")
+def setupDisplayHandler(ROOT = None):
+	log.info("initializing the Display Handler...")
+		
+	FullScreenApp.getInstance(ROOT)
+
+
+
 @rename("Select Test File")
 def selectTestFileHandler():
 	log.info("Selecting Test File")
@@ -115,7 +146,7 @@ def selectTestFileHandler():
 def adjustLinearActuatorHandler(camera = None, actuator = None):
 	log.info("adjusting Linear Actuator")
 	if actuator is None:
-		actuator = LinearActuator()
+		actuator = LinearActuator.getInstance()
 		actuator.findLimits()
 
 	actuator.manualAdjust(stepSize = 100)
@@ -154,16 +185,16 @@ def calibrateCameraHandler(camera = None, actuator = None):
 def checkCameraConnectionHandler(camera = None, actuator = None):
 	log.info("checking to see if camera is connected")
 	if camera is None:
-		camera = Camera()
+		camera = Camera.getInstance()
 
 	text = camera.getCameraSummary()
 	print(text)
 	return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = none):
+def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = None):
 	if camera is None:
-		camera = Camera()
+		camera = Camera.getInstance()
 	print("Current Output folder is: %s" % defOutFolder)
 	print("Current test image is: %s" % testImages)
 	print("Please Select from the following options:\n")
@@ -219,20 +250,24 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 
 	return camera, actuator
 
-@rename("Initialize the Display")
-def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None, camera = None, actuator = None):
-	log.info("User is manually displaying an image")
-	
-	#How to use tKinter without Mainloop()
-	#https://gordonlesti.com/use-tkinter-without-mainloop/
-	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
-	if mainDisp is None:
-		#root=ROOT
-		mainDisp=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
-		ROOT.update()
 
-	return mainDisp
-		#root.mainloop()
+
+
+# @rename("Initialize the Display")
+# def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None, camera = None, actuator = None):
+# 	log.info("User is manually displaying an image")
+	
+# 	#How to use tKinter without Mainloop()
+# 	#https://gordonlesti.com/use-tkinter-without-mainloop/
+# 	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
+# 	if mainDisp is None:
+# 		#root=ROOT
+		
+# 		#mainDisp=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
+# 		ROOT.update()
+
+# 	return mainDisp
+# 		#root.mainloop()
 
 def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
 	if mainDisplay is None:
