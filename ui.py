@@ -21,10 +21,10 @@ mainDisplay = None
 
 def main():
 	##Shit globals that need to be resolved
-	DefaultOutputFolder = "RAW/"
-	mainDisplay = None
-	root = tk.Tk()
-	FullScreenApp.getInstance(root)
+	#DefaultOutputFolder = "RAW/"
+	#mainDisplay = None
+	#root = tk.Tk()
+	#FullScreenApp.getInstance()
 
 	##LOGGING
 	loggingLevel = logging.DEBUG
@@ -62,8 +62,8 @@ def main():
 	log.debug('tests has the value: %s' % args.tests)
 
 
-	linActuator = None
-	globalCamera = None
+	#linActuator = None
+	#globalCamera = None
 	
 
 
@@ -79,8 +79,7 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
-
-			opts[val](ROOT = root, )
+			opts[val]()
 			# if val == 1:
 			# 	mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
 			# if val == 3:
@@ -131,43 +130,49 @@ def rename(newName):
 
 
 @rename("Initialize the Display")
-def setupDisplayHandler(ROOT = None):
-	log.info("initializing the Display Handler...")
-		
-	FullScreenApp.getInstance(ROOT)
+def setupDisplayHandler():
+	log.info("initializing the Display Handler...")	
+	FullScreenApp.getInstance()
 
-
-
-@rename("Select Test File")
-def selectTestFileHandler():
-	log.info("Selecting Test File")
-
-@rename("Adjust Linear Actuator")
-def adjustLinearActuatorHandler(camera = None, actuator = None):
+@rename("Initialize Linear Actuator")
+def adjustLinearActuatorHandler():
 	log.info("adjusting Linear Actuator")
-	if actuator is None:
-		actuator = LinearActuator.getInstance()
-		actuator.findLimits()
+	
+	LinearActuator.getInstance()
+	#actuator.findLimits()
 
-	actuator.manualAdjust(stepSize = 100)
-	return camera, actuator
+	#actuator.manualAdjust(stepSize = 100)
+	
+# @rename("Select Test File")
+# def selectTestFileHandler():
+# 	log.info("Selecting Test File")
+
 
 #TODO: Does this need to be here?
 @rename("Move Out Of Way")
-def moveLinearActuatorOutOfWay(camera = None, actuator = None):
+def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-	if actuator is None:
-		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+
+	actuator = LinearActuator.getInstance()
 	actuator.moveOutOfPath()
-	return camera, actuator
+
+	#adjustLinearActuatorHandler()
+
+	# if actuator is None:
+	# 	camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+	# actuator.moveOutOfPath()
+	# return camera, actuator
 
 @rename("Move Into Way")
-def moveLinearActuatorIntoPath(camera = None, actuator = None):
+def moveLinearActuatorIntoPath():
 	log.info("User Moving Linear Actuator into path")
-	if actuator is None:
-		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+	
+	actuator = LinearActuator.getInstance()
 	actuator.moveIntoPath()
-	return camera, actuator
+	# if actuator is None:
+	# 	camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+	# actuator.moveIntoPath()
+	# return camera, actuator
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
@@ -184,12 +189,16 @@ def calibrateCameraHandler(camera = None, actuator = None):
 @rename("Get Camera Settings and Summary")
 def checkCameraConnectionHandler(camera = None, actuator = None):
 	log.info("checking to see if camera is connected")
-	if camera is None:
-		camera = Camera.getInstance()
-
+	camera = Camera.getInstance()
 	text = camera.getCameraSummary()
 	print(text)
-	return camera, actuator
+
+	# if camera is None:
+	# 	camera = Camera.getInstance()
+
+	# text = camera.getCameraSummary()
+	# print(text)
+	# return camera, actuator
 
 @rename("Take Photo Menu")
 def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = None):
@@ -269,11 +278,11 @@ def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testIm
 # 	return mainDisp
 # 		#root.mainloop()
 
-def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
-	if mainDisplay is None:
-		raise BadInputException("Initialize the Display First!")
-	mainDisplay.updateImage(newImageFilePath)
-	ROOT.update()
+# def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
+# 	if mainDisplay is None:
+# 		raise BadInputException("Initialize the Display First!")
+# 	mainDisplay.updateImage(newImageFilePath)
+# 	ROOT.update()
 
 
 @rename("Run Test")

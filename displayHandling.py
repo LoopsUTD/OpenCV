@@ -2,16 +2,16 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import traceback
 
-class FullScreenApp(object):
-    def __init__(self, master, images = None, **kwargs):
-        self.master=master
+class FullScreenApp(tk.Tk):
+    def __init__(self, images=None, *args, **kwargs):
+        self.master = tk.Tk.__init__(self, *args, **kwargs)
+        #self.master=tk
         pad=0
         self.images = images
         self._geom='200x200+0+0'
-        master.geometry("{0}x{1}+0+0".format(
-            master.winfo_screenwidth()-pad, master.winfo_screenheight()-pad))
-        master.bind('<Escape>',self.toggle_geom)
-       # master.bind('<space>', self.nextImage)
+        self.master.geometry("{0}x{1}+0+0".format(
+            self.master.winfo_screenwidth()-pad, self.master.winfo_screenheight()-pad))
+        self.master.bind('<Escape>',self.toggle_geom)
         self.label = tk.Label()
         if self.images is not None:
             image = Image.open(self.images[0])
@@ -19,6 +19,7 @@ class FullScreenApp(object):
             self.label.config(image=photo)
             self.label.image = photo
             self.label.pack()
+            self.master.update()
         #image = Tk.PhotoImage(file='test.png')            
     
     def toggle_geom(self,event):
@@ -27,16 +28,8 @@ class FullScreenApp(object):
         self.master.geometry(self._geom)
         self._geom=geom
 
-    def nextImage(self, event):
-        try:
-            print("I am trying to activate")
-            photo = ImageTk.PhotoImage(Image.open(self.images[1]))
-            self.label.config(image=photo)
-            self.label.image = photo
-            self.label.pack()
-        except Exception:
-            traceback.print_exc()
-            return
+
+
     def updateImage(self, newImageFilePath):
         try:
             print("Updating Image...")
@@ -44,16 +37,15 @@ class FullScreenApp(object):
             self.label.config(image=photo)
             self.label.image = photo
             self.label.pack()
+            self.master.update()
         except Exception:
             print("Error - maybe bad image File path?")
             traceback.print_exc()
             return
 
-    def getInstance(self, master = None):
+    def getInstance(self):
         if self._singletonInstance is None:
-            if master is None:
-                raise Exception("Invalid Input Parameters - Need to pass in a 'Root'") #TODO: Make this class a derivative of TK
-            self._singletonInstance = self.__init__(master)
+            self._singletonInstance = self.__init__()
         return self._singletonInstance
 
 # root=tk.Tk()
