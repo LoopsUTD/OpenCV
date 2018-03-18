@@ -7,7 +7,7 @@ import time
 import gphoto2 as gp
 
 
-class Camera(Object):
+class Camera(object):
     _singletonInstance = None
     def __init__(self):
         #self.singletonInstance = None
