@@ -141,27 +141,15 @@ def adjustLinearActuatorHandler():
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-
 	actuator = LinearActuator.getInstance()
 	actuator.moveOutOfPath()
 
-	#adjustLinearActuatorHandler()
-
-	# if actuator is None:
-	# 	camera, actuator = adjustLinearActuatorHandler(camera,actuator)
-	# actuator.moveOutOfPath()
-	# return camera, actuator
-
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath():
-	log.info("User Moving Linear Actuator into path")
-	
+	log.info("User Moving Linear Actuator into path")	
 	actuator = LinearActuator.getInstance()
 	actuator.moveIntoPath()
-	# if actuator is None:
-	# 	camera, actuator = adjustLinearActuatorHandler(camera,actuator)
-	# actuator.moveIntoPath()
-	# return camera, actuator
+
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
@@ -181,13 +169,6 @@ def checkCameraConnectionHandler():
 	camera = Camera.getInstance()
 	text = camera.getCameraSummary()
 	print(text)
-
-	# if camera is None:
-	# 	camera = Camera.getInstance()
-
-	# text = camera.getCameraSummary()
-	# print(text)
-	# return camera, actuator
 
 @rename("Take Photo Menu")
 def takePhotoHandler():
