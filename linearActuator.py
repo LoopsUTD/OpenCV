@@ -17,9 +17,9 @@ class LinearActuator:
         self.manualAdjust(stepSize = 100)
     
     def __new__(cls):
-    if not cls._singletonInstance:
-        cls._singletonInstance = cls.__init__(cls)
-    return cls._singletonInstance
+        if not cls._singletonInstance:
+            cls._singletonInstance = cls.__init__(cls)
+        return cls._singletonInstance
 
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
