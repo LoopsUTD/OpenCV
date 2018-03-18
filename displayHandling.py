@@ -25,7 +25,7 @@ class FullScreenApp(tk.Tk):
     
     def __new__(cls):
         if not FullScreenApp._singletonInstance:
-            FullScreenApp._singletonInstance = object.__init__(cls)
+            FullScreenApp._singletonInstance = object.__new__(cls)
         return FullScreenApp._singletonInstance
 
     def toggle_geom(self,event):

@@ -19,7 +19,7 @@ class LinearActuator(object):
     
     def __new__(cls):
         if not LinearActuator._singletonInstance:
-            LinearActuator._singletonInstance = object.__init__(cls)
+            LinearActuator._singletonInstance = object.__new__(cls)
         return cls._singletonInstance
 
     #Returns boolean statement corresponding to whether goal was reached
