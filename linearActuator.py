@@ -14,8 +14,8 @@ class LinearActuator:
         self.home=0
         self.current=self.home
         self.goal=self.home
-        self.findLimits()
-        self.manualAdjust(stepSize = 100)
+        LinearActuator.findLimits(self)
+        LinearActuator.manualAdjust(self, stepSize = 100)
     
     def __new__(cls):
         if not cls._singletonInstance:

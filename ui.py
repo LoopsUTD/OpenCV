@@ -79,8 +79,8 @@ def main():
 
 		except ExitException:
 			log.critical("Exiting The Application.")
-			if globalCamera is not None:
-				globalCamera.close()
+			#if globalCamera is not None:
+		#		globalCamera.close()
 			badSelection = False
 		except BadInputException:
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
