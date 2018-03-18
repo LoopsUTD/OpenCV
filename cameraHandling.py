@@ -6,18 +6,19 @@ import time
 
 import gphoto2 as gp
 
-log = logging.getLogger(__name__)
-loggingLevel = 10
-handler = logging.StreamHandler()
-handler.setLevel(loggingLevel)
-#format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-format = logging.Formatter('%(levelname)s -- %(message)s')
-handler.setFormatter(format)
-log.addHandler(handler)
 
 class Camera:
     def __init__(self):
-        log.info("Initializing...")
+        #self.singletonInstance = None
+        self.log = logging.getLogger(__name__)
+        loggingLevel = 10
+        handler = logging.StreamHandler()
+        handler.setLevel(loggingLevel)
+        #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
+        format = logging.Formatter('%(levelname)s -- %(message)s')
+        handler.setFormatter(format)
+        self.log.addHandler(handler)
+        self.log.info("Initializing...")
         self.camera = gp.Camera()
         self.camera.init()
         self._initializeConfig()
@@ -33,11 +34,10 @@ class Camera:
         'imagequality': None,
         'imagesize': None
         }
-        log.info("Parsing 'mainConfigs'")
+        self.log.info("Parsing 'mainConfigs'")
         for sections in self._config.get_children():
-            if "settings" not in sections.get_name():
+            if "settings" not in sections.get_name(): #TODO: update this 
                 continue
-            #print("\n#########{} ({})###########\n".format(sections.get_label(), sections.get_name()))
             for child in sections.get_children():
                 if child.get_name() not in self.mainConfigs:
                     continue
@@ -56,7 +56,7 @@ class Camera:
         #TODO: Make this Object Oriented? 
 
     def takePhoto(self, folderName):
-        log.info("Capturing Photo...")
+        self.log.info("Capturing Photo...")
         #TODO: ensure capture target is properly setup?
         #self.adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
@@ -67,11 +67,17 @@ class Camera:
 
 
     def getCameraSummary(self):
-        log.info("Return Camera Summary:")
+        self.log.info("Return Camera Summary:")
         return self.camera.get_summary()
 
+    def getInstance(self):
+        if self._singletonInstance is None:
+            self._singletonInstance = self.__init__()
+        
+        return self._singletonInstance
+
     def close(self):
-        log.info("Camera is exiting")
+        self.log.info("Camera is exiting")
         self.camera.exit()
 
 if __name__ == "__main__":

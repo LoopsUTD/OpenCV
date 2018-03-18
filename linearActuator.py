@@ -74,6 +74,11 @@ class LinearActuator:
         self.moveTo(self.home)
     def moveOutOfPath(self):
         self.moveTo(self.bottom+100)
+
+    def getInstance(self):
+        if self._singletonInstance is None:
+            self._singletonInstance = self.__init__()
+        return self._singletonInstance
     
 
 # if __name__ == "__main__":
