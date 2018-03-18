@@ -3,7 +3,7 @@ import sys
 from tkinter import *
 import logging
 
-class LinearActuator:
+class LinearActuator(object):
     _singletonInstance = None
     #stepperMotor class from stepperMotor.py
     #home - adjustable position to return to (in steps)
@@ -14,15 +14,13 @@ class LinearActuator:
         self.home=0
         self.current=self.home
         self.goal=self.home
-        #LinearActuator.findLimits(self)
-        #LinearActuator.manualAdjust(self, stepSize = 100)
+        self.findLimits()
+        self.manualAdjust(stepSize = 100)
     
     def __new__(cls):
-        firstInitialization = False
-        if not cls._singletonInstance:
-            cls._singletonInstance = cls.__init__(cls)
-            firstInitialization = True
-        return cls._singletonInstance, firstInitialization
+        if not LinearActuator._singletonInstance:
+            LinearActuator._singletonInstance = object.__init__(cls)
+        return cls._singletonInstance
 
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
