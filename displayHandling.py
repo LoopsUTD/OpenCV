@@ -9,8 +9,8 @@ class FullScreenApp(tk.Tk):
     def getInstance(inputImages=None):
         if FullScreenApp._singletonInstance == None:
             FullScreenApp(images=inputImages)
-        else:
-            return FullScreenApp._singletonInstance
+        
+        return FullScreenApp._singletonInstance
 
     def __init__(self, images=None, *args, **kwargs):
         if FullScreenApp._singletonInstance != None:

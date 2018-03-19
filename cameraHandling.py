@@ -14,8 +14,8 @@ class Camera(object):
     def getInstance():
         if Camera._singletonInstance == None:
             Camera()
-        else:
-            return Camera._singletonInstance
+        
+        return Camera._singletonInstance
 
     def __init__(self):   
         if Camera._singletonInstance != None:

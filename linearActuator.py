@@ -23,8 +23,8 @@ class LinearActuator(object):
         """Get Instance of Singleton class"""
         if LinearActuator._singletonInstance == None:
             LinearActuator()
-        else:
-            return LinearActuator._singletonInstance
+        
+        return LinearActuator._singletonInstance
 
 
     def __init__(self):
