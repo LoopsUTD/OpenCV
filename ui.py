@@ -167,7 +167,7 @@ def takePhotoHandler():
 	badSelection = True
 	while(badSelection):
 		try:
-			selection = input("enter selection: [1-%d] " % len(myOpts))
+			selection = input("enter selection: [1-%d] " % len(testhandling.myOpts))
 			val = int(selection)
 			if val not in testhandling.myOpts:
 				raise BadInputException
