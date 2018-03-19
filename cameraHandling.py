@@ -9,26 +9,37 @@ import gphoto2 as gp
 
 class Camera(object):
     _singletonInstance = None
-    def __init__(self):
-        #self.singletonInstance = None
-        self.log = logging.getLogger(__name__)
-        loggingLevel = 10
-        handler = logging.StreamHandler()
-        handler.setLevel(loggingLevel)
-        #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-        format = logging.Formatter('%(levelname)s -- %(message)s')
-        handler.setFormatter(format)
-        self.log.addHandler(handler)
-        self.log.info("Initializing...")
-        self.camera = gp.Camera()
-        self.camera.init()
-        self._initializeConfig()
+    
+    @staticmethod
+    def getInstance():
+        if Camera._singletonInstance == None:
+            Camera()
+        else:
+            return Camera._singletonInstance
 
-    def __new__(cls):
-        if not Camera.singletonInstance:
-            Camera.singletonInstance = object.__new__(cls)
-        #Camera._singletonInstance.val = val
-        return Camera.singletonInstance
+    def __init__(self):   
+        if Camera._singletonInstance != None:
+            raise Exception("Critical Error: Camera is a Singleton!")
+        else:
+            Camera._singletonInstance = self
+            self.log = logging.getLogger(__name__)
+            loggingLevel = 10
+            handler = logging.StreamHandler()
+            handler.setLevel(loggingLevel)
+            #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
+            format = logging.Formatter('%(levelname)s -- %(message)s')
+            handler.setFormatter(format)
+            self.log.addHandler(handler)
+            self.log.info("Initializing...")
+            self.camera = gp.Camera()
+            self.camera.init()
+            self._initializeConfig()
+
+    # def __new__(cls):
+    #     if not Camera.singletonInstance:
+    #         Camera.singletonInstance = object.__new__(cls)
+    #     #Camera._singletonInstance.val = val
+    #     return Camera.singletonInstance
 
     def _initializeConfig(self):
         self._config = self.camera.get_config()

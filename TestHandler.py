@@ -36,9 +36,9 @@ class TestHandler():
 			self.defOutFolder = defOutFolder
 
 		#Initialize Singleton Variables and store a memory pointer in this object.
-		self.camera = Camera()
-		self.actuator = LinearActuator() #This should already have been initialized, but it will re-initialize if it hasn't been.
-		self.display = FullScreenApp()
+		self.camera = Camera.getInstance()
+		self.actuator = LinearActuator.getInstance() #This should already have been initialized, but it will re-initialize if it hasn't been.
+		self.display = FullScreenApp.getInstance()
 
 	def printMainMenu(self):
 		print("Current Output folder is: %s" % self.defOutFolder)

@@ -18,15 +18,7 @@ numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
 
-#numOptionsInMenu = 4
-#KEEPGOING = True
-
 def main():
-	##Shit globals that need to be resolved
-	#DefaultOutputFolder = "RAW/"
-	#mainDisplay = None
-	#root = tk.Tk()
-	#FullScreenApp()
 
 	##LOGGING
 	loggingLevel = logging.DEBUG
@@ -79,8 +71,7 @@ def main():
 
 		except ExitException:
 			log.critical("Exiting The Application.")
-			#if globalCamera is not None:
-		#		globalCamera.close()
+			Camera.getInstance().close()
 			badSelection = False
 		except BadInputException:
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
@@ -121,13 +112,13 @@ def rename(newName):
 @rename("Initialize the Display")
 def setupDisplayHandler():
 	log.info("initializing the Display Handler...")	
-	FullScreenApp()
+	FullScreenApp.getInstance()
 
 @rename("Initialize Linear Actuator")
 def adjustLinearActuatorHandler():
 	log.info("adjusting Linear Actuator")
 	
-	actuator = LinearActuator()
+	actuator = LinearActuator.getInstance()
 	
 # @rename("Select Test File")
 # def selectTestFileHandler():
@@ -138,13 +129,13 @@ def adjustLinearActuatorHandler():
 @rename("Move Out Of Way")
 def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-	actuator = LinearActuator()
+	actuator = LinearActuator.getInstance()
 	actuator.moveOutOfPath()
 
 @rename("Move Into Way")
 def moveLinearActuatorIntoPath():
 	log.info("User Moving Linear Actuator into path")	
-	actuator = LinearActuator()
+	actuator = LinearActuator.getInstance()
 	actuator.moveIntoPath()
 
 
@@ -153,17 +144,18 @@ def numLensToTestHandler():
 	log.info("adjusting number of lens to test")
 
 @rename("Calibrate Camera")
-def calibrateCameraHandler(camera = None, actuator = None):
+def calibrateCameraHandler():
 	log.info("Running Camera Calibration")
 	##DAVID CODE GO HERE
-
-	return camera, actuator
+	camera = Camera.getInstance()
+	actuator = LinearActuator.getInstance()
+	
 
 
 @rename("Get Camera Settings and Summary")
 def checkCameraConnectionHandler():
 	log.info("checking to see if camera is connected")
-	camera = Camera()
+	camera = Camera.getInstance()
 	text = camera.getCameraSummary()
 	print(text)
 

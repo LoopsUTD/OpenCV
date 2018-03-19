@@ -3,30 +3,41 @@ from PIL import Image, ImageTk
 import traceback
 
 class FullScreenApp(tk.Tk):
-    singletonInstance = None
-    def __init__(self, images=None, *args, **kwargs):
-        self.master = tk.Tk()#.__init__(self, *args, **kwargs)
-        #self.master=tk
-        pad=0
-        self.images = images
-        self._geom='200x200+0+0'
-        self.master.geometry("{0}x{1}+0+0".format(
-            self.master.winfo_screenwidth()-pad, self.master.winfo_screenheight()-pad))
-        self.master.bind('<Escape>',self.toggle_geom)
-        self.label = tk.Label()
-        if self.images is not None:
-            image = Image.open(self.images[0])
-            photo = ImageTk.PhotoImage(image)
-            self.label.config(image=photo)
-            self.label.image = photo
-            self.label.pack()
-            self.master.update()
-        #image = Tk.PhotoImage(file='test.png')            
+    _singletonInstance = None
     
-    def __new__(cls):
-        if not FullScreenApp.singletonInstance:
-            FullScreenApp.singletonInstance = object.__new__(cls)
-        return FullScreenApp.singletonInstance
+    @staticmethod
+    def getInstance(inputImages=None):
+        if FullScreenApp._singletonInstance == None:
+            FullScreenApp(images=inputImages)
+        else:
+            return FullScreenApp._singletonInstance
+
+    def __init__(self, images=None, *args, **kwargs):
+        if FullScreenApp._singletonInstance != None:
+            raise Exception("This is a singleton Instance")
+        else:
+            FullScreenApp._singletonInstance = self
+            self.master = tk.Tk()
+            pad=0
+            self.images = images
+            self._geom='200x200+0+0'
+            self.master.geometry("{0}x{1}+0+0".format(
+                self.master.winfo_screenwidth()-pad, self.master.winfo_screenheight()-pad))
+            self.master.bind('<Escape>',self.toggle_geom)
+            self.label = tk.Label()
+            if self.images is not None:
+                image = Image.open(self.images[0])
+                photo = ImageTk.PhotoImage(image)
+                self.label.config(image=photo)
+                self.label.image = photo
+                self.label.pack()
+                self.master.update()
+            
+    
+    # def __new__(cls):
+    #     if not FullScreenApp.singletonInstance:
+    #         FullScreenApp.singletonInstance = object.__new__(cls)
+    #     return FullScreenApp.singletonInstance
 
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()

@@ -3,24 +3,42 @@ import sys
 from tkinter import *
 import logging
 
+# Class LinActHolder(object):
+#     _shared_state = {}
+#     def __init__(self):
+#         self.__dict__ = _shared_state
+
 class LinearActuator(object):
-    singletonInstance = None
+    _singletonInstance = None
     #stepperMotor class from stepperMotor.py
     #home - adjustable position to return to (in steps)
     #current - current position (in steps_
     #goal - position that actuator is moving towards
+
+    #Singleton in Python?
+    #https://gist.github.com/pazdera/1098129
+
+    @staticmethod
+    def getInstance():
+        """Get Instance of Singleton class"""
+        if LinearActuator._singletonInstance == None:
+            LinearActuator()
+        else:
+            return LinearActuator._singletonInstance
+
+
     def __init__(self):
-        self.motor=stepperMotor.StepperMotor(29,31,5,3)
-        self.home=0
-        self.current=self.home
-        self.goal=self.home
-        self.findLimits()
-        self.manualAdjust(stepSize = 100)
-    
-    def __new__(cls):
-        if not LinearActuator.singletonInstance:
-            LinearActuator.singletonInstance = object.__new__(cls)
-        return LinearActuator.singletonInstance
+        
+        if LinearActuator._singletonInstance != None:
+            raise Exception("This class is a Singleton!")
+        else:
+            LinearActuator._singletonInstance = self
+            self.motor=stepperMotor.StepperMotor(29,31,5,3)
+            self.home=0
+            self.current=self.home
+            self.goal=self.home
+            self.findLimits()
+            self.manualAdjust(stepSize = 100)
 
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
