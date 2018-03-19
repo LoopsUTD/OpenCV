@@ -33,6 +33,8 @@ class LinearActuator(object):
             raise Exception("This class is a Singleton!")
         else:
             LinearActuator._singletonInstance = self
+            self.log = logging.getLogger("mainApp")
+            self.log.info("Initializing the Linear Actuator...")
             self.motor=stepperMotor.StepperMotor(29,31,5,3)
             self.home=0
             self.current=self.home
@@ -60,7 +62,7 @@ class LinearActuator(object):
         self.home=(self.bottom+self.top)/2
         self.moveTo(self.home)
     
-        print('{}{}{}{}'.format('Bottom: ', self.bottom,'\nTop: ', self.top))
+        self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\nTop: ', self.top))
     
     def moveUp(self,event,step):
         self.moveTo(self.current+step)
@@ -80,15 +82,19 @@ class LinearActuator(object):
             frame = Frame(root,width=100,height=100)
             label = Label(root,text='Move with arrow keys, Press x to set home. Press space to got home.')
             label.pack()
+            quitBtn = Button(root, text="Quit", command=root.destroy)
+            quitBtn.pack()
             frame.bind('<Up>', lambda event: self.moveUp(event,stepSize/10)  )
             frame.bind('<Down>', lambda event: self.moveDown(event,stepSize/10))
             frame.bind('<w>', lambda event: self.moveUp(event,stepSize)  )
             frame.bind('<s>', lambda event: self.moveDown(event,stepSize))
             frame.bind('<x>', self.setHome)
             frame.bind('<space>',self.goHome)
+            frame.bind('<Return>',quitBtn)
             frame.focus_set()
             frame.pack()
-            Button(root, text="Quit", command=root.destroy).pack()
+
+
             #https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
             while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
                 root.update()
@@ -101,11 +107,3 @@ class LinearActuator(object):
     def moveOutOfPath(self):
         self.moveTo(self.bottom+100)
     
-
-# if __name__ == "__main__":
-#     actuator=LinearActuator()
-#     actuator.findLimits()
-#     actuator.manualAdjust(stepSize=100)
-#     #actuator.moveIntoPath()
-#     actuator.moveOutOfPath()
-#     actuator.moveIntoPath()

@@ -13,16 +13,16 @@ from displayHandling import FullScreenApp
 
 class TestHandler():
 	def __init__(self, testImages = None, defOutFolder = None, logLevelDefault = None):
-		self.log = logging.getLogger(__name__)
-		handler = logging.StreamHandler()
-		if logLevelDefault is None:
-			handler.setLevel(logging.INFO)
-		else:
-			handler.setLevel(logLevelDefault)
-		format = logging.Formatter('%(levelname)s -- %(message)s')
-		handler.setFormatter(format)
-		self.log.addHandler(handler)
-		self.log.info("Initializing Test Handler")
+		self.log = logging.getLogger("mainApp")
+		#handler = logging.StreamHandler()
+		# if logLevelDefault is None:
+		# 	handler.setLevel(logging.INFO)
+		# else:
+		# 	handler.setLevel(logLevelDefault)
+		# format = logging.Formatter('%(levelname)s -- %(message)s')
+		# handler.setFormatter(format)
+		# self.log.addHandler(handler)
+		self.log.info("Initializing Test Handler...")
 
 		#Set Default variables:
 		if testImages is None:
@@ -48,10 +48,12 @@ class TestHandler():
 			1:self.takePhotoNow,
 			2:self.changeOutputFolder,
 			3:self.takePhotoOtherImage,
-			4:self.exit
+			4:self.moveLensHolderOutOfWay,
+			5:self.moveLensHolderIntoPath,
+			6:self.exit
 		}
 		for key, opt in self.myOpts.items():
-			print("\t%d. %s" % (key, opt))
+			print("\t%d. %s" % (key, opt.__name__))
 
 
 
@@ -78,6 +80,14 @@ class TestHandler():
 		self.log.info("user updated the test image path: %s" % (newImagePath))
 		self.testImages[0] = newImagePath
 		self.takePhotoNow()
+
+	def moveLensHolderOutOfWay(self):
+		self.log.info("moving linear actuator out of the way...")
+		self.actuator.moveOutOfPath()
+
+	def moveLensHolderIntoPath(self):
+		self.log.info("moving linear actuator into path...")
+		self.actuator.moveIntoPath()
 
 	def exit(self):
 		pass

@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import traceback
+import logging
 
 class FullScreenApp(tk.Tk):
     _singletonInstance = None
@@ -17,6 +18,8 @@ class FullScreenApp(tk.Tk):
             raise Exception("This is a singleton Instance")
         else:
             FullScreenApp._singletonInstance = self
+            self.log = logging.getLogger("mainApp")
+            self.log.debug("Initializing FullScreenApp...")
             self.master = tk.Tk()
             pad=0
             self.images = images
@@ -33,34 +36,23 @@ class FullScreenApp(tk.Tk):
                 self.label.pack()
                 self.master.update()
             
-    
-    # def __new__(cls):
-    #     if not FullScreenApp.singletonInstance:
-    #         FullScreenApp.singletonInstance = object.__new__(cls)
-    #     return FullScreenApp.singletonInstance
 
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
-        print(geom,self._geom)
+        self.log.debug(geom,self._geom)
         self.master.geometry(self._geom)
         self._geom=geom
 
 
-
     def updateImage(self, newImageFilePath):
         try:
-            print("Updating Image...")
+            self.log.info("Updating Image...")
             photo = ImageTk.PhotoImage(Image.open(newImageFilePath))
             self.label.config(image=photo)
             self.label.image = photo
             self.label.pack()
             self.master.update()
         except Exception:
-            print("Error - maybe bad image File path?")
+            self.log.error("Error - maybe bad image File path?")
             traceback.print_exc()
             return
-
-
-# root=tk.Tk()
-# app=FullScreenApp(root, ['test.jpg', 'second.jpg']) #pass images into the argument when you create this object.
-# root.mainloop()

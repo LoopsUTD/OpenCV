@@ -22,15 +22,15 @@ class Camera(object):
             raise Exception("Critical Error: Camera is a Singleton!")
         else:
             Camera._singletonInstance = self
-            self.log = logging.getLogger(__name__)
-            loggingLevel = 10
-            handler = logging.StreamHandler()
-            handler.setLevel(loggingLevel)
-            #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-            format = logging.Formatter('%(levelname)s -- %(message)s')
-            handler.setFormatter(format)
-            self.log.addHandler(handler)
-            self.log.info("Initializing...")
+            self.log = logging.getLogger("mainApp")
+            # loggingLevel = 10
+            # handler = logging.StreamHandler()
+            # handler.setLevel(loggingLevel)
+            # #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
+            # format = logging.Formatter('%(levelname)s -- %(message)s')
+            # handler.setFormatter(format)
+            # self.log.addHandler(handler)
+            self.log.info("Initializing Camera...")
             self.camera = gp.Camera()
             self.camera.init()
             self._initializeConfig()

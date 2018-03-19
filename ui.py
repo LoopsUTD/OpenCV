@@ -12,8 +12,8 @@ from TestHandler import TestHandler
 import tkinter as tk
 
 
-log = logging.getLogger(__name__)
-VERSION = "0.4a"
+log = logging.getLogger("mainApp")
+VERSION = "0.5"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
@@ -26,7 +26,7 @@ def main():
 	handler = logging.StreamHandler()
 	handler.setLevel(loggingLevel)
 	#format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-	format = logging.Formatter('%(levelname)s -- %(message)s')
+	format = logging.Formatter('%(module)s -- %(levelname)s -- %(message)s')
 	handler.setFormatter(format)
 	log.addHandler(handler)
 
@@ -171,37 +171,14 @@ def takePhotoHandler():
 			val = int(selection)
 			if val not in testhandling.myOpts:
 				raise BadInputException
-			if val == 4:
+			if val == len(testhandling.myOpts): #ASSUME LAST OPTION IS EXIT
 				badSelection = False
 
 			testhandling.myOpts[val]()
 
 		except BadInputException:
 			traceback.print_exc()
-			log.error("Invalid Input! Please Try Again or Enter 4 to return")
-
-
-# @rename("Initialize the Display")
-# def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None, camera = None, actuator = None):
-# 	log.info("User is manually displaying an image")
-	
-# 	#How to use tKinter without Mainloop()
-# 	#https://gordonlesti.com/use-tkinter-without-mainloop/
-# 	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
-# 	if mainDisp is None:
-# 		#root=ROOT
-		
-# 		#mainDisp=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
-# 		ROOT.update()
-
-# 	return mainDisp
-# 		#root.mainloop()
-
-# def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
-# 	if mainDisplay is None:
-# 		raise BadInputException("Initialize the Display First!")
-# 	mainDisplay.updateImage(newImageFilePath)
-# 	ROOT.update()
+			log.error("Invalid Input! Please Try Again or Enter %d to return" % len(testhandling.myOpts))
 
 
 @rename("Run Test")
