@@ -42,17 +42,6 @@ class FullScreenApp(tk.Tk):
         self.master.geometry(self._geom)
         self._geom=geom
 
-    def nextImage(self, event):
-        try:
-            print("I am trying to activate")
-            photo = ImageTk.PhotoImage(Image.open(self.images[1]))
-            self.label.config(image=photo)
-            self.label.image = photo
-            self.label.pack()
-        except Exception:
-            traceback.print_exc()
-            return
-
     def updateImage(self, newImageFilePath):
         try:
             self.log.info("Updating Image...")
