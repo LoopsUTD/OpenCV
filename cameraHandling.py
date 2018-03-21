@@ -6,22 +6,40 @@ import time
 
 import gphoto2 as gp
 
-log = logging.getLogger(__name__)
-loggingLevel = 10
-handler = logging.StreamHandler()
-handler.setLevel(loggingLevel)
-#format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-format = logging.Formatter('%(levelname)s -- %(message)s')
-handler.setFormatter(format)
-log.addHandler(handler)
 
-class Camera:
-    def __init__(self):
-        log.info("Initializing...")
-        self.camera = gp.Camera()
-        self.camera.init()
-        self._initializeConfig()
+class Camera(object):
+    _singletonInstance = None
+    
+    @staticmethod
+    def getInstance():
+        if Camera._singletonInstance == None:
+            Camera()
+        
+        return Camera._singletonInstance
 
+    def __init__(self):   
+        if Camera._singletonInstance != None:
+            raise Exception("Critical Error: Camera is a Singleton!")
+        else:
+            Camera._singletonInstance = self
+            self.log = logging.getLogger("mainApp")
+            # loggingLevel = 10
+            # handler = logging.StreamHandler()
+            # handler.setLevel(loggingLevel)
+            # #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
+            # format = logging.Formatter('%(levelname)s -- %(message)s')
+            # handler.setFormatter(format)
+            # self.log.addHandler(handler)
+            self.log.info("Initializing Camera...")
+            self.camera = gp.Camera()
+            self.camera.init()
+            self._initializeConfig()
+
+    # def __new__(cls):
+    #     if not Camera.singletonInstance:
+    #         Camera.singletonInstance = object.__new__(cls)
+    #     #Camera._singletonInstance.val = val
+    #     return Camera.singletonInstance
 
     def _initializeConfig(self):
         self._config = self.camera.get_config()
@@ -33,11 +51,10 @@ class Camera:
         'imagequality': None,
         'imagesize': None
         }
-        log.info("Parsing 'mainConfigs'")
+        self.log.info("Parsing 'mainConfigs'")
         for sections in self._config.get_children():
-            if "settings" not in sections.get_name():
+            if "settings" not in sections.get_name(): #TODO: update this 
                 continue
-            #print("\n#########{} ({})###########\n".format(sections.get_label(), sections.get_name()))
             for child in sections.get_children():
                 if child.get_name() not in self.mainConfigs:
                     continue
@@ -56,7 +73,7 @@ class Camera:
         #TODO: Make this Object Oriented? 
 
     def takePhoto(self, folderName):
-        log.info("Capturing Photo...")
+        self.log.info("Capturing Photo...")
         #TODO: ensure capture target is properly setup?
         #self.adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
@@ -67,11 +84,12 @@ class Camera:
 
 
     def getCameraSummary(self):
-        log.info("Return Camera Summary:")
+        self.log.info("Return Camera Summary:")
         return self.camera.get_summary()
 
+
     def close(self):
-        log.info("Camera is exiting")
+        self.log.info("Camera is exiting")
         self.camera.exit()
 
 if __name__ == "__main__":
