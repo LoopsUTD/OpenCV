@@ -8,22 +8,17 @@ import traceback
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 from displayHandling import FullScreenApp
+from TestHandler import TestHandler
 import tkinter as tk
 
-log = logging.getLogger(__name__)
-VERSION = "0.2"
+
+log = logging.getLogger("mainApp")
+VERSION = "0.5"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
 
-#numOptionsInMenu = 4
-#KEEPGOING = True
-
 def main():
-	##Shit globals that need to be resolved
-	DefaultOutputFolder = "RAW/"
-	mainDisplay = None
-	root = tk.Tk()
 
 	##LOGGING
 	loggingLevel = logging.DEBUG
@@ -31,7 +26,7 @@ def main():
 	handler = logging.StreamHandler()
 	handler.setLevel(loggingLevel)
 	#format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-	format = logging.Formatter('%(levelname)s -- %(message)s')
+	format = logging.Formatter('%(module)s -- %(levelname)s -- %(message)s')
 	handler.setFormatter(format)
 	log.addHandler(handler)
 
@@ -60,12 +55,6 @@ def main():
 	log.debug("Input Args: %s" % args)
 	log.debug('tests has the value: %s' % args.tests)
 
-
-	linActuator = None
-	globalCamera = None
-	
-
-
 	## MAIN LOOP
 	opts = printMainMenu()
 	badSelection = True
@@ -78,23 +67,29 @@ def main():
 			val = int(selection)
 			if val not in opts:
 				raise BadInputException
-			if val == 1:
-				mainDisplay = opts[val](mainDisp = mainDisplay, ROOT = root)
-			if val == 3:
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			if val == 5: #TODO: make this explicit for photo menu
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator, defOutFolder = DefaultOutputFolder, testImages = args.tests, mainDisplay = mainDisplay, ROOT = root) #runs the correct handler function
-			else:
-				globalCamera, linActuator = opts[val](camera = globalCamera, actuator = linActuator) #runs the correct handler function
+			opts[val]()
+
 		except ExitException:
 			log.critical("Exiting The Application.")
-			if globalCamera is not None:
-				globalCamera.close()
+			Camera.getInstance().close()
 			badSelection = False
 		except BadInputException:
 			log.error("Invalid Input! Please Try Again or [Ctrl-c] to abort")
 		except Exception:
 			log.error(traceback.print_exc())
+
+#Main Menu Options
+		# #1:selectTestFileHandler, 
+		# 1:setupDisplayHandler,
+		# 2:adjustLinearActuatorHandler, 
+		# #3:numLensToTestHandler, 
+		# 3:calibrateCameraHandler, 
+		# 4:checkCameraConnectionHandler, 
+		# 5:takePhotoHandler,
+		# 6:runTestHandler, 
+		# 7:moveLinearActuatorIntoPath,
+		# 8:moveLinearActuatorOutOfWay,
+		# 9:exitThisProgram
 
 	
 ##Why does this work? see here:
@@ -107,138 +102,83 @@ def rename(newName):
 
 ##Why use handler functions in a Dictionary for options? See Here:
 #https://stackoverflow.com/questions/3978624/since-python-doesnt-have-a-switch-statement-what-should-i-use
-@rename("Select Test File")
-def selectTestFileHandler():
-	log.info("Selecting Test File")
 
-@rename("Adjust Linear Actuator")
-def adjustLinearActuatorHandler(camera = None, actuator = None):
+	#How to use tKinter without Mainloop()
+	#https://gordonlesti.com/use-tkinter-without-mainloop/
+	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
+
+
+
+@rename("Initialize the Display")
+def setupDisplayHandler():
+	log.info("initializing the Display Handler...")	
+	FullScreenApp.getInstance()
+
+@rename("Initialize Linear Actuator")
+def adjustLinearActuatorHandler():
 	log.info("adjusting Linear Actuator")
-	if actuator is None:
-		actuator = LinearActuator()
-		actuator.findLimits()
+	
+	actuator = LinearActuator.getInstance()
+	
+# @rename("Select Test File")
+# def selectTestFileHandler():
+# 	log.info("Selecting Test File")
 
-	actuator.manualAdjust(stepSize = 100)
-	return camera, actuator
 
 #TODO: Does this need to be here?
 @rename("Move Out Of Way")
-def moveLinearActuatorOutOfWay(camera = None, actuator = None):
+def moveLinearActuatorOutOfWay():
 	log.info("User Moving Linear Actuator Out of The Way")
-	if actuator is None:
-		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+	actuator = LinearActuator.getInstance()
 	actuator.moveOutOfPath()
-	return camera, actuator
 
 @rename("Move Into Way")
-def moveLinearActuatorIntoPath(camera = None, actuator = None):
-	log.info("User Moving Linear Actuator into path")
-	if actuator is None:
-		camera, actuator = adjustLinearActuatorHandler(camera,actuator)
+def moveLinearActuatorIntoPath():
+	log.info("User Moving Linear Actuator into path")	
+	actuator = LinearActuator.getInstance()
 	actuator.moveIntoPath()
-	return camera, actuator
+
 
 @rename("Change number of Lens to test (default: %d)" % numLensToTest)
 def numLensToTestHandler():
 	log.info("adjusting number of lens to test")
 
 @rename("Calibrate Camera")
-def calibrateCameraHandler(camera = None, actuator = None):
+def calibrateCameraHandler():
 	log.info("Running Camera Calibration")
 	##DAVID CODE GO HERE
-
-	return camera, actuator
+	camera = Camera.getInstance()
+	actuator = LinearActuator.getInstance()
+	
 
 
 @rename("Get Camera Settings and Summary")
-def checkCameraConnectionHandler(camera = None, actuator = None):
+def checkCameraConnectionHandler():
 	log.info("checking to see if camera is connected")
-	if camera is None:
-		camera = Camera()
-
+	camera = Camera.getInstance()
 	text = camera.getCameraSummary()
 	print(text)
-	return camera, actuator
 
 @rename("Take Photo Menu")
-def takePhotoHandler(camera = None, actuator = None, defOutFolder = None, testImages = None, mainDisplay = None, ROOT = None):
-	if camera is None:
-		camera = Camera()
-	print("Current Output folder is: %s" % defOutFolder)
-	print("Current test image is: %s" % testImages)
-	print("Please Select from the following options:\n")
-	myOpts = {
-		1:"Take Photo With First Test Image",
-		2:"Change Output folder",
-		3:"Take Photo with other test image",
-		4:"Return to Main Menu"
-	}
-	for key, opt in myOpts.items():
-		print("\t%d. %s" % (key, opt))
+def takePhotoHandler():
+	testhandling = TestHandler(logLevelDefault = logging.DEBUG)
+	testhandling.printMainMenu()
 
 	badSelection = True
 	while(badSelection):
 		try:
-			selection = input("enter selection: [1-%d] " % len(myOpts))
+			selection = input("enter selection: [1-%d] " % len(testhandling.myOpts))
 			val = int(selection)
-			if val not in myOpts:
+			if val not in testhandling.myOpts:
 				raise BadInputException
-			if val == 1:
-				if len(testImages) > 0:
-					log.info("user is storing image in: %s with test photo: %s" % (defOutFolder, testImages))
-					manualUpdateImage(mainDisplay, testImages, ROOT)
-					target = camera.takePhoto(folderName = defOutFolder)
-					log.info("photo saved at: %s" % target)
-				else:
-					print("no default test images defined!")
-			if val == 2:
-				newFolderNameRaw = input("Enter new folder name: ")
-				strippedName = newFolderNameRaw.strip()
-				nameWithSlashes = strippedName.replace(' ', '')
-				goodName = nameWithSlashes.replace('\\', '')
-				betterName = goodName.replace("\'", '')
-				bestName = betterName.replace('\"', '')
-				DefaultOutputFolder = bestName
-				print("Updated Output folder is: %s" % DefaultOutputFolder)
-				defOutFolder = DefaultOutputFolder
-			if val == 3:
-				newImagePath = str(input("enter test image path and file name: (must be exact!)"))
-				log.info("user is taking image at %s with %s" % (defOutFolder, newImagePath))
-				testImages = newImagePath
-				manualUpdateImage(mainDisplay, newImagePath, ROOT)
-				target = camera.takePhoto(folderName = defOutFolder)
-				log.info("Image saved at: %s" % target)
-
-			if val == 4:
+			if val == len(testhandling.myOpts): #ASSUME LAST OPTION IS EXIT
 				badSelection = False
+
+			testhandling.myOpts[val]()
+
 		except BadInputException:
 			traceback.print_exc()
-			log.error("Invalid Input! Please Try Again or Enter 4 to return")
-
-	#camera.takePhoto(folderName = DefaultOutputFolder)
-
-	return camera, actuator
-
-@rename("Initialize the Display")
-def setupDisplayHandler(ROOT = None, mainDisp = None, testImages = None, camera = None, actuator = None):
-	log.info("User is manually displaying an image")
-	
-	#How to use tKinter without Mainloop()
-	#https://gordonlesti.com/use-tkinter-without-mainloop/
-	#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
-	if mainDisp is None:
-		#root=ROOT
-		mainDisp=FullScreenApp(ROOT, testImages) #pass images into the argument when you create this object.
-		ROOT.update()
-
-	return mainDisp
-		#root.mainloop()
-
-def manualUpdateImage(mainDisplay = None, newImageFilePath = None, ROOT = None):
-	if mainDisplay is None:
-		raise BadInputException("Initialize the Display First!")
-	mainDisplay.updateImage(newImageFilePath)
-	ROOT.update()
+			log.error("Invalid Input! Please Try Again or Enter %d to return" % len(testhandling.myOpts))
 
 
 @rename("Run Test")
