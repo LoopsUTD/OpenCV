@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import traceback
 
 class FullScreenApp(object):
+
     def __init__(self, master, images = None, **kwargs):
         self.master=master
         pad=3
@@ -19,7 +20,8 @@ class FullScreenApp(object):
             self.label.config(image=photo)
             self.label.image = photo
             self.label.pack()
-        #image = Tk.PhotoImage(file='test.png')            
+        #image = Tk.PhotoImage(file='test.png')   
+         
     def toggle_geom(self,event):
         geom=self.master.winfo_geometry()
         print(geom,self._geom)
@@ -36,6 +38,7 @@ class FullScreenApp(object):
         except Exception:
             traceback.print_exc()
             return
+
     def updateImage(self, newImageFilePath):
         try:
             print("Updating Image...")
