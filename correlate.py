@@ -24,16 +24,17 @@ def writeToFile(mapping,name):
 	for value in mapping.items():
 		file.write("{},{},{}\n".format(value[1][0],value[1][1],value[0]))
 	file.close()
+
 	
 def testData(size,density):
 	print("testData")
 	undev=np.empty(density,dtype=Blob)
 	dev=np.empty(density,dtype=Blob)
 	for i in range(density):
-		x=randint(1,size)
-		y=randint(1,size)
+		x=randint(0,size)
+		y=randint(0,size)
 		b=Blob(i,x,y)
-		c=Blob(i+randint(0,density),x+randint(0,density/20),y+randint(0,density/20))
+		c=Blob(i+randint(0,density),x+randint(1,density/10),y+randint(1,density/10))
 		undev.put(i,b)
 		dev.put(i,c)
 	return undev,dev
@@ -43,7 +44,7 @@ def mindist(item,array):
 	for i in range(array.size):
 		idist=distance(item,array[i])
 		if idist < minim:
-			mindist=idist
+			minim=idist
 			closest=array[i]
 			closest.id=item.id
 	return closest
@@ -54,6 +55,6 @@ def distance(blob1,blob2):
 if __name__=='__main__':
 	
 	print("isit")
-	data=testData(1000,1000)
+	data=testData(50,20)
 	main(data[0],data[1])
 
