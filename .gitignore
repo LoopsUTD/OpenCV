@@ -8,3 +8,5 @@
 *.raw
 *.pyc
 *.gif
+*.NEF
+*.nef
