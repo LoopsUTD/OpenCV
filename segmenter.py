@@ -111,4 +111,4 @@ def segmentInfo(img):
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    extractObjects('test.png')   
+    extractObjects('segmentTest.png')   
