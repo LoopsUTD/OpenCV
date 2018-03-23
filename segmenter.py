@@ -1,6 +1,6 @@
 import cv2
 import numpy
-import blob
+from blob import Blob
 
 # INPUT:  name of .png photograph file
 # OUTPUT: array of found blob objects
@@ -13,7 +13,7 @@ def extractObjects(filename):
     image = greenscale(image)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
-    thresh = 128
+    thresh = 64
     image = threshold(image,thresh)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
@@ -100,13 +100,13 @@ def threshold(image,thresh):
 
 def fill(image,i,j,h,w,index):
     image[i,j] = index
-    if i > 0 and image[i-1,j] > 0 and image[i-1,j] < 256:
+    if i > 0 and image[i-1,j] == 255:
         fill(image,i-1,j,h,w,index)
-    if i+1 < h and image[i+1,j] > 0 and image[i+1,j] < 256:
+    if i+1 < h and image[i+1,j] == 255:
         fill(image,i+1,j,h,w,index)
-    if j > 0 and image[i,j-1] > 0 and image[i,j-1] < 256:
+    if j > 0 and image[i,j-1] == 255:
         fill(image,i,j-1,h,w,index)
-    if j+1 < w and image[i,j+1] > 0 and image[i,j+1] < 256:
+    if j+1 < w and image[i,j+1] == 255:
         fill(image,i,j+1,h,w,index)
     return
 
@@ -130,9 +130,13 @@ def segment(image):
 
 def segmentInfo(image):
     blobs = list()
+    for i in range(h):
+        for j in range(w):
+    
+    
     
     return blobs
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    extractObjects('test.jpg')   
+    extractObjects('test.png')   
