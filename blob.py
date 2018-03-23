@@ -9,9 +9,9 @@ def main():
 	print(blob1.value)
 
 class Blob:
-    def __init__(self,id,x,y):
-        self.id=id
-        self.value=[x,y]
+	def __init__(self,id,x,y):
+		self.id=id
+		self.value=[x,y]
 
 if __name__ == '__main__':
 	main()

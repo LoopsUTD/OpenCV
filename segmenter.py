@@ -20,15 +20,14 @@ def extractObjects(filename):
     image = segment(image)
     cv2.imshow("greenscale",image.astype(dtype='uint8'))
     cv2.waitKey(0)
-    foundBlobs = segmentInfo(image)    
-    cv2.imwrite("output.png",image.astype(dtype='uint8'))
+    foundBlobs = segmentInfo(image)
     return foundBlobs
 
 # Sub-functions
 
 # INPUT:  array representation of image, 1- or 3-channel
 # OUTPUT: 1-channel representation of image
-# Instead of true greyscale, we use greenscale(since all test images are green)
+# Instead of true greyscale, we use greenscale(since all test images are green)        --- This will be changing soon, when we switch to 3-color pixel groups
 
 def greenscale(image):
     channels = len(image.shape)
@@ -42,7 +41,7 @@ def greenscale(image):
     return image
 
 # INPUT:  1-channel array representing an image
-# OUTPUT: Array containing only -10,000 (low values) or 10000 (high values) in each entry
+# OUTPUT: Array containing only 0 (low values) or 255 (high values) in each entry
 
 def threshold(image,thresh):
     for a in numpy.nditer(image, op_flags=['readwrite']):
@@ -82,8 +81,7 @@ def segment(image):
             if image[i,j] > 0 and image[i,j] < 256:     # if the pixel is part of an object and not yet marked
                 fill(image,i,j,h,w,index)
                 index = index + 1
-                
-    print(index-256)
+
     return image
 
 # INPUT:  Image with isolated and labeled segments
@@ -101,7 +99,6 @@ def segmentInfo(img):
                     b[img[i,j]] = [1,i,j]
                 else:
                     b[img[i,j]] = [b[img[i,j]][0]+1,b[img[i,j]][1]+i,b[img[i,j]][2]+j]
-    print(b)
                     
     blobs = list()
     for key in b:
