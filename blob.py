@@ -1,4 +1,3 @@
-import numpy
 import sys
 
 def main():

@@ -20,10 +20,9 @@ def extractObjects(filename):
     image = segment(image)
     cv2.imshow("greenscale",image.astype(dtype='uint8'))
     cv2.waitKey(0)
-    
-    
-    
+    foundBlobs = segmentInfo(image)    
     cv2.imwrite("output.png",image.astype(dtype='uint8'))
+    return foundBlobs
 
 # Sub-functions
 
@@ -53,50 +52,9 @@ def threshold(image,thresh):
             a[...] = 0
     return image
 
-# INPUT:  Thresholded image
-# OUTPUT: Image with isolated segments
-
-# def segment(image):
-#     index = 1
-#     h = len(image)
-#     w = len(image[1])
-#     image = image.astype(dtype='uint16')
-# 
-#     for i in range(h):
-#         for j in range(w):
-#             if image[i,j] > 0:
-#                 a = index
-#                 if i > 0 and image[i-1,j] and a > image[i-1,j]:
-#                     a = image[i-1,j]
-#                 if j > 0 and image[i,j-1] and a > image[i,j-1]:
-#                     a = image[i,j-1]
-#                 if a == index:
-#                     index = index + 1
-#                 image[i,j] = a
-#                 
-#     for i in range(h-1,0,-1):
-#         for j in range(w-1,0,-1):
-#             if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
-#                 image[i,j] = image[i+1,j]
-#             if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
-#                 image[i,j] = image[i,j+1]
-#                 
-#     for i in range(h):
-#         for j in range(w-1,0,-1):
-#             if i > 0 and image[i-1,j] and image[i,j] > image[i-1,j]:
-#                 image[i,j] = image[i-1,j]
-#             if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
-#                 image[i,j] = image[i,j+1]
-# 
-#     for i in range(h-1,0,-1):                
-#         for j in range(w):
-#             if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
-#                 image[i,j] = image[i+1,j]
-#             if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
-#                 image[i,j] = image[i,j-1]
-# 
-# #     print(index)
-#     return image
+# INPUT:  Pixel location of part of blob\
+# TASK:   Recursively "Fills" a blob from one found pixel
+# OUTPUT: None per se, but it checks all neighbors
 
 def fill(image,i,j,h,w,index):
     image[i,j] = index
@@ -109,6 +67,9 @@ def fill(image,i,j,h,w,index):
     if j+1 < w and image[i,j+1] == 255:
         fill(image,i,j+1,h,w,index)
     return
+
+# INPUT:  Thresholded image
+# OUTPUT: Image with isolated segments
 
 def segment(image):
     index = 256     # Starts at 256 because the largest number in the image will be 255
@@ -128,13 +89,27 @@ def segment(image):
 # INPUT:  Image with isolated and labeled segments
 # OUTPUT: Array of blob objects
 
-def segmentInfo(image):
-    blobs = list()
+def segmentInfo(img):
+    h = len(img)
+    w = len(img[1])
+    b = {}
+    
     for i in range(h):
         for j in range(w):
-    
-    
-    
+            if img[i,j] != 0:
+                if img[i,j] not in b:
+                    b[img[i,j]] = [1,i,j]
+                else:
+                    b[img[i,j]] = [b[img[i,j]][0]+1,b[img[i,j]][1]+i,b[img[i,j]][2]+j]
+    print(b)
+                    
+    blobs = list()
+    for key in b:
+        ssn = key
+        x   = b[key][1] / b[key][0]
+        y   = b[key][2] / b[key][0]
+        newBlob = Blob(ssn,x,y)
+        blobs.append(newBlob)
     return blobs
 
 if __name__ == '__main__':
