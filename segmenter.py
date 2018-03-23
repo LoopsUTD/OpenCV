@@ -100,13 +100,13 @@ def threshold(image,thresh):
 
 def fill(image,i,j,h,w,index):
     image[i,j] = index
-    if i > 0 and image[i-1] > 0 and image[i-1] < 256:
+    if i > 0 and image[i-1,j] > 0 and image[i-1,j] < 256:
         fill(image,i-1,j,h,w,index)
-    if i+1 < h and image[i+1] > 0 and image[i+1] < 256:
+    if i+1 < h and image[i+1,j] > 0 and image[i+1,j] < 256:
         fill(image,i+1,j,h,w,index)
-    if j > 0 and image[j-1] > 0 and image[j-1] < 256:
+    if j > 0 and image[i,j-1] > 0 and image[i,j-1] < 256:
         fill(image,i,j-1,h,w,index)
-    if j+1 < w and image[j+1] > 0 and image[j+1] < 256:
+    if j+1 < w and image[i,j+1] > 0 and image[i,j+1] < 256:
         fill(image,i,j+1,h,w,index)
     return
 
