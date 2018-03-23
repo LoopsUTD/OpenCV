@@ -56,46 +56,73 @@ def threshold(image,thresh):
 # INPUT:  Thresholded image
 # OUTPUT: Image with isolated segments
 
+# def segment(image):
+#     index = 1
+#     h = len(image)
+#     w = len(image[1])
+#     image = image.astype(dtype='uint16')
+# 
+#     for i in range(h):
+#         for j in range(w):
+#             if image[i,j] > 0:
+#                 a = index
+#                 if i > 0 and image[i-1,j] and a > image[i-1,j]:
+#                     a = image[i-1,j]
+#                 if j > 0 and image[i,j-1] and a > image[i,j-1]:
+#                     a = image[i,j-1]
+#                 if a == index:
+#                     index = index + 1
+#                 image[i,j] = a
+#                 
+#     for i in range(h-1,0,-1):
+#         for j in range(w-1,0,-1):
+#             if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+#                 image[i,j] = image[i+1,j]
+#             if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+#                 image[i,j] = image[i,j+1]
+#                 
+#     for i in range(h):
+#         for j in range(w-1,0,-1):
+#             if i > 0 and image[i-1,j] and image[i,j] > image[i-1,j]:
+#                 image[i,j] = image[i-1,j]
+#             if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
+#                 image[i,j] = image[i,j+1]
+# 
+#     for i in range(h-1,0,-1):                
+#         for j in range(w):
+#             if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
+#                 image[i,j] = image[i+1,j]
+#             if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
+#                 image[i,j] = image[i,j-1]
+# 
+# #     print(index)
+#     return image
+
+def fill(image,i,j,h,w,index):
+    image[i,j] = index
+    if i > 0 and image[i-1] > 0 and image[i-1] < 256:
+        fill(image,i-1,j,h,w,index)
+    if i+1 < h and image[i+1] > 0 and image[i+1] < 256:
+        fill(image,i+1,j,h,w,index)
+    if j > 0 and image[j-1] > 0 and image[j-1] < 256:
+        fill(image,i,j-1,h,w,index)
+    if j+1 < w and image[j+1] > 0 and image[j+1] < 256:
+        fill(image,i,j+1,h,w,index)
+    return
+
 def segment(image):
-    index = 1
+    index = 256     # Starts at 256 because the largest number in the image will be 255
     h = len(image)
     w = len(image[1])
     image = image.astype(dtype='uint16')
-
+    
     for i in range(h):
         for j in range(w):
-            if image[i,j] > 0:
-                a = index
-                if i > 0 and image[i-1,j] and a > image[i-1,j]:
-                    a = image[i-1,j]
-                if j > 0 and image[i,j-1] and a > image[i,j-1]:
-                    a = image[i,j-1]
-                if a == index:
-                    index = index + 1
-                image[i,j] = a
+            if image[i,j] > 0 and image[i,j] < 256:     # if the pixel is part of an object and not yet marked
+                fill(image,i,j,h,w,index)
+                index = index + 1
                 
-    for i in range(h-1,0,-1):
-        for j in range(w-1,0,-1):
-            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
-                image[i,j] = image[i+1,j]
-            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
-                image[i,j] = image[i,j+1]
-                
-    for i in range(h):
-        for j in range(w-1,0,-1):
-            if i > 0 and image[i-1,j] and image[i,j] > image[i-1,j]:
-                image[i,j] = image[i-1,j]
-            if j < w-1 and image[i,j+1] and image[i,j] > image[i,j+1]:
-                image[i,j] = image[i,j+1]
-
-    for i in range(h-1,0,-1):                
-        for j in range(w):
-            if i < h-1 and image[i+1,j] and image[i,j] > image[i+1,j]:
-                image[i,j] = image[i+1,j]
-            if j > 0 and image[i,j-1] and image[i,j] > image[i,j-1]:
-                image[i,j] = image[i,j-1]
-
-#     print(index)
+    print(index-256)
     return image
 
 # INPUT:  Image with isolated and labeled segments
