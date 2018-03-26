@@ -19,7 +19,7 @@ program to crash.  However, our photos of screen pixels
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
-def extractObjects(filename):
+def extractObjectsPngJpg(filename):
     image = cv2.imread(filename)
     image = greenscale(image)
     thresh = 64
@@ -28,7 +28,7 @@ def extractObjects(filename):
     foundBlobs = segmentInfo(image)
     return foundBlobs
 
-def loudExtractObjects(filename):
+def loudExtractObjectsPngJpg(filename):
     image = cv2.imread(filename)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
