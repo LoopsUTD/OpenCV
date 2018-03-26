@@ -6,6 +6,8 @@ import sys
 import time
 
 import gphoto2 as gp
+import segmenter
+import correlate
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 from displayHandling import FullScreenApp
@@ -50,7 +52,8 @@ class TestHandler():
 			3:self.takePhotoOtherImage,
 			4:self.moveLensHolderOutOfWay,
 			5:self.moveLensHolderIntoPath,
-			6:self.exit
+			6:self.oneClickTest,
+			7:self.exit			# Leave exit as last index
 		}
 		for key, opt in self.myOpts.items():
 			print("\t%d. %s" % (key, opt.__name__))
@@ -63,6 +66,13 @@ class TestHandler():
 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
+
+	def _takePhotoNowReturnsName(self):
+		self.log.info("user is storing image in: %s with test photo: %s" % (self.defOutFolder, self.testImages))
+		self.display.updateImage(self.testImages[0])
+		target = self.camera.takePhoto(folderName = self.defOutFolder)
+		self.log.info("photo saved at: %s" % target)
+		return target
 
 	def changeOutputFolder(self):
 		newFolderNameRaw = input("Enter new folder name: ")
@@ -88,6 +98,16 @@ class TestHandler():
 	def moveLensHolderIntoPath(self):
 		self.log.info("moving linear actuator into path...")
 		self.actuator.moveIntoPath()
+
+	def oneClickTest(self):
+		self.display.updateImage(self.testImages[0])
+		self.moveLensHolderOutOfWay()
+		noLens = self._takePhotoNowReturnsName()
+		self.moveLensHolderIntoPath()
+		withLens = self._takePhotoNowReturnsName()
+		undev = segmenter.extractObjects(noLens)
+		dev   = segmenter.extractObjects(withLens)
+		correlate.main(undev,dev)
 
 	def exit(self):
 		pass

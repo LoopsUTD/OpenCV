@@ -121,7 +121,6 @@ def segmentInfo(img):
                     b[img[i,j]] = [1,i,j]
                 else:
                     b[img[i,j]] = [b[img[i,j]][0]+1,b[img[i,j]][1]+i,b[img[i,j]][2]+j]
-                    
     blobs = list()
     for key in b:
         ssn = key
@@ -129,7 +128,7 @@ def segmentInfo(img):
         y   = b[key][2] / b[key][0]
         newBlob = Blob(ssn,x,y)
         blobs.append(newBlob)
-    return blobs
+    return numpy.asarray(blobs)
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
