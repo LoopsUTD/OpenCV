@@ -7,19 +7,19 @@ OPERATION PARAMETERS - EDIT HERE DURING USE
 """
 
 # Image size, in pixels
-rsize = 800	# HEIGHT
-csize = 800	# WIDTH
+rsize = 720	 # HEIGHT
+csize = 1280     # WIDTH
 
 # Set one mode to True and the others to False
 #   (If nothing is selected, blobs will be used)
 #   (If multiple selected, lower takes precedence)
 horizontalStripes = False
 verticalStripes   = False
-checkerboard      = True
-blobs             = False
+checkerboard      = False
+blobs             = True
 
 # Set period of pattern, in pixels
-period = 200
+period = 8
 
 # If either orientation of stripes, set duty cycle
 #   (If using blobs, ignore this line)
@@ -27,8 +27,8 @@ dutyCycle = 0.5
 
 # If using blobs, set blob size
 #   (If using stripes, ignore these lines)
-rblob = 100     # HEIGHT OF BLOB (in px)
-cblob = 100     # WIDTH OF BLOB (in px)
+rblob = 2     # HEIGHT OF BLOB (in px)
+cblob = 2     # WIDTH OF BLOB (in px)
 
 """
 END OF OPERATION PARAMETERS - EDITING BELOW THIS POINT MAY BREAK THINGS

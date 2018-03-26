@@ -2,11 +2,33 @@ import cv2
 import numpy
 from blob import Blob
 
+# WARNING: UNEXPECTED BEHAVIOR MAY OCCUR #
+"""
+The final function called by extractObjects, segmentInfo(),
+utilizes (~^.^)~ RECURSION ~(^.^~).  When it finds an
+above-threshold pixel, segmentInfo() calls fill().  fill()
+recursively calls itself to explore entire blobs.  Python
+has a built-in maximum recursion depth of 1000.  Currently,
+this limit is unchanged by the program.  So, if a segment
+of more than 1000 pixels is found, is possible for the
+program to crash.  However, our photos of screen pixels
+*shouldn't* contain segments over 1000 pixels.
+"""
+
 # INPUT:  name of .png photograph file
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
 def extractObjects(filename):
+    image = cv2.imread(filename)
+    image = greenscale(image)
+    thresh = 64
+    image = threshold(image,thresh)
+    image = segment(image)
+    foundBlobs = segmentInfo(image)
+    return foundBlobs
+
+def loudExtractObjects(filename):
     image = cv2.imread(filename)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
