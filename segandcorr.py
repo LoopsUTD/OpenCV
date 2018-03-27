@@ -1,10 +1,18 @@
 import segmenter
 import correlate
 if __name__=="__main__":	
-	undevname="lens2_nolens_280pxG.png"
-	devname="lens2_wlens_280pxG.png"
-	undev=segmenter.loudExtractObjectsPngJpg(undevname)
+	undevname="clens2_nolens.png"
+	devname="clens2_wlens.png"
+#j	undevname="undevdumb.png"
+#	devname="devdumb.png"
+	undev=segmenter.extractObjectsPngJpg(undevname)
 	print('undev done')
-	dev=segmenter.loudExtractObjectsPngJpg(devname)
+	for blobs in undev:
+		print("u")
+		print(blobs)
+	dev=segmenter.extractObjectsPngJpg(devname)
 	print('dev done')
-	correlate.main(undev,dev)
+	for blobs in dev:
+		print("d")
+		print(blobs)
+
