@@ -84,11 +84,11 @@ def fill(image,i,j,h,w,index):
     image[i,j] = index
     if i > 0 and image[i-1,j] == 255:
         fill(image,i-1,j,h,w,index)
-    if i+1 < h and image[i+1,j] == 255:
+    if i+1 < w and image[i+1,j] == 255:
         fill(image,i+1,j,h,w,index)
     if j > 0 and image[i,j-1] == 255:
         fill(image,i,j-1,h,w,index)
-    if j+1 < w and image[i,j+1] == 255:
+    if j+1 < h and image[i,j+1] == 255:
         fill(image,i,j+1,h,w,index)
     return
 
@@ -101,8 +101,8 @@ def segment(image):
     w = len(image[1])
     image = image.astype(dtype='uint16')
     
-    for i in range(h):
-        for j in range(w):
+    for j in range(h):
+        for i in range(w):
             if image[i,j] > 0 and image[i,j] < 256:     # if the pixel is part of an object and not yet marked
                 fill(image,i,j,h,w,index)
                 index = index + 1
@@ -117,8 +117,8 @@ def segmentInfo(img):
     w = len(img[1])
     b = {}
     
-    for i in range(h):
-        for j in range(w):
+    for j in range(h):
+        for i in range(w):
             if img[i,j] != 0:
                 if img[i,j] not in b:
                     b[img[i,j]] = [1,i,j]
