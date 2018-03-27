@@ -17,7 +17,7 @@ def main(undeviated,deviated):
 def compare(undevdict,devdict):
 	devmap={}
 	for key,value in undevdict.items():
-		dist=distance(value,devdict[key])
+		dist=sqrt(distanceSquared(value,devdict[key]))
 		deviation={(value.value[0],value.value[1]):dist}
 		devmap.update(deviation)
 	return devmap
@@ -27,7 +27,7 @@ def corr(undeviated,deviated):
 	devdict={}
 	for i in range(undeviated.size):
 		undevdict.update({undeviated[i].id:undeviated[i]})
-		closest=mindist(undeviated[i],deviated)
+		closest=minDistSquared(undeviated[i],deviated)
 		devdict.update({closest.id:closest})
 	return undevdict,devdict
 
@@ -37,23 +37,23 @@ def writeToFile(mapping,name):
 		file.write("{},{},{}\n".format(value[0][0],value[0][1],value[1]))
 	file.close()
 	
-def mindist(item,array):
+def minDistSquared(item,array):
 	minim=sys.maxsize
 	for i in range(array.size):
-		idist=distance(item,array[i])
+		idist=distanceSquared(item,array[i])
 		if idist < minim:
 			minim=idist
 			closest=array[i]
 			closest.id=item.id
 	return closest
 	
-def distance(blob1,blob2):
-	dist=sqrt(pow((blob1.value[0]-blob2.value[0]),2)+pow((blob1.value[1]-blob2.value[1]),2))
-	return dist
+def distanceSquared(blob1,blob2):
+	distSquared=pow((blob1.value[0]-blob2.value[0]),2)+pow((blob1.value[1]-blob2.value[1]),2)
+	return distSquared
+
 if __name__=='__main__':
 	print("main")
 	start = time()
 	data=testData(5000,3000)
 	main(data[0],data[1])
 	print(time()-start)
-
