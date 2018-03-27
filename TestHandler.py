@@ -28,7 +28,7 @@ class TestHandler():
 
 		#Set Default variables:
 		if testImages is None:
-			self.testImages = ['test.jpg']
+			self.testImages = ['test.png']
 		else:
 			self.testImages = testImages
 
