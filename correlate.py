@@ -1,4 +1,3 @@
-import cv2
 from blob import *
 import numpy as np
 from math import *

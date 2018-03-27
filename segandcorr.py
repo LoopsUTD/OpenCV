@@ -9,7 +9,7 @@ if __name__=="__main__":
 #	devname="devdumb.png"
 	undev=segmenter.extractObjectsPngJpg(undevname)
 	print('undev done')
-	print (time()-start)
+	print(time()-start)
 #	for blobs in undev:
 #		print("u")
 #		print(blobs)

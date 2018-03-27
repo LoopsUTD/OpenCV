@@ -135,6 +135,5 @@ def segmentInfo(img):
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    array=loudExtractObjectsPngJpg('clens2_wlens.png')   
-    for blobs in array:
-        print(blobs)
+    array=loudExtractObjectsPngJpg('lens2_nolens_4pxG.png')   
+    print(array.shape)
