@@ -97,14 +97,14 @@ def fill(image,i,j,h,w,index):
 
 def segment(image):
     index = 256     # Starts at 256 because the largest number in the image will be 255
-    h = len(image)
-    w = len(image[1])
+    h = len(image)//4
+    w = len(image[1])//4
     image = image.astype(dtype='uint16')
     
     for i in range(h):
         for j in range(w):
-            if image[i,j] > 0 and image[i,j] < 256:     # if the pixel is part of an object and not yet marked
-                fill(image,i,j,h,w,index)
+            if image[4*i,4*j] > 0 and image[4*i,4*j] < 256:     # if the pixel is part of an object and not yet marked
+                fill(image,4*i,4*j,h,w,index)
                 index = index + 1
 
     return image
