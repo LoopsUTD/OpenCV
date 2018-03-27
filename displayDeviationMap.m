@@ -1,3 +1,7 @@
-scatter(dev.VarName1,dev.VarName2,[],dev.VarName3,'filled')
+dat=table2array(dev)
+dat=dat(dat(:,3)<5,:)
+%%dat(:,3)=~isoutlier(dat(:,3)).*dat(:,3);
+scatter(dat(:,1),dat(:,2),[],dat(:,3),'filled')
+colorbar
 figure
-histogram(table2array(dev(:,3)))
+histogram(dat(:,3))

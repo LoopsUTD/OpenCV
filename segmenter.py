@@ -52,7 +52,7 @@ def loudExtractObjectsPngJpg(filename):
 # Instead of true greyscale, we use greenscale(since all test images are green)        --- This will be changing soon, when we switch to 3-color pixel groups
 
 def greenscale(image):
-"""
+    """
     channels = len(image.shape)
     if channels == 1:
         image = image
@@ -61,8 +61,8 @@ def greenscale(image):
     else:
         print("Error in segmentImg >> greenscale: image is not 1- or 3-channel")
         image = numpy.zeros(2,2)
-"""
-    image = cv2.RGB2Gray(image)
+    """
+    image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     return image
 
 # INPUT:  1-channel array representing an image
@@ -135,6 +135,6 @@ def segmentInfo(img):
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    array=loudExtractObjectsPngJpg('lens2_nolens_280pxG.png')   
+    array=loudExtractObjectsPngJpg('clens2_wlens.png')   
     for blobs in array:
         print(blobs)
