@@ -22,7 +22,7 @@ program to crash.  However, our photos of screen pixels
 def extractObjectsPngJpg(filename):
     image = cv2.imread(filename)
     image = greenscale(image)
-    thresh = 64
+    thresh = 128
     image = threshold(image,thresh)
     image = segment(image)
     foundBlobs = segmentInfo(image)
@@ -35,7 +35,7 @@ def loudExtractObjectsPngJpg(filename):
     image = greenscale(image)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
-    thresh = 64
+    thresh = 128
     image = threshold(image,thresh)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
@@ -124,14 +124,14 @@ def segmentInfo(img):
     blobs = list()
     for key in b:
         ssn = key
-        x   = b[key][1] / b[key][0]
-        y   = b[key][2] / b[key][0]
+        x   = b[key][1] // b[key][0]
+        y   = b[key][2] // b[key][0]
         newBlob = Blob(ssn,x,y)
         blobs.append(newBlob)
     return numpy.asarray(blobs)
 
 if __name__ == '__main__':
     # this image name is not important.  I was just using what I had on my computer
-    array=loudExtractObjectsPngJpg('lens2_wlens_280pxG.png')   
+    array=loudExtractObjectsPngJpg('lens2_nolens_280pxG.png')   
     for blobs in array:
         print(blobs)
