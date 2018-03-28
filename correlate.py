@@ -4,9 +4,9 @@ from math import *
 import os.path
 from time import *
 from testData import *
-def main(undeviated,deviated):
+def main(undeviated,deviated,name):
 
-	fname="dev.txt"
+	fname="{}{}".format(name,".txt")
 #	if(os.path.isfile(fname)):
 #		os.remove(fname)
 	undevdict,devdict=corr(undeviated,deviated)
