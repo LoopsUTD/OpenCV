@@ -6,8 +6,8 @@ import sys
 import time
 
 import gphoto2 as gp
-#import segmenter
-#import correlate
+import segmenter
+import correlate
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 from displayHandling import FullScreenApp
@@ -105,9 +105,9 @@ class TestHandler():
 		noLens = self._takePhotoNowReturnsName()
 		self.moveLensHolderIntoPath()
 		withLens = self._takePhotoNowReturnsName()
-		undev = segmenter.extractObjects(noLens)
+		undev = segmenter.extractObjectsPngJpg(noLens)
 		print('undev segmented')
-		dev = segmenter.extractObjects(withLens)
+		dev = segmenter.extractObjectsPngJpg(withLens)
 		print('dev segmented')
 		correlate.main(undev,dev,noLens[:-4])
 		print("Yeah this code is totally working!")
