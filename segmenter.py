@@ -19,23 +19,25 @@ program to crash.  However, our photos of screen pixels
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
-def extractObjectsPngJpg(filename):
+def extractObjectsPngJpg(filename,thresh=None):
     image = cv2.imread(filename)
     image = greenscale(image)
-    thresh = 128
+    if thresh == None:
+        thresh = 128
     image = threshold(image,thresh)
     image = segment(image)
     foundBlobs = segmentInfo(image)
     return foundBlobs
 
-def loudExtractObjectsPngJpg(filename):
+def loudExtractObjectsPngJpg(filename,thresh=None):
     image = cv2.imread(filename)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
     image = greenscale(image)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
-    thresh = 128
+    if thresh == None:
+        thresh = 128
     image = threshold(image,thresh)
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
@@ -97,12 +99,12 @@ def fill(image,i,j,h,w,index):
 
 def segment(image):
     index = 256     # Starts at 256 because the largest number in the image will be 255
-    h = len(image)//4
-    w = len(image[1])//4
+    h = len(image)
+    w = len(image[1])
     image = image.astype(dtype='uint16')
     
-    for i in range(h):
-        for j in range(w):
+    for i in range(h//4):
+        for j in range(w//4):
             if image[4*i,4*j] > 0 and image[4*i,4*j] < 256:     # if the pixel is part of an object and not yet marked
                 fill(image,4*i,4*j,h,w,index)
                 index = index + 1
