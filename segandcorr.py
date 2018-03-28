@@ -4,20 +4,24 @@ from time import *
 import cv2
 from multiprocessing import Pool,Process
 import os
+import tkinter as tk
+from tkinter import filedialog
 
-def analyze(name,imagefolder):
+def analyze(undevpath,devpath):
 	start=time()
 #	undevname="lens2_nolens_4pxG.png"
 #	devname="lens2_wlens_4pxG.png"i
-	undevname='{}{}{}'.format(imagefolder,name,"_nolens.JPG")
-	devname='{}{}{}'.format(imagefolder,name,"_lens.JPG")
+#	undevname='{}{}{}'.format(imagefolder,name,"_nolens.JPG")
+#	devname='{}{}{}'.format(imagefolder,name,"_lens.JPG")
+	undevname=undevpath
+	devname=devpath
 	print(undevname,devname)
 	pool=Pool(2)
 	asyncdev=pool.apply_async(seg,(devname,start))
 	asyncundev=pool.apply_async(seg,(undevname,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	correlate.main(undev,dev,name)
+	correlate.main(undev,dev,undevpath[:-4])
 	print ('Total time elapsed: {} seconds'.format(time()-start))
 def seg(image,start):
 	segmented=segmenter.extractObjectsPngJpg(image)
@@ -28,6 +32,14 @@ def seg(image,start):
 #		print(blobs)
 	return segmented
 if __name__=="__main__":	
-	analyze('lens3',"../JPG_ADJUSTED_SIZE/")
+	root=tk.Tk()
+	label = tk.Label(root,text="Select the no-lens image")
+	label.pack()
+	undevpath = filedialog.askopenfilename()
+	label.config(text="Select the with-lens image")
+	label.pack()
+	devpath = filedialog.askopenfilename()
+	analyze(undevpath,devpath)
+	
 
 
