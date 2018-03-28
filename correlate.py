@@ -4,6 +4,7 @@ from math import *
 import os.path
 from time import *
 from testData import *
+from multiprocessing import *
 def main(undeviated,deviated,name):
 
 	fname="{}{}".format(name,".txt")

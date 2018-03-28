@@ -2,6 +2,8 @@ import segmenter
 import correlate
 from time import *
 import cv2
+from multiprocessing import Pool,Process
+import os
 
 def analyze(name,imagefolder):
 	start=time()
@@ -10,22 +12,22 @@ def analyze(name,imagefolder):
 	undevname='{}{}{}'.format(imagefolder,name,"_nolens.JPG")
 	devname='{}{}{}'.format(imagefolder,name,"_lens.JPG")
 	print(undevname,devname)
-	undev=segmenter.extractObjectsPngJpg(undevname)
-
-	print('undev segmented')
+	pool=Pool(2)
+	asyncdev=pool.apply_async(seg,(devname,start))
+	asyncundev=pool.apply_async(seg,(undevname,start))
+	undev=asyncundev.get()
+	dev=asyncdev.get()
+	correlate.main(undev,dev,name)
+	print ('Total time elapsed: {} seconds'.format(time()-start))
+def seg(image,start):
+	segmented=segmenter.extractObjectsPngJpg(image)
+	print('{} segmented'.format(image))
 	print(time()-start)
 #	for blobs in undev:
 #		print("u")
 #		print(blobs)
-	dev=segmenter.extractObjectsPngJpg(devname)
-	print('dev segmented')
-	print(time()-start)
-#	for blobs in dev:
-#		print("d")
-#		print(blobs)
-	correlate.main(undev,dev,name)
-	print ('Total time elapsed: {} seconds'.format(time()-start))
+	return segmented
 if __name__=="__main__":	
-	analyze('blank',"../JPG_ADJUSTED_SIZE/")
+	analyze('lens3',"../JPG_ADJUSTED_SIZE/")
 
 
