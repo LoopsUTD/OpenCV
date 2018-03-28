@@ -107,7 +107,7 @@ class TestHandler():
 		withLens = self._takePhotoNowReturnsName()
 		undev = segmenter.extractObjects(noLens)
 		print('undev segmented')
-                dev   = segmenter.extractObjects(withLens)
+                dev = segmenter.extractObjects(withLens)
                 print('dev segmented')
                 correlate.main(undev,dev,noLens[:-4])
 		print("Yeah this code is totally working!")
