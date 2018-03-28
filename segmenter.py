@@ -21,7 +21,6 @@ program to crash.  However, our photos of screen pixels
 
 def extractObjectsPngJpg(filename,thresh=None):
     image = cv2.imread(filename)
-    image=cv2.resize(image,None,fx=0.5,fy=0.5,interpolation=cv2.INTER_AREA)
     image = greenscale(image)
     if thresh == None:
         thresh = 128
