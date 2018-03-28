@@ -6,8 +6,8 @@ import sys
 import time
 
 import gphoto2 as gp
-#import segmenter
-#import correlate
+import segmenter
+import correlate
 from linearActuator import LinearActuator
 from cameraHandling import Camera
 from displayHandling import FullScreenApp
