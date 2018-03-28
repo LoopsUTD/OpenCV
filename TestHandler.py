@@ -105,11 +105,11 @@ class TestHandler():
 		noLens = self._takePhotoNowReturnsName()
 		self.moveLensHolderIntoPath()
 		withLens = self._takePhotoNowReturnsName()
-		"""
 		undev = segmenter.extractObjects(noLens)
-		dev   = segmenter.extractObjects(withLens)
-		correlate.main(undev,dev)
-		"""
+		print('undev segmented')
+                dev   = segmenter.extractObjects(withLens)
+                print('dev segmented')
+                correlate.main(undev,dev,noLens[:-4])
 		print("Yeah this code is totally working!")
 		
 	def exit(self):
