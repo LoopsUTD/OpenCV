@@ -33,11 +33,8 @@ def seg(image,start):
 	return segmented
 if __name__=="__main__":	
 	root=tk.Tk()
-	label = tk.Label(root,text="Select the no-lens image")
-	label.pack()
+	root.withdraw()
 	undevpath = filedialog.askopenfilename()
-	label.config(text="Select the with-lens image")
-	label.pack()
 	devpath = filedialog.askopenfilename()
 	analyze(undevpath,devpath)
 	
