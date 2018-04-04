@@ -49,7 +49,7 @@ class TestHandler():
 		self.myOpts = {
 			1:self.takePhotoNow,
 			2:self.changeOutputFolder,
-			3:self.takePhotoOtherImage,
+			3:self.updateDisplayOtherImage,
 			4:self.moveLensHolderOutOfWay,
 			5:self.moveLensHolderIntoPath,
 			6:self.oneClickTest,
@@ -67,10 +67,10 @@ class TestHandler():
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
 
-	def _takePhotoNowReturnsName(self):
+	def _takePhotoNowReturnsName(self, filePrefix = None):
 		self.log.info("user is storing image in: %s with test photo: %s" % (self.defOutFolder, self.testImages))
 		self.display.updateImage(self.testImages[0])
-		target = self.camera.takePhoto(folderName = self.defOutFolder)
+		target = self.camera.takePhoto(folderName = self.defOutFolder, prefix = filePrefix)
 		self.log.info("photo saved at: %s" % target)
 		return target
 
@@ -85,11 +85,12 @@ class TestHandler():
 		print("Updated Output folder is: %s" % defaultOutputFolder)
 		self.defOutFolder = defaultOutputFolder
 
-	def takePhotoOtherImage(self):
+	def updateDisplayOtherImage(self):
 		newImagePath = str(input("enter path to test image: (must be exact!)"))
 		self.log.info("user updated the test image path: %s" % (newImagePath))
 		self.testImages[0] = newImagePath
-		self.takePhotoNow()
+		#self.takePhotoNow()
+		self.display.updateImage(self.testImages[0])
 
 	def moveLensHolderOutOfWay(self):
 		self.log.info("moving linear actuator out of the way...")
@@ -102,15 +103,15 @@ class TestHandler():
 	def oneClickTest(self):
 		self.display.updateImage(self.testImages[0])
 		self.moveLensHolderOutOfWay()
-		noLens = self._takePhotoNowReturnsName()
+		noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_")
 		self.moveLensHolderIntoPath()
-		withLens = self._takePhotoNowReturnsName()
-		undev = segmenter.extractObjectsPngJpg(noLens)
-		print('undev segmented')
-		dev = segmenter.extractObjectsPngJpg(withLens)
-		print('dev segmented')
-		correlate.main(undev,dev,noLens[:-4])
-		print("Yeah this code is totally working!")
+		withLens = self._takePhotoNowReturnsName(filePrefix = "withLens_")
+		# undev = segmenter.extractObjectsPngJpg(noLens)
+		# print('undev segmented')
+		# dev = segmenter.extractObjectsPngJpg(withLens)
+		# print('dev segmented')
+		# correlate.main(undev,dev,noLens[:-4])
+		# print("Yeah this code is totally working!")
 		
 	def exit(self):
 		pass

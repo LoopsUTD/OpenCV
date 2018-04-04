@@ -13,7 +13,7 @@ import tkinter as tk
 
 
 log = logging.getLogger("mainApp")
-VERSION = "0.5"
+VERSION = "0.6"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None
@@ -159,7 +159,7 @@ def checkCameraConnectionHandler():
 	text = camera.getCameraSummary()
 	print(text)
 
-@rename("Take Photo Menu")
+@rename("Testing Menu")
 def takePhotoHandler():
 	testhandling = TestHandler(logLevelDefault = logging.DEBUG)
 	testhandling.printMainMenu()
@@ -195,18 +195,23 @@ def printMainMenu():
 
 	#Why use a Dict? Because it's so sneaky clean!!
 	#See links above to see how I made this so slick.
+	# options = {
+	# 	#1:selectTestFileHandler, 
+	# 	1:setupDisplayHandler,
+	# 	2:adjustLinearActuatorHandler, 
+	# 	#3:numLensToTestHandler, 
+	# 	3:calibrateCameraHandler, 
+	# 	4:checkCameraConnectionHandler, 
+	# 	5:takePhotoHandler,
+	# 	6:runTestHandler, 
+	# 	7:moveLinearActuatorIntoPath,
+	# 	8:moveLinearActuatorOutOfWay,
+	# 	9:exitThisProgram
+	# }
 	options = {
-		#1:selectTestFileHandler, 
-		1:setupDisplayHandler,
-		2:adjustLinearActuatorHandler, 
-		#3:numLensToTestHandler, 
-		3:calibrateCameraHandler, 
-		4:checkCameraConnectionHandler, 
-		5:takePhotoHandler,
-		6:runTestHandler, 
-		7:moveLinearActuatorIntoPath,
-		8:moveLinearActuatorOutOfWay,
-		9:exitThisProgram
+		1: takePhotoHandler,
+		2: calibrateCameraHandler,
+		3: exitThisProgram
 	}
 
 	print(welcome + mainmsg)

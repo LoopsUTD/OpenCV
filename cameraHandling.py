@@ -23,23 +23,10 @@ class Camera(object):
         else:
             Camera._singletonInstance = self
             self.log = logging.getLogger("mainApp")
-            # loggingLevel = 10
-            # handler = logging.StreamHandler()
-            # handler.setLevel(loggingLevel)
-            # #format = logging.Formatter('%(name)s -- %(levelname)s -- %(message)s')
-            # format = logging.Formatter('%(levelname)s -- %(message)s')
-            # handler.setFormatter(format)
-            # self.log.addHandler(handler)
             self.log.info("Initializing Camera...")
             self.camera = gp.Camera()
             self.camera.init()
             self._initializeConfig()
-
-    # def __new__(cls):
-    #     if not Camera.singletonInstance:
-    #         Camera.singletonInstance = object.__new__(cls)
-    #     #Camera._singletonInstance.val = val
-    #     return Camera.singletonInstance
 
     def _initializeConfig(self):
         self._config = self.camera.get_config()
@@ -63,6 +50,7 @@ class Camera(object):
                     for choice in child.get_choices():
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
+        self.log.debug(str(self.mainConfigs))
 
     def adjustSettings(self, settingName, settingValue):
         setting = gp.gp_widget_get_child_by_name(self._config,settingName)
@@ -72,12 +60,15 @@ class Camera(object):
         self._config = self.camera.get_config() #update local config value to match the camera
         #TODO: Make this Object Oriented? 
 
-    def takePhoto(self, folderName):
+    def takePhoto(self, folderName, prefix=None):
         self.log.info("Capturing Photo...")
         #TODO: ensure capture target is properly setup?
         #self.adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
-        target = os.path.join(folderName, file_path.name)
+        if prefix is not None:
+            target = os.path.join(folderName, str(prefix) + file_path.name )
+        else:
+            target = os.path.join(folderName, file_path.name)
         camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL))
         gp.check_result(gp.gp_file_save(camera_file, target))
         return target
