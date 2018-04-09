@@ -90,7 +90,7 @@ class LinearActuator(object):
             frame.bind('<s>', lambda event: self.moveDown(event,stepSize))
             frame.bind('<x>', self.setHome)
             frame.bind('<space>',self.goHome)
-            frame.bind('<Return>',quitBtn)
+            frame.bind('<Return>',lambda event: root.destroy) #testing!
             frame.focus_set()
             frame.pack()
 

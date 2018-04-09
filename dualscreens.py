@@ -21,6 +21,7 @@ def display_process(dict_global, is_master, exit_event):
     from kivy.clock import Clock
     from kivy.uix.boxlayout import BoxLayout
     from kivy.uix.label import Label
+    from kivy.uix.image import Image
 
     import operator
 
@@ -74,9 +75,9 @@ def display_process(dict_global, is_master, exit_event):
                 exit()
 
         def _otherbuild(self):
-            layout1 = BoxLayout(orientation='horizontal',spacing=10)
-            layout1.add_widget(LabelD('counter',font_size=200))
-
+            #layout1 = BoxLayout(orientation='horizontal',spacing=10)
+            #layout1.add_widget(LabelD('counter',font_size=200))
+            layout1 = Image(src='test.jpg')
             return layout1
 
         def _mainbuild(self):

@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import time
+import pathlib
 
 import gphoto2 as gp
 import segmenter
@@ -33,7 +34,9 @@ class TestHandler():
 			self.testImages = testImages
 
 		if defOutFolder is None:
-			self.defOutFolder = "RAW/"
+			self.defOutFolder = input("Enter Local Output Directory \n (new directories are automatically created): ")
+			#self.defOutFolder = "RAW/"
+
 		else:
 			self.defOutFolder = defOutFolder
 
@@ -67,29 +70,37 @@ class TestHandler():
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
 
-	def _takePhotoNowReturnsName(self, filePrefix = None):
-		self.log.info("user is storing image in: %s with test photo: %s" % (self.defOutFolder, self.testImages))
+	def _takePhotoNowReturnsName(self, filePrefix = None, outputFolder = None):
+		
+		if outputFolder is not None:
+			currentOutFolder = self.defOutFolder + "/" + outputFolder
+			self._makeFolder(currentOutFolder)
+		else:
+			currentOutFolder = self.defOutFolder
+		self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
 		self.display.updateImage(self.testImages[0])
-		target = self.camera.takePhoto(folderName = self.defOutFolder, prefix = filePrefix)
+		target = self.camera.takePhoto(folderName = currentOutFolder, prefix = filePrefix)
 		self.log.info("photo saved at: %s" % target)
 		return target
 
 	def changeOutputFolder(self):
 		newFolderNameRaw = input("Enter new folder name: ")
-		strippedName = newFolderNameRaw.strip()
+		defaultOutputFolder = self._cleanInputs(newFolderNameRaw)
+		self.log.info("Updated Output folder is: %s" % defaultOutputFolder)
+		self.defOutFolder = defaultOutputFolder
+
+	def _cleanInputs(self, usr_input):
+		strippedName = usr_input.strip()
 		nameWithSlashes = strippedName.replace(' ', '')
 		goodName = nameWithSlashes.replace('\\', '')
 		betterName = goodName.replace("\'", '')
 		bestName = betterName.replace('\"', '')
-		defaultOutputFolder = bestName
-		print("Updated Output folder is: %s" % defaultOutputFolder)
-		self.defOutFolder = defaultOutputFolder
+		return bestName
 
-	def updateDisplayOtherImage(self):
+	def updateDisplayWithOtherImage(self):
 		newImagePath = str(input("enter path to test image: (must be exact!)"))
 		self.log.info("user updated the test image path: %s" % (newImagePath))
 		self.testImages[0] = newImagePath
-		#self.takePhotoNow()
 		self.display.updateImage(self.testImages[0])
 
 	def moveLensHolderOutOfWay(self):
@@ -100,7 +111,13 @@ class TestHandler():
 		self.log.info("moving linear actuator into path...")
 		self.actuator.moveIntoPath()
 
+	def _makeFolder(self, dir_path):
+		pathlib.Path(dir_path).mkdir(parents=True,exist_ok=True)
+
+
 	def oneClickTest(self):
+		sampleFolderNameRaw = input("Enter Sample Name:")
+		self._makeFolder(self.defOutFolder + "/" + self._cleanInputs(sampleFolderNameRaw))
 		self.display.updateImage(self.testImages[0])
 		self.moveLensHolderOutOfWay()
 		noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_")

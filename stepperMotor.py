@@ -17,10 +17,8 @@ class StepperMotor:
         self.lim2=limit2
         GPIO.setup(self.lim1,GPIO.IN)
         GPIO.setup(self.lim2,GPIO.IN)
-    
-    
-    def step(self,steps):
         
+    def step(self,steps):    
         stepsTaken = 0
         if steps<0:
             GPIO.output(self.dirPin,GPIO.LOW)
