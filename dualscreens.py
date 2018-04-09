@@ -64,6 +64,22 @@ def display_process(dict_global, is_master, exit_event):
 
 
         def build(self):
+            if is_master:
+                return self._mainbuild()
+            else:
+                return self._otherbuild()
+
+        def update(self, *args):
+            if exit_event.is_set():
+                exit()
+
+        def _otherbuild(self):
+            layout1 = BoxLayout(orientation='horizontal',spacing=10)
+            layout1.add_widget(LabelD('counter',font_size=200))
+
+            return layout1
+
+        def _mainbuild(self):
             layout1 = BoxLayout(orientation='horizontal',spacing=10)
             layout1.add_widget(LabelD('counter',font_size=200))
             layout2 = BoxLayout(orientation='vertical', spacing=10)
@@ -72,10 +88,6 @@ def display_process(dict_global, is_master, exit_event):
             layout1.add_widget(layout2)
 
             return layout1
-
-        def update(self, *args):
-            if exit_event.is_set():
-                exit()
 
         def on_stop(self):
             exit_event.set()
