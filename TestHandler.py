@@ -70,10 +70,10 @@ class TestHandler():
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
 
-	def _takePhotoNowReturnsName(self, filePrefix = None, outputFolder = None):
+	def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
 		
-		if outputFolder is not None:
-			currentOutFolder = self.defOutFolder + "/" + outputFolder
+		if sampleFolder is not None:
+			currentOutFolder = self.defOutFolder + "/" + sampleFolder
 			self._makeFolder(currentOutFolder)
 		else:
 			currentOutFolder = self.defOutFolder
@@ -117,12 +117,12 @@ class TestHandler():
 
 	def oneClickTest(self):
 		sampleFolderNameRaw = input("Enter Sample Name:")
-		self._makeFolder(self.defOutFolder + "/" + self._cleanInputs(sampleFolderNameRaw))
+		#self._makeFolder(self.defOutFolder + "/" + self._cleanInputs(sampleFolderNameRaw))
 		self.display.updateImage(self.testImages[0])
 		self.moveLensHolderOutOfWay()
-		noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_")
+		noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 		self.moveLensHolderIntoPath()
-		withLens = self._takePhotoNowReturnsName(filePrefix = "withLens_")
+		withLens = self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 		# undev = segmenter.extractObjectsPngJpg(noLens)
 		# print('undev segmented')
 		# dev = segmenter.extractObjectsPngJpg(withLens)
