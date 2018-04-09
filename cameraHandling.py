@@ -70,7 +70,7 @@ class Camera(object):
     def _updateCaptureMode(self):
         if str(self.mainConfigs['imagequality']).lower()[0] == 'j':
             self.captureMode = gp.GP_FILE_TYPE_NORMAL
-        elif str(self.mainConfigs['imagequality']).lower()[0] == 'n'):
+        elif str(self.mainConfigs['imagequality']).lower()[0] == 'n':
             self.captureMode = gp.GP_FILE_TYPE_RAW
 
     def takePhoto(self, folderName, prefix=None):
