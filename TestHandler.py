@@ -56,7 +56,8 @@ class TestHandler():
 			4:self.moveLensHolderOutOfWay,
 			5:self.moveLensHolderIntoPath,
 			6:self.oneClickTest,
-			7:self.exit			# Leave exit as last index
+			7:self.selectOutputFileFormat,
+			8:self.exit			# Leave exit as last index
 		}
 		for key, opt in self.myOpts.items():
 			print("\t%d. %s" % (key, opt.__name__))
@@ -114,6 +115,17 @@ class TestHandler():
 	def _makeFolder(self, dir_path):
 		pathlib.Path(dir_path).mkdir(parents=True,exist_ok=True)
 
+	def selectOutputFileFormat(self):
+		outputFileFormatRaw = input("Which format, JPEG or NEF?: ")
+		cleanedFormat = self._cleanInputs(outputFileFormatRaw)
+		cleanedFormat = cleanedFormat.lower()
+		if cleanedFormat[0] == 'j':
+			self.camera.adjustSettings('imagequality', 'JPEG Fine')
+			self.log.info('Camera Will save output as JPEG')
+		elif cleanedFormat[0] == 'n':
+			self.camera.adjustSettings('imagequality', 'NEF (Raw)')
+			self.camera.adjustSettings('imagesize', '6000x4000')
+			self.log.info('Camera Will save output as NEF')
 
 	def oneClickTest(self):
 		sampleFolderNameRaw = input("Enter Sample Name:")

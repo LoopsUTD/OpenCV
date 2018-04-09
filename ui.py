@@ -13,7 +13,7 @@ import tkinter as tk
 
 
 log = logging.getLogger("mainApp")
-VERSION = "0.6"
+VERSION = "0.7"
 numLensToTest = 1
 DefaultOutputFolder = "RAW/"
 mainDisplay = None

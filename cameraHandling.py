@@ -38,6 +38,10 @@ class Camera(object):
         'imagequality': None,
         'imagesize': None
         }
+        self._updateMainConfigs()
+        
+
+    def _updateMainConfigs(self):
         self.log.info("Parsing 'mainConfigs'")
         for sections in self._config.get_children():
             if "settings" not in sections.get_name(): #TODO: update this 
@@ -50,6 +54,8 @@ class Camera(object):
                     for choice in child.get_choices():
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
+        self._updateCaptureMode()
+
         self.log.debug(str(self.mainConfigs))
 
     def adjustSettings(self, settingName, settingValue):
@@ -58,7 +64,14 @@ class Camera(object):
         gp.gp_widget_set_value(setting, settingValue)
         gp.gp_camera_set_config(self.camera,self._config)
         self._config = self.camera.get_config() #update local config value to match the camera
-        #TODO: Make this Object Oriented? 
+        self._updateMainConfigs()
+
+
+    def _updateCaptureMode(self):
+        if str(self.mainConfigs['imagequality']).lower()[0] == 'j':
+            self.captureMode = gp.GP_FILE_TYPE_NORMAL
+        elif str(self.mainConfigs['imagequality']).lower()[0] == 'n'):
+            self.captureMode = gp.GP_FILE_TYPE_RAW
 
     def takePhoto(self, folderName, prefix=None):
         self.log.info("Capturing Photo...")
@@ -69,7 +82,7 @@ class Camera(object):
             target = os.path.join(folderName, str(prefix) + file_path.name )
         else:
             target = os.path.join(folderName, file_path.name)
-        camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL))
+        camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, self.captureMode))
         gp.check_result(gp.gp_file_save(camera_file, target))
         return target
 
