@@ -26,6 +26,7 @@ class Camera(object):
             self.log.info("Initializing Camera...")
             self.camera = gp.Camera()
             self.camera.init()
+            self._captureMode = None
             self._initializeConfig()
 
     def _initializeConfig(self):
@@ -55,7 +56,6 @@ class Camera(object):
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         self._updateCaptureMode()
-
         self.log.debug(str(self.mainConfigs))
 
     def adjustSettings(self, settingName, settingValue):
@@ -69,9 +69,9 @@ class Camera(object):
 
     def _updateCaptureMode(self):
         if str(self.mainConfigs['imagequality']).lower()[0] == 'j':
-            self.captureMode = gp.GP_FILE_TYPE_NORMAL
+            self._captureMode = gp.GP_FILE_TYPE_NORMAL
         elif str(self.mainConfigs['imagequality']).lower()[0] == 'n':
-            self.captureMode = gp.GP_FILE_TYPE_RAW
+            self._captureMode = gp.GP_FILE_TYPE_RAW
 
     def takePhoto(self, folderName, prefix=None):
         self.log.info("Capturing Photo...")
@@ -82,7 +82,7 @@ class Camera(object):
             target = os.path.join(folderName, str(prefix) + file_path.name )
         else:
             target = os.path.join(folderName, file_path.name)
-        camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, self.captureMode))
+        camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, self._captureMode))
         gp.check_result(gp.gp_file_save(camera_file, target))
         return target
 
