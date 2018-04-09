@@ -52,7 +52,7 @@ class TestHandler():
 		self.myOpts = {
 			1:self.takePhotoNow,
 			2:self.changeOutputFolder,
-			3:self.updateDisplayOtherImage,
+			3:self.updateDisplayWithOtherImage,
 			4:self.moveLensHolderOutOfWay,
 			5:self.moveLensHolderIntoPath,
 			6:self.oneClickTest,
