@@ -62,7 +62,7 @@ class Camera(object):
         #node = self._config.
         config = self.camera.get_config()
         node = config.get_child_by_name(settingName)
-        node.set_value(self.mainConfigs[settingName][1].index(settingValue))
+        node.set_value(settingValue)
         self.camera.set_config(config)
         self._config = self.camera.get_config() #update local config value to match the camera
         self._updateMainConfigs()
@@ -77,7 +77,7 @@ class Camera(object):
         # self.camera.set_config(config) #'UNSPECIFIED ERROR ' Exists here... :
         setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
         settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))
-        gp.check_result(gp.gp_widget_set_value(setting, settingValue))
+        gp.check_result(gp.gp_widget_set_value(setting, self.mainConfigs[settingName][1].index(settingValue)))
         gp.check_result(gp.gp_camera_set_config(self.camera,self._config))
         self._config = self.camera.get_config() #update local config value to match the camera
         self._updateMainConfigs()
