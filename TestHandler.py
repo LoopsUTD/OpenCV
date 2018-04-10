@@ -120,11 +120,10 @@ class TestHandler():
 		cleanedFormat = self._cleanInputs(outputFileFormatRaw)
 		cleanedFormat = cleanedFormat.lower()
 		if cleanedFormat[0] == 'j':
-			self.camera.adjustMainSettings('imagequality', 'JPEG Fine')
+			self.camera.adjustSettings('imagequality', 'JPEG Fine')
 			self.log.info('Camera Will save output as JPEG')
 		elif cleanedFormat[0] == 'n':
-			self.camera.adjustMainSettings('imagequality', 'NEF (Raw)')
-			self.camera.adjustMainSettings('imagesize', '6000x4000')
+			self.camera.adjustSettings('imagequality', 'NEF (Raw)')
 			self.log.info('Camera Will save output as NEF')
 
 	def oneClickTest(self):

@@ -58,28 +58,19 @@ class Camera(object):
         #self.log.debug(str(self.mainConfigs))
         #self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
 
-    def adjustMainSettings(self, settingName, settingValue):
-        #node = self._config.
-        config = self.camera.get_config()
-        node = config.get_child_by_name(settingName)
-        node.set_value(settingValue)
-        self.camera.set_config(config)
-        self._config = self.camera.get_config() #update local config value to match the camera
-        self._updateMainConfigs()
-
 
     def adjustSettings(self, settingName, settingValue):
         #ObjectOriented?!
         #http://gphoto-software.10949.n7.nabble.com/Beginner-Using-libgphoto2-how-to-find-set-config-values-td16449.html       
-        # config = self.camera.get_config()
-        # node = config.get_child_by_name(settingName)
-        # node.set_value(self.mainConfigs[settingName][1].index(settingValue))
-        # self.camera.set_config(config) #'UNSPECIFIED ERROR ' Exists here... :
-        setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
-        settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))
-        gp.check_result(gp.gp_widget_set_value(setting, self.mainConfigs[settingName][1].index(settingValue)))
-        gp.check_result(gp.gp_camera_set_config(self.camera,self._config))
-        self._config = self.camera.get_config() #update local config value to match the camera
+        #config = self.camera.get_config()
+        node = self._config.get_child_by_name(settingName)
+        node.set_value(settingValue)
+        self.camera.set_config(self._config) #'UNSPECIFIED ERROR ' Exists here... :
+        # setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
+        # settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))
+        # gp.check_result(gp.gp_widget_set_value(setting, self.mainConfigs[settingName][1].index(settingValue)))
+        # gp.check_result(gp.gp_camera_set_config(self.camera,self._config))
+        #self._config = self.camera.get_config() #update local config value to match the camera
         self._updateMainConfigs()
 
 
