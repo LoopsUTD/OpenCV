@@ -55,15 +55,25 @@ class Camera(object):
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         # self._updateCaptureMode()
-        self.log.debug(str(self.mainConfigs))
-        self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
+        #self.log.debug(str(self.mainConfigs))
+        #self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
+
+    def adjustMainSettings(self, settingName, settingValue):
+        #node = self._config.
+        config = self.camera.get_config()
+        node = config.get_child_by_name(settingName)
+        node.set_value(self.mainConfigs[settingName][1].index(settingValue))
+        self.camera.set_config(config)
+        self._config = self.camera.get_config() #update local config value to match the camera
+        self._updateMainConfigs()
+
 
     def adjustSettings(self, settingName, settingValue):
         #ObjectOriented?!
         #http://gphoto-software.10949.n7.nabble.com/Beginner-Using-libgphoto2-how-to-find-set-config-values-td16449.html       
         # config = self.camera.get_config()
         # node = config.get_child_by_name(settingName)
-        # node.set_value(settingValue)
+        # node.set_value(self.mainConfigs[settingName][1].index(settingValue))
         # self.camera.set_config(config) #'UNSPECIFIED ERROR ' Exists here... :
         setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
         settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))

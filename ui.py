@@ -47,7 +47,7 @@ def main():
 	else:
 		#loggingLevel = logging.ERROR
 		#TODO: Comment out the below section for production code, uncomment the above
-		loggingLevel = logging.DEBUG
+		loggingLevel = -10
 
 	log.setLevel(loggingLevel)
 
