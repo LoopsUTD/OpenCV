@@ -59,10 +59,15 @@ class Camera(object):
         self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
 
     def adjustSettings(self, settingName, settingValue):
-        setting = gp.gp_widget_get_child_by_name(self._config,settingName)
-        settingValue = gp.gp_widget_get_choice(setting, settingValue)
-        gp.gp_widget_set_value(setting, settingValue)
-        gp.gp_camera_set_config(self.camera,self._config)
+        #ObjectOriented?!
+        #http://gphoto-software.10949.n7.nabble.com/Beginner-Using-libgphoto2-how-to-find-set-config-values-td16449.html       
+        node = self._config.get_child_by_name(settingName)
+        node.set_value(node.get_choice(settingValue))
+        self.camera.set_config(self._config)
+        # setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
+        # settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))
+        # gp.check_result(gp.gp_widget_set_value(setting, settingValue))
+        # gp.check_result(gp.gp_camera_set_config(self.camera,self._config))
         self._config = self.camera.get_config() #update local config value to match the camera
         self._updateMainConfigs()
 
