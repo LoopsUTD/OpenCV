@@ -56,6 +56,7 @@ class Camera(object):
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         # self._updateCaptureMode()
         self.log.debug(str(self.mainConfigs))
+        self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
 
     def adjustSettings(self, settingName, settingValue):
         setting = gp.gp_widget_get_child_by_name(self._config,settingName)
@@ -82,11 +83,11 @@ class Camera(object):
         else:
             target = os.path.join(folderName, file_path.name)
         
-        if str(self.mainConfigs['imagequality']).lower()[0] == 'j':
+        if str(self.mainConfigs['imagequality'][0]).lower()[0] == 'j':
             self.log.info("Capturing JPEG...")
             camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL))
             gp.check_result(gp.gp_file_save(camera_file, target))       
-        elif str(self.mainConfigs['imagequality']).lower()[0] == 'n':
+        elif str(self.mainConfigs['imagequality'][0]).lower()[0] == 'n':
             self.log.info("Capturing NEF...")
             camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_RAW))
             gp.check_result(gp.gp_file_save(camera_file, target))
