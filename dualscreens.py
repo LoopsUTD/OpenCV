@@ -22,7 +22,7 @@ def display_process(dict_global, is_master, exit_event):
     from kivy.uix.boxlayout import BoxLayout
     from kivy.uix.label import Label
     from kivy.uix.image import Image
-    from kivy.properties import *
+    from kivy.properties import DictProperty
 
     import operator
 
@@ -61,9 +61,19 @@ def display_process(dict_global, is_master, exit_event):
 
         def on_localsrc(self, instance, value):
             print("value")
-            self.source = dict_global[imSource]
+            self.source = dict_global['imSource']
             print("Value Changed!")
             #self.
+
+    class ChangeImageButton(Button):
+        def __init__(self, **kwargs):
+            super(ChangeImageButton, self).__init__(**kwargs)
+            self.bind(on_press=self.callback1)
+
+
+        def callback1(self, instance):
+            print('Btn <%s> is being pressed.' % instance.text)
+            dict_global['imSource'] = 'rock.png'
 
     class MyApp(App):
         #src = StringProperty('test.jpg')
@@ -92,7 +102,7 @@ def display_process(dict_global, is_master, exit_event):
         def _otherbuild(self):
             #layout1 = BoxLayout(orientation='horizontal',spacing=10)
             #layout1.add_widget(LabelD('counter',font_size=200))
-            layout1 = MyImage(img_source='test.jpg')
+            layout1 = DisplayWidget(img_source='test.jpg')
             return layout1
 
         def _mainbuild(self):
@@ -102,16 +112,13 @@ def display_process(dict_global, is_master, exit_event):
             layout2.add_widget(ButtonDIPO('counter',operator.add,1,text="+1",font_size=200))
             layout2.add_widget(ButtonDIPO('counter', operator.mul, 0, text="Reset",font_size=200))
             
-            btn = Button(text="Change Image")
-            btn.bind(on_press=callback1)
+            btn = ChangeImageButton(text="Change Image")
+            #btn.bind(on_press=self.callback1)
             layout2.add_widget(btn)
             layout1.add_widget(layout2)
 
             return layout1
 
-        def callback1(instance):
-            print('Btn <%s> is being pressed.' % instance.text)
-            dict_global[imSource] = 'rock.png'
 
         def on_stop(self):
             exit_event.set()
@@ -124,7 +131,7 @@ def display_process(dict_global, is_master, exit_event):
 if __name__ == '__main__':
     m = Manager()
     dict_main = m.dict()
-    dict_main[imSource] = 'test.jpg'
+    dict_main['imSource'] = 'test.jpg'
     ev = Event()
     dict_main['counter'] = 0
     proc_master = Process(target=display_process, args=(dict_main,True, ev))
