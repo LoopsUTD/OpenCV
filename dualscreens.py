@@ -56,7 +56,7 @@ def display_process(dict_global, is_master, exit_event):
         def __init__(self,img_source, **kwargs):
             super(DisplayWidget, self).__init__(source=img_source)
             #if self.localsrc > "":
-
+            #self.localsrc.bind()
             #dict_global[imSource] = self.localsrc
 
         def on_localsrc(self, instance, value):
@@ -73,8 +73,9 @@ def display_process(dict_global, is_master, exit_event):
 
         def callback1(self, instance):
             print('Btn <%s> is being pressed.' % instance.text)
-            dict_global['imSource'] = 'rock.png'
-            print('New DIct Value: ')
+            #dict_global['imSource'] = 'rock.png'
+            dict_global.update('imSource' = 'rock.png')
+            print('New Dict Value: %s' % dict_global['imSource'])
 
     class MyApp(App):
         #src = StringProperty('test.jpg')
