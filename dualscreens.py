@@ -54,7 +54,7 @@ def display_process(dict_global, is_master, exit_event):
     class DisplayWidget(Image):
         localsrc = DictProperty(dict_global, rebind=True)
         def __init__(self,img_source, **kwargs):
-            super(MyImage, self).__init__(source=img_source)
+            super(DisplayWidget, self).__init__(source=img_source)
             #if self.localsrc > "":
 
             #dict_global[imSource] = self.localsrc
@@ -102,13 +102,13 @@ def display_process(dict_global, is_master, exit_event):
 
         def _otherbuild(self):
             layout1 = BoxLayout(orientation='horizontal',spacing=10)
-            #layout1.add_widget(LabelD('counter',font_size=200))
+            layout1.add_widget(LabelD('counter',font_size=200))
             layout1.add_widget(DisplayWidget(img_source='test.jpg'))
             return layout1
 
         def _mainbuild(self):
             layout1 = BoxLayout(orientation='horizontal',spacing=10)
-            layout1.add_widget(LabelD('counter',font_size=200))
+            layout1.add_widget(LabelD('counter',font_size=130))
             layout2 = BoxLayout(orientation='vertical', spacing=10)
             layout2.add_widget(ButtonDIPO('counter',operator.add,1,text="+1",font_size=200))
             layout2.add_widget(ButtonDIPO('counter', operator.mul, 0, text="Reset",font_size=200))
