@@ -1,8 +1,9 @@
 *Env/**
 *.swp
 *pycache*
-*opencv/**
+*opencv/
 *.jpg
+*.JPG
 *.jpeg
 *.png
 *.raw
@@ -10,4 +11,5 @@
 *.gif
 *.NEF
 *.nef
-dev.txt
+*.txt
+*.asv
