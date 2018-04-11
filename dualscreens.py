@@ -52,7 +52,7 @@ def display_process(dict_global, is_master, exit_event):
             self.text = str(dict_global[self.key_string])
 
     class DisplayWidget(Image):
-        localsrc = DictProperty(dict_global)
+        localsrc = DictProperty(dict_global, rebind=True)
         def __init__(self,img_source, **kwargs):
             super(MyImage, self).__init__(source=img_source)
             #if self.localsrc > "":
@@ -74,6 +74,7 @@ def display_process(dict_global, is_master, exit_event):
         def callback1(self, instance):
             print('Btn <%s> is being pressed.' % instance.text)
             dict_global['imSource'] = 'rock.png'
+            print('New DIct Value: ')
 
     class MyApp(App):
         #src = StringProperty('test.jpg')
@@ -100,9 +101,9 @@ def display_process(dict_global, is_master, exit_event):
                 exit()
 
         def _otherbuild(self):
-            #layout1 = BoxLayout(orientation='horizontal',spacing=10)
+            layout1 = BoxLayout(orientation='horizontal',spacing=10)
             #layout1.add_widget(LabelD('counter',font_size=200))
-            layout1 = DisplayWidget(img_source='test.jpg')
+            layout1.add_widget(DisplayWidget(img_source='test.jpg'))
             return layout1
 
         def _mainbuild(self):
