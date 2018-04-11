@@ -23,6 +23,7 @@ def display_process(dict_global, is_master, exit_event):
     from kivy.uix.label import Label
     from kivy.uix.image import Image
     from kivy.properties import DictProperty
+    from kivy.properties import StringProperty
 
     import operator
 
@@ -54,10 +55,15 @@ def display_process(dict_global, is_master, exit_event):
     class DisplayWidget(Image):
         localsrc = DictProperty(dict_global, rebind=True)
         def __init__(self,img_source, **kwargs):
-            super(DisplayWidget, self).__init__(source=img_source)
+            super(DisplayWidget, self).__init__(**kwargs)
+            self.source=img_source
             #if self.localsrc > "":
             #self.localsrc.bind()
             #dict_global[imSource] = self.localsrc
+            Clock.schedule_interval(self.update, 1/30.)
+
+        def update(self,*args):
+            self.reload()
 
         def on_localsrc(self, instance, value):
             print("value")
@@ -74,7 +80,7 @@ def display_process(dict_global, is_master, exit_event):
         def callback1(self, instance):
             print('Btn <%s> is being pressed.' % instance.text)
             #dict_global['imSource'] = 'rock.png'
-            dict_global.update('imSource' = 'rock.png')
+            dict_global.update({'imSource':'rock.png'})
             print('New Dict Value: %s' % dict_global['imSource'])
 
     class MyApp(App):
@@ -103,7 +109,7 @@ def display_process(dict_global, is_master, exit_event):
 
         def _otherbuild(self):
             layout1 = BoxLayout(orientation='horizontal',spacing=10)
-            layout1.add_widget(LabelD('counter',font_size=200))
+            #layout1.add_widget(LabelD('counter',font_size=200))
             layout1.add_widget(DisplayWidget(img_source='test.jpg'))
             return layout1
 
