@@ -43,7 +43,7 @@ def main():
 	return image
 """
 def dictToImg(map,m=2):
-	image=np.zeros((4000,6000,3),np.uint8)
+	image=np.zeros((4016,6016,3),np.uint8)
 	data=list(map.values())
 	median=np.median(data)
 	meddist=np.abs(data-np.median(data))
@@ -56,7 +56,7 @@ def dictToImg(map,m=2):
 			image[int(key[0]),int(key[1]),:]=0
 	return image
 def dictToFilledImg(map):
-	image=np.zeros((4000,6000,3),np.uint8)
+	image=np.zeros((4016,6016,3),np.uint8)
 	for i in range(3000):
 		for j in range (2000):
 			mindist=50
@@ -65,6 +65,9 @@ def dictToFilledImg(map):
 				if distance<mindist:
 					mindist=distance
 					image[i,j]=value
+
+def getImageDimensions()
+
 if __name__=='__main__':
 	main()
 

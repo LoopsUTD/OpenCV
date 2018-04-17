@@ -24,7 +24,12 @@ def analyze(undevpath,devpath):
 	correlate.main(undev,dev,undevpath[:-4])
 	print ('Total time elapsed: {} seconds'.format(time()-start))
 def seg(image,start):
-	segmented=segmenter.extractObjectsPngJpg(image)
+	imgSplit = image.split('.')
+	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
+		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
+	else:
+		segmented=segmenter.extractObjectsPngJpg(image)
+	
 	print('{} segmented'.format(image))
 	print(time()-start)
 #	for blobs in undev:

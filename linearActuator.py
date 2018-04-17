@@ -62,7 +62,7 @@ class LinearActuator(object):
         self.home=(self.bottom+self.top)/2
         self.moveTo(self.home)
     
-        self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\nTop: ', self.top))
+        self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\tTop: ', self.top))
     
     def moveUp(self,event,step):
         self.moveTo(self.current+step)
@@ -72,6 +72,8 @@ class LinearActuator(object):
 
     def setHome(self,event):
         self.home=self.current
+        self.log.debug('Home Position Set: %d' % self.home)
+
     
     def goHome(self,event):
         self.moveTo(self.home)
@@ -99,6 +101,7 @@ class LinearActuator(object):
             while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
                 root.update()
                 root.update_idletasks()
+                #self.log.debug("Home Value: %d" % self.home)
         except Exception:
             return
     
