@@ -58,9 +58,9 @@ class Camera(object):
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         # self._updateCaptureMode()
-        self.log.debug(str(self.mainConfigs))
-        with open('configs.txt', 'w') as configs:
-            configs.write(str(self.mainConfigs))
+        # self.log.debug(str(self.mainConfigs))
+        # with open('configs.txt', 'w') as configs:
+        #     configs.write(str(self.mainConfigs))
         #self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
 
 

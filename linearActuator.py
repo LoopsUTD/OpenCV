@@ -99,6 +99,7 @@ class LinearActuator(object):
             while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
                 root.update()
                 root.update_idletasks()
+                self.log.debug("Home Value: %d" % self.home)
         except Exception:
             return
     
