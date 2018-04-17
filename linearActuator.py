@@ -62,7 +62,7 @@ class LinearActuator(object):
         self.home=(self.bottom+self.top)/2
         self.moveTo(self.home)
     
-        self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\nTop: ', self.top))
+        self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\tTop: ', self.top))
     
     def moveUp(self,event,step):
         self.moveTo(self.current+step)
@@ -72,6 +72,7 @@ class LinearActuator(object):
 
     def setHome(self,event):
         self.home=self.current
+        self.log.debug('Home Position Set: %d' % self.home)
 
     
     def goHome(self,event):
