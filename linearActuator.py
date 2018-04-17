@@ -72,6 +72,7 @@ class LinearActuator(object):
 
     def setHome(self,event):
         self.home=self.current
+
     
     def goHome(self,event):
         self.moveTo(self.home)
@@ -99,7 +100,7 @@ class LinearActuator(object):
             while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
                 root.update()
                 root.update_idletasks()
-                self.log.debug("Home Value: %d" % self.home)
+                #self.log.debug("Home Value: %d" % self.home)
         except Exception:
             return
     
