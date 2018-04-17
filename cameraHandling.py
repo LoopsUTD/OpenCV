@@ -10,12 +10,15 @@ import gphoto2 as gp
 class Camera(object):
     _singletonInstance = None
     
+    # This is a singleton class!!
+
     @staticmethod
     def getInstance():
         if Camera._singletonInstance == None:
             Camera()
         
         return Camera._singletonInstance
+
 
     def __init__(self):   
         if Camera._singletonInstance != None:
@@ -55,30 +58,19 @@ class Camera(object):
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         # self._updateCaptureMode()
-        #self.log.debug(str(self.mainConfigs))
+        self.log.debug(str(self.mainConfigs))
+        with open('configs.txt', 'w') as configs:
+            configs.write(str(self.mainConfigs))
         #self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
 
 
     def adjustSettings(self, settingName, settingValue):
         #ObjectOriented?!
         #http://gphoto-software.10949.n7.nabble.com/Beginner-Using-libgphoto2-how-to-find-set-config-values-td16449.html       
-        #config = self.camera.get_config()
         node = self._config.get_child_by_name(settingName)
         node.set_value(settingValue)
-        self.camera.set_config(self._config) #'UNSPECIFIED ERROR ' Exists here... :
-        # setting = gp.check_result(gp.gp_widget_get_child_by_name(self._config,settingName))
-        # settingValue = gp.check_result(gp.gp_widget_get_choice(setting, settingValue))
-        # gp.check_result(gp.gp_widget_set_value(setting, self.mainConfigs[settingName][1].index(settingValue)))
-        # gp.check_result(gp.gp_camera_set_config(self.camera,self._config))
-        #self._config = self.camera.get_config() #update local config value to match the camera
+        self.camera.set_config(self._config) #'UNSPECIFIED ERROR -> tried to change a "disabled" setting (i.e. RAW image with a "low" resolution makes no sense)
         self._updateMainConfigs()
-
-
-    # def _updateCaptureMode(self):
-    #     if str(self.mainConfigs['imagequality']).lower()[0] == 'j':
-    #         self._captureMode = gp.GP_FILE_TYPE_NORMAL
-    #     elif str(self.mainConfigs['imagequality']).lower()[0] == 'n':
-    #         self._captureMode = gp.GP_FILE_TYPE_RAW
 
     def takePhoto(self, folderName, prefix=None):
         self.log.info("Capturing Photo...")
