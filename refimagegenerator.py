@@ -13,17 +13,17 @@ csize = 1920     # WIDTH
 # Set one mode to True and the others to False
 #   (If nothing is selected, blobs will be used)
 #   (If multiple selected, lower takes precedence)
-horizontalStripes = False
+horizontalStripes = True
 verticalStripes   = False
 checkerboard      = False
-blobs             = True
+blobs             = False
 
 # Set period of pattern, in pixels
-period = 4
+period = 1
 
 # If either orientation of stripes, set duty cycle
 #   (If using blobs, ignore this line)
-dutyCycle = 0.5
+dutyCycle = 1
 
 # If using blobs, set blob size
 #   (If using stripes, ignore these lines)
