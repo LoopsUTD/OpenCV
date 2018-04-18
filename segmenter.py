@@ -32,7 +32,7 @@ def extractObjectsPngJpg(filename,thresh=None):
 
 def extractObjectsNef(filename, thresh=None):
     with rawpy.imread(filename) as raw:
-        image = raw.postprocess(output_bps=16)
+        image = raw.postprocess(output_bps=8)
     image = greenscale(image)
     if thresh == None:
         thresh = 128
