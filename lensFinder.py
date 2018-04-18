@@ -38,17 +38,15 @@ def findLens(filename, scaling = None):
 			circlePiError = cPiError
 			
 	(x,y),r = cv2.minEnclosingCircle(circle)
-	
+	(x,y,r) = (scaling*x,scaling*y,scaling*r)
+	(x,y,r) = np.uint16(np.around((x,y,r)))
+	cv2.destroyAllWindows()
 	return (x,y,r)
 #	circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,100)	
 # 	circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,30,param1=30,param2=15,minRadius=0,maxRadius=height//2)
 # 	if circles.dtype != None:
 # 		circles = np.uint16(np.around(circles))	
 # 		circles = circles * scaling
-	
-	cv2.destroyAllWindows()
-	
-	return contours
 
 if __name__ == '__main__':
 	circle = findLens('withLens_DSC_0284.JPG')
