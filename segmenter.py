@@ -1,6 +1,6 @@
 import cv2
 import numpy
-import rawpy
+#import rawpy
 from blob import Blob
 
 # WARNING: UNEXPECTED BEHAVIOR MAY OCCUR #
