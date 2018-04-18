@@ -89,6 +89,7 @@ if __name__ == '__main__':
 	filledCircle(image.shape[0]//2,image.shape[1]//2,100,image[:,:,2])
 	cv2.imshow('circleTest',image)
 	cv2.waitKey(0)
+#	cv2.imwrite('circle.png',image)
 	fourCorners(image.shape[0]//2,image.shape[1]//2,image[:,:,1])
 	cv2.imshow('cornersTest',image)
 	cv2.waitKey(0)

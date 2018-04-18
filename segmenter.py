@@ -30,16 +30,16 @@ def extractObjectsPngJpg(filename,thresh=None):
     foundBlobs = segmentInfo(image)
     return foundBlobs
 
-def extractObjectsNef(filename, thresh=None):
-    with rawpy.imread(filename) as raw:
-        image = raw.postprocess(output_bps=16)
-    image = greenscale(image)
-    if thresh == None:
-        thresh = 128
-    image = threshold(image,thresh)
-    image = segment(image)
-    foundBlobs = segmentInfo(image)
-    return foundBlobs
+# def extractObjectsNef(filename, thresh=None):
+#     with rawpy.imread(filename) as raw:
+#         image = raw.postprocess(output_bps=16)
+#     image = greenscale(image)
+#     if thresh == None:
+#         thresh = 128
+#     image = threshold(image,thresh)
+#     image = segment(image)
+#     foundBlobs = segmentInfo(image)
+#     return foundBlobs
 
 
 def loudExtractObjectsPngJpg(filename,thresh=None):
