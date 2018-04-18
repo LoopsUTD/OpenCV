@@ -1,0 +1,9 @@
+[
+    {
+        "type": "lensHolderAdjust",
+        "title": "Lens Position",
+        "desc": "Set Lens Home Position",
+        "section": "LensHolder",
+        "key": "position"
+    }
+]
