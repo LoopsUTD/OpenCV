@@ -109,10 +109,6 @@ class InitializeScreen(Screen):
 
 		return True
 
-	def adjustCameraSettings(self, key, value):
-		#camera.adjustSettings()
-		#
-
 	def initializeLensHolder(self):
 		#How to access: https://stackoverflow.com/questions/45663871/kivy-access-configuration-values-from-any-widget
 		print(App.get_running_app().config.get('LensHolder','position'))
@@ -243,17 +239,17 @@ class LoopsUTDApp(App):
 	def on_config_change(self, config, section, key, value):
 		print("Config Change Detected!")
 		print("Config Changed! Section: %s Key: %s Value: %s" % (section, key, value))
-		if key is in ['position']:
+		if key in ['position']:
 			print('moving linear actuator to: %d'  % int(value))
 			#TODO: update linear actuator position
 			#actuator = LinearActuator.getInstance()
 			#actuator.move_to(value)
 
-		if key is in ['defaulttestimage']:
-			print('updating Displayed Image to: %s ' ):
+		if key in ['defaulttestimage']:
+			print('updating Displayed Image to: %s ' % value)
 			#TODO: Update Display
 
-		if section is in ['Camera']:
+		if section in ['Camera']:
 			print('updating Camera Config: %s:%s' %(key, value))
 			#TODO: Update Camera Obj
 

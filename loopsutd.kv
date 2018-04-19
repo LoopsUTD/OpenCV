@@ -42,6 +42,13 @@ RootWidget:
                 	root.ids.sm.transition.direction: 'left'
                 	root.ids.sm.current = 'runtest'
 
+            Button:
+            	text: 'Exit App'
+            	on_press:
+            		app.stop()
+            	background_normal: ""
+            	background_color: 1,0,0,.8
+
 
     FloatLayout:
 		id: infoText
