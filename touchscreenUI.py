@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
+from kivy.factory import Factory
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.clock import Clock
@@ -132,17 +133,17 @@ def main_process(shared_data_dict, is_master, exit_event):
 			# self.name = 'configure'
 			#self.arg = arg
 
-	class LensHomeScreen(Screen):
-		"""docstring for LensHomeScreen"""
-		def __init__(self, **kwargs):
-			super(LensHomeScreen, self).__init__(**kwargs)
-			# self.name = 'lensHome'
+	# class LensHomeScreen(Screen):
+	# 	"""docstring for LensHomeScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(LensHomeScreen, self).__init__(**kwargs)
+	# 		# self.name = 'lensHome'
 
-	class CameraSettingsScreen(Screen):
-		"""docstring for CameraSettingsScreen"""
-		def __init__(self, **kwargs):
-			super(CameraSettingsScreen, self).__init__(**kwargs)
-			# self.name = 'cameraSettings'
+	# class CameraSettingsScreen(Screen):
+	# 	"""docstring for CameraSettingsScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(CameraSettingsScreen, self).__init__(**kwargs)
+	# 		# self.name = 'cameraSettings'
 
 	class PrepareScreen(Screen):
 		"""docstring for PrepareScreen"""
@@ -150,10 +151,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 			super(PrepareScreen, self).__init__(**kwargs)
 			#app.open_settings()
 
-	class NamingConvScreen(Screen):
-		"""docstring for NamingConvScreen"""
-		def __init__(self, **kwargs):
-			super(NamingConvScreen, self).__init__(**kwargs)
+	# class NamingConvScreen(Screen):
+	# 	"""docstring for NamingConvScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(NamingConvScreen, self).__init__(**kwargs)
 
 	class RunTestScreen(Screen):
 		"""docstring for RunTestScreen"""
@@ -239,7 +240,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def updateRunConsole(self, text):
 			self.ids.runConsole.text += text
 
-
+	Factory.register('RootWidget', cls=RootWidget)
+	Factory.register('InitializeScreen', cls=InitializeScreen)
+	Factory.register('RunTestScreen', cls=RunTestScreen)
+	Factory.register('ConfigureScreen', cls=ConfigureScreen)
 
 	class DisplayWindow(Image):
 	    src = ObjectProperty()
@@ -263,7 +267,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 	class LoopsApp(App):
 		def __init__(self):
-			App.__init__()
+			App.__init__(self)
 			#super(LoopsApp, self).__init__()
 
 			if is_master:
@@ -273,6 +277,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 		
 		def build(self):
 			#Builder.load_file("loopsutd.kv")
+			print("I'm building!")
 			if is_master:
 				self.use_kivy_settings = False
 				return Builder.load_file('touchscreenUI.kv')
