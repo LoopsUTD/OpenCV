@@ -263,7 +263,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 	class LoopsApp(App):
 		def __init__(self):
-			super(LoopsApp, self).__init__()
+			App.__init__()
+			#super(LoopsApp, self).__init__()
 
 			if is_master:
 				self.title = "Master Display"
