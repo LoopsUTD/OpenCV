@@ -1,4 +1,8 @@
 [
+	{
+		"type": "title",
+		"title": "Lens Holder"
+	},
     {
         "type": "lensHolderAdjust",
         "title": "Lens Position",

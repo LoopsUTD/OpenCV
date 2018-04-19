@@ -1,5 +1,9 @@
 [
     {
+        "type": "title",
+        "title": "Output Formatting"
+    },
+    {
         "type": "options",
         "title": "Image Format",
         "desc": "Choose Image Format",
