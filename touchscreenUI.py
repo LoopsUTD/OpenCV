@@ -235,29 +235,29 @@ class RootWidget(FloatLayout):
 def main_process(shared_data_dict, is_master, exit_event):
 
 	if is_master:
-       os.environ["KIVY_BCM_DISPMANX_ID"] = "4"
-    else:
-        os.environ["KIVY_BCM_DISPMANX_ID"] = "5"
+		os.environ["KIVY_BCM_DISPMANX_ID"] = "4"
+	else:
+		os.environ["KIVY_BCM_DISPMANX_ID"] = "5"
 
-    class DisplayWindow(Image):
-        src = ObjectProperty()
-        def __init__(self, **kwargs):
-            super(DisplayWindow, self).__init__(**kwargs)
-            #print("Source: %s" % self.src.value)
-            self.src = shared_data_dict
-            self.source = self.src['displayedImage']
-            Clock.schedule_interval(self.update, 1/12.)
+	class DisplayWindow(Image):
+	    src = ObjectProperty()
+	    def __init__(self, **kwargs):
+	        super(DisplayWindow, self).__init__(**kwargs)
+	        #print("Source: %s" % self.src.value)
+	        self.src = shared_data_dict
+	        self.source = self.src['displayedImage']
+	        Clock.schedule_interval(self.update, 1/12.)
 
-        def on_src(self, instance, value):
-            newVal = dict(value)['displayedImage']
-            print("Detected a Value Change! %s" % newVal)
-            self.source = newVal
-            #self.reload()
+	    def on_src(self, instance, value):
+	        newVal = dict(value)['displayedImage']
+	        print("Detected a Value Change! %s" % newVal)
+	        self.source = newVal
+	        #self.reload()
 
-        def update(self, *args):
-            print("Updating with... %s" % shared_data_dict['displayedImage'])
-            self.source = shared_data_dict['displayedImage']
-            self.reload()
+	    def update(self, *args):
+	        print("Updating with... %s" % shared_data_dict['displayedImage'])
+	        self.source = shared_data_dict['displayedImage']
+	        self.reload()
 
 	class LoopsApp(App):
 		def __init__(self):
@@ -278,10 +278,13 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def _otherbuild(self):
 			self.root = None    
-            layout1 = BoxLayout(orientation='horizontal')
-            dispWin = DisplayWindow()
-            layout1.add_widget(dispWin)
-            return layout1
+			layout1 = BoxLayout(orientation='horizontal')
+			dispWin = DisplayWindow()
+			#testing
+			layout1.add_widget(dispWin)
+			#testing
+			return layout1
+
 
 		def build_config(self, config):
 			self.settings_cls=SettingsWithTabbedPanel
@@ -318,18 +321,18 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 if __name__ == '__main__':
 	# LoopsUTDApp().run()
- 	m = Manager()
-    shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-    shared_data['displayedImage'] = "rock.png"
-    #Link for the Proxy Object Documentation:
-    #https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
-    ev = Event()
-    proc_master = Process(target=main_process, args=(shared_data,True, ev))
-    proc_slave = Process(target=main_process, args=(shared_data, False, ev))
-    proc_master.start()
-    proc_slave.start()
-    proc_master.join()
-    proc_slave.join()
+	m = Manager()
+	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
+	shared_data['displayedImage'] = "rock.png"
+	#Link for the Proxy Object Documentation:
+	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
+	ev = Event()
+	proc_master = Process(target=main_process, args=(shared_data,True, ev))
+	proc_slave = Process(target=main_process, args=(shared_data, False, ev))
+	proc_master.start()
+	proc_slave.start()
+	proc_master.join()
+	proc_slave.join()
 		
 
 
