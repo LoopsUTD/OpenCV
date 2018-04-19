@@ -126,11 +126,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 			return True
 
 
-	class ConfigureScreen(Screen):
-		"""docstring for ConfigureScreen"""
-		def __init__(self, **kwargs):
-			super(ConfigureScreen, self).__init__(**kwargs)
-			# self.name = 'configure'
+	# class ConfigureScreen(Screen):
+	# 	"""docstring for ConfigureScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(ConfigureScreen, self).__init__(**kwargs)
+	# 		# self.name = 'configure'
 			#self.arg = arg
 
 	# class LensHomeScreen(Screen):
@@ -145,11 +145,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 	# 		super(CameraSettingsScreen, self).__init__(**kwargs)
 	# 		# self.name = 'cameraSettings'
 
-	class PrepareScreen(Screen):
-		"""docstring for PrepareScreen"""
-		def __init__(self, **kwargs):
-			super(PrepareScreen, self).__init__(**kwargs)
-			#app.open_settings()
+	# class PrepareScreen(Screen):
+	# 	"""docstring for PrepareScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(PrepareScreen, self).__init__(**kwargs)
+	# 		#app.open_settings()
 
 	# class NamingConvScreen(Screen):
 	# 	"""docstring for NamingConvScreen"""
