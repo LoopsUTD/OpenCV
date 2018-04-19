@@ -5,7 +5,7 @@
         "desc": "Choose Image Format",
         "section": "Camera",
         "key": "imagequality",
-        "options": ["JPEG Basic", "JPEG Normal", "JPEG Fine", "NEF (Raw)", "NEF+Fine"]
+        "options": ["JPEG Basic", "JPEG Normal", "JPEG Fine", "NEF (Raw)"]
     },
     {
         "type": "path",
@@ -19,7 +19,7 @@
         "title": "Test Image Path",
         "desc": "Select Testing Image",
         "section": "Output",
-        "key": "defaultTestImage"
+        "key": "defaulttestimage"
     }
 
 ]
