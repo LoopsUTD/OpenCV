@@ -136,68 +136,68 @@ RootWidget:
 				# 			text: 'Alignment Calibration'
 				# 			#TODO: Alert while Alignment automatically occurs.
 
-    		RunTestScreen:
-    			name: 'runtest'
-    			id: runTestScreen
-				GridLayout:
-					cols: 2
-					rows: 1
-					padding: 25,10,25,10
-					spacing: 5
+    # 		RunTestScreen:
+    # 			name: 'runtest'
+    # 			id: runTestScreen
+				# GridLayout:
+				# 	cols: 2
+				# 	rows: 1
+				# 	padding: 25,10,25,10
+				# 	spacing: 5
 
-					BoxLayout:
-						orientation: 'vertical'
-						Widget:
-							#pos_hint: {'top', 1}
-							size_hint: (.2,1)
-						BoxLayout:
-							orientation: 'horizontal'
-							Button:
-								text: "Enter Sample Name:"
-								on_release:
-									root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
-									root.ids.btnRunTest.disabled = False
-							Label:
-								id: sampleNameInput
-								text: "lens1"
-								#multiline: False
-								#focus: True
-								# on_text_validate: 
-								# 	root.ids.runTestScreen.validateText(self)
-								# 	root.ids.btnRunTest.disabled = False
-								# on_text:
-								# 	#print('on_text input text box ')
-								# 	root.ids.btnRunTest.disabled = True
-						Widget:
-							size_hint: (.2, 1)
-						Button:
-							id: btnRunTest
-							disabled: True
-							text: "Run Test"
-							background_normal: ""
-							background_color: (1, 0, 0, .8)
-							on_release:
-								self.disabled = True
-								root.ids.runTestScreen.runTest()
-					ScrollView:
-						pos_hint: {'bottom': 1}
-						do_scroll_x: False
-						scroll_y: 0
-						canvas.before:
-				    		Color:
-				    			rgba: 0,0,0,1
-				    		Rectangle:
-				    			pos: self.pos
-				    			size: self.size 
-						Label:
-							id: runConsole
-							text: "[CONSOLE DIALOG]\nLoad Sample in Lens Holder\nClose the Door.\nClick Run Test.\n"
-							text_size: self.width, None
-							font_size: 15 
-							height: self.texture_size[1]
-							size_hint_y: None
-							halign: "left"
-							padding: (20,20)
+				# 	BoxLayout:
+				# 		orientation: 'vertical'
+				# 		Widget:
+				# 			#pos_hint: {'top', 1}
+				# 			size_hint: (.2,1)
+				# 		BoxLayout:
+				# 			orientation: 'horizontal'
+				# 			Button:
+				# 				text: "Enter Sample Name:"
+				# 				on_release:
+				# 					root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
+				# 					root.ids.btnRunTest.disabled = False
+				# 			Label:
+				# 				id: sampleNameInput
+				# 				text: "lens1"
+				# 				#multiline: False
+				# 				#focus: True
+				# 				# on_text_validate: 
+				# 				# 	root.ids.runTestScreen.validateText(self)
+				# 				# 	root.ids.btnRunTest.disabled = False
+				# 				# on_text:
+				# 				# 	#print('on_text input text box ')
+				# 				# 	root.ids.btnRunTest.disabled = True
+				# 		Widget:
+				# 			size_hint: (.2, 1)
+				# 		Button:
+				# 			id: btnRunTest
+				# 			disabled: True
+				# 			text: "Run Test"
+				# 			background_normal: ""
+				# 			background_color: (1, 0, 0, .8)
+				# 			on_release:
+				# 				self.disabled = True
+				# 				root.ids.runTestScreen.runTest()
+				# 	ScrollView:
+				# 		pos_hint: {'bottom': 1}
+				# 		do_scroll_x: False
+				# 		scroll_y: 0
+				# 		canvas.before:
+				#     		Color:
+				#     			rgba: 0,0,0,1
+				#     		Rectangle:
+				#     			pos: self.pos
+				#     			size: self.size 
+				# 		Label:
+				# 			id: runConsole
+				# 			text: "[CONSOLE DIALOG]\nLoad Sample in Lens Holder\nClose the Door.\nClick Run Test.\n"
+				# 			text_size: self.width, None
+				# 			font_size: 15 
+				# 			height: self.texture_size[1]
+				# 			size_hint_y: None
+				# 			halign: "left"
+				# 			padding: (20,20)
 
 <InitializeScreen>:
 	name: 'initialize'

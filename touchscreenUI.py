@@ -232,8 +232,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def _finish_init(self, dt):
 			print("RootWidget finish Init!")
 			#print(self.ids)
-			print(self.ids.sm.get_screen('initialize').ids)
-			print(self.ids.sm.get_screen('runtest').ids)
+			# print(self.ids.sm.get_screen('initialize').ids)
+			# print(self.ids.sm.get_screen('runtest').ids)
 
 		def updateInfoLabel(self, text):
 			self.ids.infoTextLabel.text += text
@@ -253,7 +253,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 	        #print("Source: %s" % self.src.value)
 	        self.src = shared_data_dict
 	        self.source = self.src['displayedImage']
-	        Clock.schedule_interval(self.update, 1/12.)
+	        Clock.schedule_interval(self.update, 1/5.)
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
