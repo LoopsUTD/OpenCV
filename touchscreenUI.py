@@ -8,6 +8,7 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
+from kivy.core.window import Window
 from kivy.properties import DictProperty
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
