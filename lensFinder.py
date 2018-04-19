@@ -23,7 +23,10 @@ def findLens(filename, scaling = None):
 		if cPiError < circlePiError:
 			circle = c
 			circlePiError = cPiError
-	(x,y),r = cv2.minEnclosingCircle(circle)
+	M = cv2.moments(circle)
+	x = M['m10']/M['m00']
+	y = M['m01']/M['m00']
+	r = math.sqrt(cv2.contourArea(circle)/math.pi)
 	(x,y,r) = (scaling*x,scaling*y,scaling*r)
 	(x,y,r) = np.uint16(np.around((x,y,r)))
 	cv2.destroyAllWindows()
@@ -31,6 +34,7 @@ def findLens(filename, scaling = None):
 
 if __name__ == '__main__':
 	circle = findLens('withLens_DSC_0284.JPG')
+	print(circle)
 	image = cv2.imread('withLens_DSC_0284.JPG')
 	image = cv2.circle(image,(circle[0],circle[1]),circle[2],(0,0,255),3)
 	cv2.imshow('circles',image)
