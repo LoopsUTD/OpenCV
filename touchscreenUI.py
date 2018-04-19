@@ -126,11 +126,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 			return True
 
 
-	class ConfigureScreen(Screen):
-		"""docstring for ConfigureScreen"""
-		def __init__(self, **kwargs):
-			super(ConfigureScreen, self).__init__(**kwargs)
-			# self.name = 'configure'
+	# class ConfigureScreen(Screen):
+	# 	"""docstring for ConfigureScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(ConfigureScreen, self).__init__(**kwargs)
+	# 		# self.name = 'configure'
 			#self.arg = arg
 
 	# class LensHomeScreen(Screen):
@@ -145,11 +145,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 	# 		super(CameraSettingsScreen, self).__init__(**kwargs)
 	# 		# self.name = 'cameraSettings'
 
-	class PrepareScreen(Screen):
-		"""docstring for PrepareScreen"""
-		def __init__(self, **kwargs):
-			super(PrepareScreen, self).__init__(**kwargs)
-			#app.open_settings()
+	# class PrepareScreen(Screen):
+	# 	"""docstring for PrepareScreen"""
+	# 	def __init__(self, **kwargs):
+	# 		super(PrepareScreen, self).__init__(**kwargs)
+	# 		#app.open_settings()
 
 	# class NamingConvScreen(Screen):
 	# 	"""docstring for NamingConvScreen"""
@@ -243,7 +243,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 	Factory.register('RootWidget', cls=RootWidget)
 	Factory.register('InitializeScreen', cls=InitializeScreen)
 	Factory.register('RunTestScreen', cls=RunTestScreen)
-	Factory.register('ConfigureScreen', cls=ConfigureScreen)
+	#Factory.register('ConfigureScreen', cls=ConfigureScreen)
 
 	class DisplayWindow(Image):
 	    src = ObjectProperty()
@@ -302,30 +302,30 @@ def main_process(shared_data_dict, is_master, exit_event):
 		# 		self.config = None
 		# 	#app.open_settings()
 
-		def build_settings(self, settings):
-			settings.register_type('scrolloptions', SettingScrollOptions)
-			settings.register_type('lensHolderAdjust', LensHolderOptions)
-			settings.add_json_panel('Testing', self.config, 'config/outputSettings.json')
-			settings.add_json_panel('Camera', self.config, 'config/cameraSettings.json')
-			settings.add_json_panel('Lens Holder', self.config, 'config/lensSettings.json')
+		# def build_settings(self, settings):
+		# 	settings.register_type('scrolloptions', SettingScrollOptions)
+		# 	settings.register_type('lensHolderAdjust', LensHolderOptions)
+		# 	settings.add_json_panel('Testing', self.config, 'config/outputSettings.json')
+		# 	settings.add_json_panel('Camera', self.config, 'config/cameraSettings.json')
+		# 	settings.add_json_panel('Lens Holder', self.config, 'config/lensSettings.json')
 		
-		def on_config_change(self, config, section, key, value):
-			print("Config Change Detected!")
-			print("Config Changed! Section: %s Key: %s Value: %s" % (section, key, value))
-			if key in ['position']:
-				print('moving linear actuator to: %d'  % int(value))
-				#TODO: update linear actuator position
-				#actuator = LinearActuator.getInstance()
-				#actuator.move_to(value)
+		# def on_config_change(self, config, section, key, value):
+		# 	print("Config Change Detected!")
+		# 	print("Config Changed! Section: %s Key: %s Value: %s" % (section, key, value))
+		# 	if key in ['position']:
+		# 		print('moving linear actuator to: %d'  % int(value))
+		# 		#TODO: update linear actuator position
+		# 		#actuator = LinearActuator.getInstance()
+		# 		#actuator.move_to(value)
 
-			if key in ['defaulttestimage']:
-				print('updating Displayed Image to: %s ' % value)
-				shared_data_dict['displayedImage'] = value
-				#TODO: Update Display
+		# 	if key in ['defaulttestimage']:
+		# 		print('updating Displayed Image to: %s ' % value)
+		# 		shared_data_dict['displayedImage'] = value
+		# 		#TODO: Update Display
 
-			if section in ['Camera']:
-				print('updating Camera Config: %s:%s' %(key, value))
-				#TODO: Update Camera Obj
+		# 	if section in ['Camera']:
+		# 		print('updating Camera Config: %s:%s' %(key, value))
+		# 		#TODO: Update Camera Obj
 	
 	app = LoopsApp()
 	app.run()
@@ -334,7 +334,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "test1080x1920 period4.png"
+	shared_data['displayedImage'] = "na.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
