@@ -157,17 +157,17 @@ RootWidget:
 								on_release:
 									root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
 									root.ids.btnRunTest.disabled = False
-							TextInput:
+							Label:
 								id: sampleNameInput
 								text: "lens1"
-								multiline: False
+								#multiline: False
 								#focus: True
-								on_text_validate: 
-									root.ids.runTestScreen.validateText(self)
-									root.ids.btnRunTest.disabled = False
-								on_text:
-									#print('on_text input text box ')
-									root.ids.btnRunTest.disabled = True
+								# on_text_validate: 
+								# 	root.ids.runTestScreen.validateText(self)
+								# 	root.ids.btnRunTest.disabled = False
+								# on_text:
+								# 	#print('on_text input text box ')
+								# 	root.ids.btnRunTest.disabled = True
 						Widget:
 							size_hint: (.2, 1)
 						Button:
