@@ -136,10 +136,6 @@ RootWidget:
 				# 			text: 'Alignment Calibration'
 				# 			#TODO: Alert while Alignment automatically occurs.
 
-
-
-    		ConfigureScreen:
-    		PrepareScreen:
     		RunTestScreen:
     			name: 'runtest'
     			id: runTestScreen
@@ -247,29 +243,29 @@ RootWidget:
 				text: 'Alignment Calibration'
 				#TODO: Alert while Alignment automatically occurs.
 
-<ConfigureScreen>:
-	name:	'configure'
-	BoxLayout:
-		orientation: 'horizontal'
-		padding: 25,150,25,150 #left, top, right, bottom
-		spacing: 50
+# <ConfigureScreen>:
+# 	name:	'configure'
+# 	BoxLayout:
+# 		orientation: 'horizontal'
+# 		padding: 25,150,25,150 #left, top, right, bottom
+# 		spacing: 50
 
-		#TODO: define these buttons and their handlers in the python file
-		Button:
-			text: "Set Lens Holder Home Position"
-		Button:
-			text: "Adjust Camera Settings"
-		Button:
-			text: "Save/Load Profile"
+# 		#TODO: define these buttons and their handlers in the python file
+# 		Button:
+# 			text: "Set Lens Holder Home Position"
+# 		Button:
+# 			text: "Adjust Camera Settings"
+# 		Button:
+# 			text: "Save/Load Profile"
 
-<PrepareScreen>:
-	name: 'prepare'
-	Button:
-		on_release: app.open_settings()
-		# SettingsWithTabbedPanel:
-		# 	orientation: 'horizontal'
-		# 	padding: 25 #,150,25,150 #left, top, right, bottom
-		# 	spacing: 50
+# <PrepareScreen>:
+# 	name: 'prepare'
+# 	Button:
+# 		on_release: app.open_settings()
+# 		# SettingsWithTabbedPanel:
+# 		# 	orientation: 'horizontal'
+# 		# 	padding: 25 #,150,25,150 #left, top, right, bottom
+# 		# 	spacing: 50
 
 <RunTestScreen>:
 	name: 'runtest'
