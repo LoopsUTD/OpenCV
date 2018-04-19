@@ -1,0 +1,333 @@
+#:kivy 1.4
+
+RootWidget:
+	FloatLayout:
+		id: navBarContainer
+		name: 'navContainer'
+		size_hint: (1, .15)
+		pos_hint: {'top': 1} 
+		BoxLayout:
+            id: boxlay1
+            name: 'test1'
+            orientation: 'horizontal'
+            #pos: self.parent.pos
+            size: self.parent.size
+            pos_hint: {'top': 1, 'left': 1}
+            #pos: (0, 408)
+            #size_hint: (1, .15)
+            padding: (20,15,20,15) #left, top, right bottom
+            spacing: 25           
+            Button:
+                text: 'Initialize'
+                on_press:
+                	root.ids.sm.transition.direction = 'right'
+                	root.ids.sm.current = 'initialize'
+
+            Button:
+                text: 'Settings'
+                on_press:
+                    print(str(root.ids.sm.current))
+                    app.open_settings()
+                	# root.ids.sm.transition.direction: 'right' if root.ids.sm.current == 'initialize' else 'left'
+                	# root.ids.sm.current = 'prepare'
+            # Button:
+            #     text: 'Prepare'
+            #     on_press:
+            #         print(str(root.ids.sm.current))
+            #     	root.ids.sm.transition.direction: 'right' if root.ids.sm.current == 'initialize' else 'left'
+            #     	root.ids.sm.current = 'prepare'
+            Button:
+                text: 'Run'
+                on_press:
+                	root.ids.sm.transition.direction: 'left'
+                	root.ids.sm.current = 'runtest'
+
+            Button:
+            	text: 'Exit App'
+            	on_press:
+            		app.stop()
+            	background_normal: ""
+            	background_color: 1,0,0,.8
+
+
+    FloatLayout:
+		id: infoText
+		name: 'infoMarquee'
+
+		ScrollView:
+			size_hint: (1, .2)
+			pos_hint: {'bottom': 1}
+			do_scroll_x: False
+			scroll_y: 0
+			canvas.before:
+	    		Color:
+	    			rgba: 1,1,1,.9
+	    		Rectangle:
+	    			pos: self.pos
+	    			size: self.size 
+			Label:
+				id:	infoTextLabel
+				padding: (20,5) #Padding Horizontal, Padding Vertical
+				text:	'[INFO]: Updates Provided Here.'
+				color:	0,0,0,1
+				text_size: self.width, None 
+				height: self.texture_size[1]
+				size_hint_y: None
+				halign: "left"
+		    	
+			#bcolor: 1,1,1,1
+
+    FloatLayout:
+    	id: screenContainer
+    	name: 'screenContainer'
+    	ScreenManager:
+    		id: sm
+    		size_hint: (1, .65)
+    		pos_hint: {'top': .85}
+            canvas.before:
+            	Color:
+            		rgba: (191/255.,191/255.,191/255.,.8)
+            	Rectangle:
+            		size: self.size 
+            		pos: self.pos  
+    		
+    		InitializeScreen:
+    			# id: initializeScreen
+    			# #self.myInfoLabel = root.ids.infoTextlabel
+   
+    			
+				# name: 'initialize'
+				# id: initializeScreen
+				# myInfoLabel: root.ids.infoTextLabel 
+				# BoxLayout:
+				# 	orientation: 'horizontal'
+				# 	padding: 25,10,25,10
+				# 	BoxLayout:
+				# 		#TODO: Get the buttons from below, create then on the python file, and do the "things" necessary to activate them.
+				# 		name:	'progressBarContainer'
+				# 		orientation: 'vertical'
+				# 		padding: 50, 50, 80, 25
+				# 		spacing: 70
+				# 		size_hint: (.5,1)
+				# 		Button:
+				# 			id: btnDisplay2
+				# 			text: "Display"
+				# 			disabled: True
+				# 			on_release: root.ids.initializeScreen.onDisplay(self)
+				# 			#TODO: get "green light" from other process, reading the shared dict
+
+				# 		Button:
+				# 			text: "camera"
+				# 			on_release: 
+				# 				root.ids.infoTextLabel.text += root.ids.initializeScreen.onCameraUpdate()
+				# 		Button:
+				# 			text: "Lens Holder"
+				# 			disabled: True
+				# 	BoxLayout:
+				# 		name: 	'cameraInitializationButtons'
+				# 		size_hint: (.5, 1)
+				# 		orientation: 'vertical'
+				# 		padding: 50, 50, 20, 50 #left, top, right bottom
+				# 		spacing: 50
+				# 		Button:
+				# 			text: 'Set Camera Focus'
+				# 			#TODO: Camera Popup Definition
+				# 		Button:
+				# 			text: 'Alignment Calibration'
+				# 			#TODO: Alert while Alignment automatically occurs.
+
+
+
+    		ConfigureScreen:
+    		PrepareScreen:
+    		RunTestScreen:
+    			name: 'runtest'
+    			id: runTestScreen
+				GridLayout:
+					cols: 2
+					rows: 1
+					padding: 25,10,25,10
+					spacing: 5
+
+					BoxLayout:
+						orientation: 'vertical'
+						Widget:
+							#pos_hint: {'top', 1}
+							size_hint: (.2,1)
+						BoxLayout:
+							orientation: 'horizontal'
+							Button:
+								text: "Enter Sample Name:"
+								on_release:
+									root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
+									root.ids.btnRunTest.disabled = False
+							TextInput:
+								id: sampleNameInput
+								text: "lens1"
+								multiline: False
+								focus: True
+								on_text_validate: 
+									root.ids.runTestScreen.validateText(self)
+									root.ids.btnRunTest.disabled = False
+								on_text:
+									#print('on_text input text box ')
+									root.ids.btnRunTest.disabled = True
+						Widget:
+							size_hint: (.2, 1)
+						Button:
+							id: btnRunTest
+							disabled: True
+							text: "Run Test"
+							background_normal: ""
+							background_color: (1, 0, 0, .8)
+							on_release:
+								self.disabled = True
+								root.ids.runTestScreen.runTest()
+					ScrollView:
+						pos_hint: {'bottom': 1}
+						do_scroll_x: False
+						scroll_y: 0
+						canvas.before:
+				    		Color:
+				    			rgba: 0,0,0,1
+				    		Rectangle:
+				    			pos: self.pos
+				    			size: self.size 
+						Label:
+							id: runConsole
+							text: "[CONSOLE DIALOG]\nLoad Sample in Lens Holder\nClose the Door.\nClick Run Test.\n"
+							text_size: self.width, None
+							font_size: 15 
+							height: self.texture_size[1]
+							size_hint_y: None
+							halign: "left"
+							padding: (20,20)
+
+<InitializeScreen>:
+	name: 'initialize'
+	#id: initializeScreen
+	#myInfoLabel: root.ids.infoTextlabel
+	
+	BoxLayout:
+		orientation: 'horizontal'
+		padding: 25,10,25,10
+		BoxLayout:
+			#TODO: Get the buttons from below, create then on the python file, and do the "things" necessary to activate them.
+			name:	'progressBarContainer'
+			orientation: 'vertical'
+			padding: 50, 50, 80, 25
+			spacing: 70
+			size_hint: (.5,1)
+			Button:
+				id: btnDisplay
+				text: "Initializing Display..."
+				disabled: True
+				#on_release: root.onDisplay(self)
+				#TODO: get "green light" from other process, reading the shared dict
+
+			Button:
+				id: camInitialize
+				text: "Initializing Camera..."
+				on_release:
+					#print(root.ids)
+					root.updateInfoBox("\nAdding Stuff to Camera!")
+			Button:
+				id: lensInitialize
+				text: "Initializing Lens Holder"
+		BoxLayout:
+			name: 	'cameraInitializationButtons'
+			size_hint: (.5, 1)
+			orientation: 'vertical'
+			padding: 50, 50, 20, 50 #left, top, right bottom
+			spacing: 50
+			Button:
+				text: 'Set Camera Focus'
+				#TODO: Camera Popup Definition
+			Button:
+				text: 'Alignment Calibration'
+				#TODO: Alert while Alignment automatically occurs.
+
+<ConfigureScreen>:
+	name:	'configure'
+	BoxLayout:
+		orientation: 'horizontal'
+		padding: 25,150,25,150 #left, top, right, bottom
+		spacing: 50
+
+		#TODO: define these buttons and their handlers in the python file
+		Button:
+			text: "Set Lens Holder Home Position"
+		Button:
+			text: "Adjust Camera Settings"
+		Button:
+			text: "Save/Load Profile"
+
+<PrepareScreen>:
+	name: 'prepare'
+	Button:
+		on_release: app.open_settings()
+		# SettingsWithTabbedPanel:
+		# 	orientation: 'horizontal'
+		# 	padding: 25 #,150,25,150 #left, top, right, bottom
+		# 	spacing: 50
+
+<RunTestScreen>:
+	name: 'runtest'
+# 	GridLayout:
+# 		cols: 2
+# 		rows: 1
+# 		padding: 25,10,25,10
+# 		spacing: 5
+
+# 		BoxLayout:
+# 			orientation: 'vertical'
+# 			Widget:
+# 				#pos_hint: {'top', 1}
+# 				size_hint: (.2,1)
+# 			BoxLayout:
+# 				orientation: 'horizontal'
+# 				Label:
+# 					text: "Enter Sample Name:"
+# 				TextInput:
+# 					id: sampleNameInput
+# 					text: "lens1"
+# 					multiline: False
+# 					focus: True
+# 					on_text_validate: root.validateText(self)
+# 					on_focus: root.ids.runTest.disabled = True
+# 			Widget:
+# 				size_hint: (.2, 1)
+# 			Button:
+# 				id: runTest
+
+# 				text: "Run Test"
+# 				background_normal: ""
+# 				background_color: (1, 0, 0, .8)
+# 		ScrollView:
+# 			pos_hint: {'bottom': 1}
+# 			do_scroll_x: False
+# 			scroll_y: 0
+# 			canvas.before:
+# 	    		Color:
+# 	    			rgba: 0,0,0,1
+# 	    		Rectangle:
+# 	    			pos: self.pos
+# 	    			size: self.size 
+# 			Label:
+# 				id: runConsole
+# 				text: "[CONSOLE DIALOG]\nLoad Sample in Lens Holder\nClose the Door.\nClick Run Test.\n"
+# 				text_size: self.width, None
+# 				font_size: 15 
+# 				height: self.texture_size[1]
+# 				size_hint_y: None
+# 				halign: "left"
+# 				padding: (20,20)
+
+# <LensHomeScreen>:
+# 	name: 'lensHome'
+# 	FloatLayout:
+		
+
+
+
+
