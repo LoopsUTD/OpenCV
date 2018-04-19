@@ -156,8 +156,10 @@ RootWidget:
 							size_hint: (.2,1)
 						BoxLayout:
 							orientation: 'horizontal'
-							Label:
+							Button:
 								text: "Enter Sample Name:"
+								on_release:
+									root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
 							TextInput:
 								id: sampleNameInput
 								text: "lens1"
@@ -169,10 +171,12 @@ RootWidget:
 							size_hint: (.2, 1)
 						Button:
 							id: runTest
-
 							text: "Run Test"
 							background_normal: ""
 							background_color: (1, 0, 0, .8)
+							on_release:
+								self.disabled = True
+								root.ids.runTestScreen.runTest()
 					ScrollView:
 						pos_hint: {'bottom': 1}
 						do_scroll_x: False

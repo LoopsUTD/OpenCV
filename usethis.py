@@ -151,11 +151,14 @@ class RunTestScreen(Screen):
 	"""docstring for RunTestScreen"""
 	def __init__(self, **kwargs):
 		super(RunTestScreen, self).__init__(**kwargs)
+		print("RunTestScreen: IDS: ")
+		self.myRoot = RootWidget.rootIds
 
 	def validateText(self, instance):
 		print("user entered: %s", instance.text)
-		cleanText = self._cleanInputs(instance.text)
-		self.ids.runTest.disabled = False
+		self.cleanSampleFolderName = self._cleanInputs(instance.text)
+
+		self.myRoot.ids.runTest.disabled = False
 
 	def _cleanInputs(self, usr_input):
 		strippedName = usr_input.strip()
@@ -166,8 +169,11 @@ class RunTestScreen(Screen):
 		return bestName
 
 	def runTest(self):
-		outputFolder = App.get_running_app().config.get('Output','defaultpath')
-		
+		self.outputDirectory = App.get_running_app().config.get('Output','defaultpath')
+		#Ensure that the user "Validated their text"
+		outputFolder = self.cleanSampleFolderName
+
+		print("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
 		#linearActuator = LinearActuator.getInstance()
 		#camera = Camera.getInstance()
 
@@ -182,10 +188,10 @@ class RunTestScreen(Screen):
 
 	def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
 		if sampleFolder is not None:
-			currentOutFolder = self.defOutFolder + "/" + sampleFolder
+			currentOutFolder = self.outputDirectory + "/" + sampleFolder
 			self._makeFolder(currentOutFolder)
 		else:
-			currentOutFolder = self.defOutFolder
+			currentOutFolder = self.outputDirectory
 		self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = currentOutFolder, prefix = filePrefix)
