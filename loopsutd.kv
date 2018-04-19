@@ -165,12 +165,16 @@ RootWidget:
 								text: "lens1"
 								multiline: False
 								focus: True
-								on_text_validate: root.ids.runTestScreen.validateText(self)
-								on_focus: root.ids.runTest.disabled = True
+								on_text_validate: 
+									root.ids.runTestScreen.validateText(self)
+									root.ids.btnRunTest.disabled: False
+								on_focus: 
+									print("onFocus Input Text")
+									root.ids.btnRunTest.disabled: True
 						Widget:
 							size_hint: (.2, 1)
 						Button:
-							id: runTest
+							id: btnRunTest
 							text: "Run Test"
 							background_normal: ""
 							background_color: (1, 0, 0, .8)

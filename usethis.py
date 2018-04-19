@@ -152,13 +152,17 @@ class RunTestScreen(Screen):
 	def __init__(self, **kwargs):
 		super(RunTestScreen, self).__init__(**kwargs)
 		print("RunTestScreen: IDS: ")
+		
+		Clock.schedule_once(self._do_this_thing)
+		
+
+	def _do_this_thing(self, dt):
 		self.myRoot = RootWidget.rootIds
+		#print(self.myRoot.ids.sm.get_screen('runtest').ids)
 
 	def validateText(self, instance):
 		print("user entered: %s", instance.text)
 		self.cleanSampleFolderName = self._cleanInputs(instance.text)
-
-		self.myRoot.ids.runTest.disabled = False
 
 	def _cleanInputs(self, usr_input):
 		strippedName = usr_input.strip()
@@ -215,8 +219,8 @@ class RootWidget(FloatLayout):
 	def _finish_init(self, dt):
 		print("RootWidget finish Init!")
 		#print(self.ids)
-		#print(self.ids.sm.get_screen('initialize').ids)
-
+		print(self.ids.sm.get_screen('initialize').ids)
+		print(self.ids.sm.get_screen('runtest').ids)
 
 	def updateInfoLabel(self, text):
 		self.ids.infoTextLabel.text += text
