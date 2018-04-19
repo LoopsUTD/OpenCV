@@ -288,13 +288,13 @@ def main_process(shared_data_dict, is_master, exit_event):
 			return layout1
 
 
-		def build_config(self, config):
-			if is_master:
-				self.settings_cls=SettingsWithTabbedPanel
-				config.read('loopsutd.ini')
-			else:
-				self.config = None
-			#app.open_settings()
+		# def build_config(self, config):
+		# 	if is_master:
+		# 		self.settings_cls=SettingsWithTabbedPanel
+		# 		config.read('loops.ini')
+		# 	else:
+		# 		self.config = None
+		# 	#app.open_settings()
 
 		def build_settings(self, settings):
 			settings.register_type('scrolloptions', SettingScrollOptions)
@@ -328,7 +328,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "rock.png"
+	shared_data['displayedImage'] = "test1080x1920 period4.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
