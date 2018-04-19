@@ -52,7 +52,7 @@ class TestHandler():
 		self.myOpts = {
 			1:self.takePhotoNow,
 			2:self.changeOutputFolder,
-			3:self.updateDisplayWithOtherImage,
+			3:self.updateReferenceImage,
 			4:self.moveLensHolderOutOfWay,
 			5:self.moveLensHolderIntoPath,
 			6:self.oneClickTest,
@@ -98,7 +98,7 @@ class TestHandler():
 		bestName = betterName.replace('\"', '')
 		return bestName
 
-	def updateDisplayWithOtherImage(self):
+	def updateReferenceImage(self):
 		newImagePath = str(input("enter path to test image: (must be exact!)"))
 		self.log.info("user updated the test image path: %s" % (newImagePath))
 		self.testImages[0] = newImagePath
