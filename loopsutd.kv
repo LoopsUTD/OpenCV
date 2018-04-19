@@ -168,9 +168,12 @@ RootWidget:
 								on_text_validate: 
 									root.ids.runTestScreen.validateText(self)
 									root.ids.btnRunTest.disabled: False
+								on_text:
+									print('on_text input text box ')
+									root.ids.btnRunTest.disabled: True
 								on_focus: 
 									print("onFocus Input Text")
-									root.ids.btnRunTest.disabled: True
+									#root.ids.btnRunTest.disabled: True
 						Widget:
 							size_hint: (.2, 1)
 						Button:
