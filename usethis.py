@@ -40,9 +40,10 @@ class InitializeScreen(Screen):
 		# bt1.bind()
 	def _finish_init(self, dt):
 		print("finished init InitializeScreen")
+		print(self)
 		print(self.ids)
 		#self.ids.update(self.myVals)
-		print(self.ids)
+		#print(self.ids)
 
 		#myRoot = RootWidget.rootIds
 
@@ -158,11 +159,14 @@ class RunTestScreen(Screen):
 
 	def _do_this_thing(self, dt):
 		self.myRoot = RootWidget.rootIds
+		#print(self.myRoot.ids)
+		#print(self.ids)
 		#print(self.myRoot.ids.sm.get_screen('runtest').ids)
 
 	def validateText(self, instance):
 		print("user entered: %s", instance.text)
 		self.cleanSampleFolderName = self._cleanInputs(instance.text)
+		print(self)
 
 	def _cleanInputs(self, usr_input):
 		strippedName = usr_input.strip()
@@ -177,7 +181,7 @@ class RunTestScreen(Screen):
 		#Ensure that the user "Validated their text"
 		outputFolder = self.cleanSampleFolderName
 
-		print("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
+		self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
 		#linearActuator = LinearActuator.getInstance()
 		#camera = Camera.getInstance()
 
@@ -224,6 +228,9 @@ class RootWidget(FloatLayout):
 
 	def updateInfoLabel(self, text):
 		self.ids.infoTextLabel.text += text
+
+	def updateRunConsole(self, text):
+		self.ids.runConsole.text += text
 
 class LoopsUTDApp(App):
 	def __init__(self):

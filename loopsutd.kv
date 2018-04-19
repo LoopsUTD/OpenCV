@@ -160,6 +160,7 @@ RootWidget:
 								text: "Enter Sample Name:"
 								on_release:
 									root.ids.runTestScreen.validateText(root.ids.sampleNameInput)
+									root.ids.btnRunTest.disabled = False
 							TextInput:
 								id: sampleNameInput
 								text: "lens1"
@@ -169,15 +170,13 @@ RootWidget:
 									root.ids.runTestScreen.validateText(self)
 									root.ids.btnRunTest.disabled = False
 								on_text:
-									print('on_text input text box ')
+									#print('on_text input text box ')
 									root.ids.btnRunTest.disabled = True
-								on_focus: 
-									print("onFocus Input Text")
-									#root.ids.btnRunTest.disabled: True
 						Widget:
 							size_hint: (.2, 1)
 						Button:
 							id: btnRunTest
+							disabled: True
 							text: "Run Test"
 							background_normal: ""
 							background_color: (1, 0, 0, .8)
@@ -272,8 +271,8 @@ RootWidget:
 		# 	padding: 25 #,150,25,150 #left, top, right, bottom
 		# 	spacing: 50
 
-# <RunTestScreen>:
-# 	name: 'runtest'
+<RunTestScreen>:
+	name: 'runtest'
 # 	GridLayout:
 # 		cols: 2
 # 		rows: 1
