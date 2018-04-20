@@ -22,6 +22,7 @@ def analyze(undevpath,devpath):
 	print ('Images correlated in {} seconds'.format(time()-start))
 	visualize.execute(mapping,devname)	
 	print('Visualization generated in {} seconds'.format(time()-start))
+
 def seg(image,start):
 	imgSplit = image.split('.')
 	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
@@ -34,12 +35,10 @@ def seg(image,start):
 #		print("u")
 #		print(blobs)
 	return segmented
+
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()
 	undevpath = filedialog.askopenfilename()
 	devpath = filedialog.askopenfilename()
 	analyze(undevpath,devpath)
-	
-
-

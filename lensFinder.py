@@ -5,8 +5,9 @@ import math
 def findLens(img, scaling = None):
 	if scaling == None:
 		scaling = 4
-	img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-	height, width = img.shape	
+	if len(img.shape) == 3:
+		img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+	height, width = img.shape
 	img = cv2.resize(img, (width//scaling,height//scaling))
 	height, width = img.shape	
 	img = cv2.medianBlur(img,9)
