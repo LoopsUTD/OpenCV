@@ -20,8 +20,7 @@ program to crash.  However, our photos of screen pixels
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
-def extractObjectsPngJpg(filename,thresh=None):
-    image = cv2.imread(filename)
+def extractObjectsPngJpg(image,thresh=None):
     image = greenscale(image)
     if thresh == None:
         thresh = 128
@@ -30,9 +29,7 @@ def extractObjectsPngJpg(filename,thresh=None):
     foundBlobs = segmentInfo(image)
     return foundBlobs
 
-def extractObjectsNef(filename, thresh=None):
-    with rawpy.imread(filename) as raw:
-        image = raw.postprocess(output_bps=8)
+def extractObjectsNef(image, thresh=None):
     image = greenscale(image)
     if thresh == None:
         thresh = 128
