@@ -7,7 +7,7 @@ OPERATION PARAMETERS - EDIT HERE DURING USE
 """
 
 # Image size, in pixels
-rsize = 900	 # HEIGHT
+rsize = 1080	 # HEIGHT
 csize = 1920     # WIDTH
 
 # Set one mode to True and the others to False
@@ -19,7 +19,7 @@ checkerboard      = False
 blobs             = True
 
 # Set period of pattern, in pixels
-period = 8
+period = 1
 
 # If either orientation of stripes, set duty cycle
 #   (If using blobs, ignore this line)
