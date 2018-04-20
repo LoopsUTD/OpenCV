@@ -13,7 +13,7 @@ def main(undeviated,deviated,name):
 	undevdict,devdict=corr(undeviated,deviated)
 	devmap=compare(undevdict,devdict)
 	writeToFile(devmap,fname)
-	
+	return devmap	
 def compare(undevdict,devdict):
 	devmap={}
 	for key,value in undevdict.items():
@@ -34,7 +34,7 @@ def corr(undeviated,deviated):
 def writeToFile(mapping,name):
 	file=open(name,"w")
 	for value in mapping.items():
-		file.write("{},{},{}\n".format(value[0][1],value[0][0],value[1]))
+		file.write("{},{},{}\n".format(value[0][0],value[0][1],value[1]))
 	file.close()
 	
 def minDistSquared(item,array):
