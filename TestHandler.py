@@ -30,6 +30,7 @@ class TestHandler():
 		#Set Default variables:
 		if testImages is None:
 			self.testImages = ['test.png','lensFinding.png']
+			print(self.testImages)
 		else:
 			self.testImages = testImages
 
@@ -68,7 +69,7 @@ class TestHandler():
 	#@rename("Take Photo With First Test Image")
 	def takePhotoNow(self):
 		self.log.info("user is storing image in: %s with test photo: %s" % (self.defOutFolder, self.testImages))
-		self.display.updateImage(self.testImages[0])
+# 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
 
@@ -80,7 +81,7 @@ class TestHandler():
 		else:
 			currentOutFolder = self.defOutFolder
 		self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
-		self.display.updateImage(self.testImages[0])
+# 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = currentOutFolder, prefix = filePrefix)
 		self.log.info("photo saved at: %s" % target)
 		return target
