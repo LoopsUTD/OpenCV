@@ -86,11 +86,12 @@ def fourCorners(x,y,img):
 
 if __name__ == '__main__':
 	image = np.zeros([900,1920,3])
-	filledCircle(image.shape[0]//2,image.shape[1]//2,100,image[:,:,2])
+	filledCircle(image.shape[0]//2,image.shape[1]//2,100,image[:,:,1])
 	cv2.imshow('circleTest',image)
 	cv2.waitKey(0)
-#	cv2.imwrite('circle.png',image)
+	cv2.imwrite('circle.png',image)
 	fourCorners(image.shape[0]//2,image.shape[1]//2,image[:,:,1])
 	cv2.imshow('cornersTest',image)
+	cv2.imwrite('centering.png',image)
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
