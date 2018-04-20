@@ -10,6 +10,7 @@ from tkinter import filedialog
 import lensFinder
 import cropper
 import rawpy
+import os
 
 def analyze(undevpath,devpath,dirname,lensfind):
 	start=time()
@@ -37,7 +38,7 @@ def seg(path,start,lensfind):
 		image = cropper.cropToCircle(image,circle)
 		segmented=segmenter.extractObjectsPngJpg(image)
 	
-	print('{} segmented in {} seconds'.format(image,time()-start))
+	print('{} segmented in {} seconds'.format(path,time()-start))
 #	for blobs in undev:
 #		print("u")
 #		print(blobs)
@@ -48,17 +49,35 @@ def parseName(devpath):
 	shortname=shortname[:-4]	
 	return shortname 
 def getCropCircle(path):
-	image=cv2.imread(path)
+	imgSplit = path.split('.')
+	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
+		with rawpy.imread(path) as raw:
+			image = raw.postprocess(output_bps=8)
+
+	else:
+		image=cv2.imread(path)
 	circle=lensFinder.findLens(image)	
 	return circle
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()
+	indir=filedialog.askdirectory(title="Double click on folder containing test images")
 	outdir=filedialog.askdirectory(title="Double click on desired output folder")
+	files=os.listdir(indir)
+	undevpath=[f for f in files if f.startswith('noLens')][0]
+	undevpath='{}/{}'.format(indir,undevpath)
+	devpath=[f for f in files if f.startswith('withLens')][0]
+	devpath='{}/{}'.format(indir,devpath)
+
+	lensfind=[f for f in files if f.startswith('lensFinding')][0]
+	lensfind='{}/{}'.format(indir,lensfind)
+	"""
+	
+	
 	undevpath = filedialog.askopenfilename(title="Select image without lens")
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
-	inarr=devpath.split('/')	
+	"""
 	analyze(undevpath,devpath,outdir, lensfind)
 	
 
