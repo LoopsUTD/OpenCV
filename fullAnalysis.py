@@ -23,7 +23,7 @@ def analyze(undevpath,devpath):
 	undev=asyncundev.get()
 	dev=asyncdev.get()
 	correlate.main(undev,dev,undevpath[:-4])
-	print ('Total time elapsed: {} seconds'.format(time()-start))
+	print ('Images correlated in: {} seconds'.format(time()-start))
 def seg(image,start):
 	imgSplit = image.split('.')
 	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
@@ -31,8 +31,7 @@ def seg(image,start):
 	else:
 		segmented=segmenter.extractObjectsPngJpg(image)
 	
-	print('{} segmented'.format(image))
-	print(time()-start)
+	print('{} segmented in {} seconds'.format(image,time()-start))
 #	for blobs in undev:
 #		print("u")
 #		print(blobs)
