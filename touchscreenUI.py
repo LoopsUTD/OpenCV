@@ -332,7 +332,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 				print('moving linear actuator to: %d'  % int(value))
 				#TODO: update linear actuator position
 				actuator = LinearActuator.getInstance()
-				actuator.moveTo(value)
+				actuator.moveTo(int(value))
 
 			if key in ['defaulttestimage']:
 				print('updating Displayed Image to: %s ' % value)
