@@ -6,7 +6,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 def execute(map,dirname,shortname):
-	image=dictToImg(map,1.5)
+	image=dictToImg(map,4)
 	image=downsample(image,fill=11,spotsize=55)
 	createVisualization(image,dirname,shortname)
 	#image=imscale(image)
@@ -50,7 +50,7 @@ def imscale(image):
 	image=np.rint(scaleimg)
 	return image
 
-def dictToImg(map,m=2):
+def dictToImg(map,m=4):
 	image=np.zeros((4016,6016,1),np.uint8)
 	data=list(map.values())
 	median=np.median(data)

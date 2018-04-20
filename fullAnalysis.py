@@ -37,7 +37,7 @@ def seg(path,start,lensfind):
 		image = cropper.cropToCircle(image,circle)
 		segmented=segmenter.extractObjectsPngJpg(image)
 	
-	print('{} segmented in {} seconds'.format(image,time()-start))
+	print('{} segmented in {} seconds'.format(path,time()-start))
 #	for blobs in undev:
 #		print("u")
 #		print(blobs)
