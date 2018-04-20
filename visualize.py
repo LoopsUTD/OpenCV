@@ -5,16 +5,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-def main():
-	root = tk.Tk()
-	root.withdraw()
-	name=filedialog.askopenfilename()
-	#name='lens3.txt'
-	file=open(name,"r")
-	map={}
-	for line in file:
-		linedat=line.split(",")
-		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+def execute(map,name):
 	image=dictToImg(map,1.5)
 	image=downsample(image,fill=11,spotsize=55)
 	createVisualization(image,name)
@@ -68,5 +59,15 @@ def dictToImg(map,m=2):
 
 
 if __name__=='__main__':
-	main()
+	root = tk.Tk()
+	root.withdraw()
+	name=filedialog.askopenfilename()
+	#name='lens3.txt'
+	file=open(name,"r")
+	map={}
+	for line in file:
+		linedat=line.split(",")
+		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+
+	execute(map,name)
 
