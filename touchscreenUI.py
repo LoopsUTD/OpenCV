@@ -124,7 +124,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			pos = App.get_running_app().config.get('LensHolder','position')
 			print("Current Lin Actuator Config Pos: %d " % int(pos))
 			actuator = LinearActuator.getInstance()
-			actuator.move_to(int(pos))
+			actuator.moveTo(int(pos))
 			return True
 
 
@@ -323,7 +323,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 				print('moving linear actuator to: %d'  % int(value))
 				#TODO: update linear actuator position
 				actuator = LinearActuator.getInstance()
-				actuator.move_to(value)
+				actuator.moveTo(value)
 
 			if key in ['defaulttestimage']:
 				print('updating Displayed Image to: %s ' % value)
