@@ -8,17 +8,16 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.core.window import Window
 from kivy.properties import DictProperty
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.settings import SettingsWithTabbedPanel
 from kivy.config import ConfigParser
 
 import os
 from multiprocessing import Process, Manager, Event
 import logging
+from MySettings import Settings
 from MoreSettingOptions import SettingScrollOptions, LensHolderOptions
 
 #from linearActuator import LinearActuator
@@ -97,7 +96,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def initializeDisplay(self):
 			print(App.get_running_app().config.get('Output','defaulttestimage'))
-			return False
+			return True
 
 		def initializeCamera(self):
 			#camera = Camera.getInstance()
@@ -121,9 +120,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def initializeLensHolder(self):
 			#How to access: https://stackoverflow.com/questions/45663871/kivy-access-configuration-values-from-any-widget
-			print(App.get_running_app().config.get('LensHolder','position'))
+			pos = App.get_running_app().config.get('LensHolder','position')
+			print("Current Lin Actuator Config Pos: %d " % int(pos))
 			#actuator = LinearActuator.getInstance()
-			#actuator.move_to(self.myRoot.config)
+			#actuator.move_to(int(pos))
 			return True
 
 
@@ -156,6 +156,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 	# 	"""docstring for NamingConvScreen"""
 	# 	def __init__(self, **kwargs):
 	# 		super(NamingConvScreen, self).__init__(**kwargs)
+
+
 
 	class RunTestScreen(Screen):
 		"""docstring for RunTestScreen"""
@@ -241,9 +243,9 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def updateRunConsole(self, text):
 			self.ids.runConsole.text += text
 
-	Factory.register('RootWidget', cls=RootWidget)
-	Factory.register('InitializeScreen', cls=InitializeScreen)
-	Factory.register('RunTestScreen', cls=RunTestScreen)
+	# Factory.register('RootWidget', cls=RootWidget)
+	# Factory.register('InitializeScreen', cls=InitializeScreen)
+	# Factory.register('RunTestScreen', cls=RunTestScreen)
 	#Factory.register('ConfigureScreen', cls=ConfigureScreen)
 
 	class DisplayWindow(Image):
@@ -257,9 +259,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
-	        print("Detected a Value Change! %s" % newVal)
-	        self.source = newVal
-	        #self.reload()
+	        if newVal != self.source:
+		        print("Detected a Value Change! %s" % newVal)
+		        self.source = newVal
+	        	self.reload()
 
 	    def update(self, *args):
 	        print("Updating with... %s" % shared_data_dict['displayedImage'])
@@ -297,7 +300,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def build_config(self, config):
 			if is_master:
-				self.settings_cls=SettingsWithTabbedPanel
+				# self.settings_cls=SettingsWithTabbedPanel
 				config.read('loops.ini')
 			else:
 				self.config = None
@@ -322,12 +325,14 @@ def main_process(shared_data_dict, is_master, exit_event):
 			if key in ['defaulttestimage']:
 				print('updating Displayed Image to: %s ' % value)
 				shared_data_dict['displayedImage'] = value
-				#TODO: Update Display
+				
 
 			if section in ['Camera']:
 				print('updating Camera Config: %s:%s' %(key, value))
 				#TODO: Update Camera Obj
-	
+				#camera = Camera.getInstance()
+				#camera.adjustSettings(key, value)
+		
 	app = LoopsApp()
 	app.run()
 

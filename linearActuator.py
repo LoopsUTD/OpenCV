@@ -26,21 +26,20 @@ class LinearActuator(object):
 		
 		return LinearActuator._singletonInstance
 
-
-	def __init__(self):
-		
-		if LinearActuator._singletonInstance != None:
-			raise Exception("This class is a Singleton!")
-		else:
-			LinearActuator._singletonInstance = self
-			self.log = logging.getLogger("mainApp")
-			self.log.info("Initializing the Linear Actuator...")
-			self.motor=stepperMotor.StepperMotor(29,31,5,3)
-			self.home=0
-			self.current=self.home
-			self.goal=self.home
-			self.findLimits()
-			self.manualAdjust(stepSize = 100)
+    def __init__(self):
+        
+        if LinearActuator._singletonInstance != None:
+            raise Exception("This class is a Singleton!")
+        else:
+            LinearActuator._singletonInstance = self
+            self.log = logging.getLogger("mainApp")
+            self.log.info("Initializing the Linear Actuator...")
+            self.motor=stepperMotor.StepperMotor(29,31,5,3)
+            self.home=0
+            self.current=self.home
+            self.goal=self.home
+            self.findLimits()
+            #self.manualAdjust(stepSize = 100)
 
 	#Returns boolean statement corresponding to whether goal was reached
 	def moveTo(self,target):

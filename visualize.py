@@ -5,16 +5,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-def main():
-	root = tk.Tk()
-	root.withdraw()
-	name=filedialog.askopenfilename()
-	#name='lens3.txt'
-	file=open(name,"r")
-	map={}
-	for line in file:
-		linedat=line.split(",")
-		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+def execute(map,name):
 	image=dictToImg(map,1.5)
 	image=downsample(image,fill=11,spotsize=55)
 	createVisualization(image,name)
@@ -31,15 +22,23 @@ def downsample(image,fill,spotsize):
 #jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
 def createVisualization(image,name):
+	namearr=name.split('/')
+	shortname=namearr[len(namearr)-1]
 	plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
 	plt.clim(0,10)
+	plt.title('Deviation Map for {}'.format(shortname[:-4]))
+	plt.xlabel('Horizontal pixel position')
+	plt.ylabel('Vertical pixel position')
 	plt.savefig('{}_heatmap.png'.format(name[:-4]))
 	plt.figure()
 	plt.hist(np.reshape(image,-1))
 	plt.draw()
+	plt.title('Deviation Histogram for {}'.format(shortname[:-4]))
+	plt.xlabel('Deviation intensity (Pixels moved)')
+	plt.ylabel('Number of Blobs')
 	plt.savefig('{}_histogram.png'.format(name[:-4]))
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
@@ -68,5 +67,15 @@ def dictToImg(map,m=2):
 
 
 if __name__=='__main__':
-	main()
+	root = tk.Tk()
+	root.withdraw()
+	name=filedialog.askopenfilename()
+	#name='lens3.txt'
+	file=open(name,"r")
+	map={}
+	for line in file:
+		linedat=line.split(",")
+		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+
+	execute(map,name)
 

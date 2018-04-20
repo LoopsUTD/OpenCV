@@ -142,8 +142,8 @@ def segmentInfo(img):
     blobs = list()
     for key in b:
         ssn = key
-        y   = b[key][1] // b[key][0]
-        x   = b[key][2] // b[key][0]
+        x   = b[key][1] // b[key][0]
+        y   = b[key][2] // b[key][0]
         newBlob = Blob(ssn,x,y)
         blobs.append(newBlob)
     return numpy.asarray(blobs)
