@@ -13,6 +13,6 @@ import lensFinder as lf
 def calculatePower(noLens,wLens):
 	original = lf.findLens(noLens)
 	magnified = lf.findLens(wLens)
-	distLensToCamera = 0.3			# In meters, needs to be measured.
+	distLensToCamera = 0.3			# In meters, accurate within 0.03
 	power = (1 - magnified/original)/distLensToCamera
 	return power
