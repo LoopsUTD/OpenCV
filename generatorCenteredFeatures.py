@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from _operator import xor
 
 # A NOTE ON NOTATION:
 # The way numpy numbers its arrays is

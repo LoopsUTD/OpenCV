@@ -29,7 +29,8 @@ class TestHandler():
 
 		#Set Default variables:
 		if testImages is None:
-			self.testImages = ['test.png']
+			self.testImages = ['pixelGrid.png','solidGreen.png','circle.png']
+			print(self.testImages)
 		else:
 			self.testImages = testImages
 
@@ -52,12 +53,14 @@ class TestHandler():
 		self.myOpts = {
 			1:self.takePhotoNow,
 			2:self.changeOutputFolder,
-			3:self.updateDisplayWithOtherImage,
-			4:self.moveLensHolderOutOfWay,
-			5:self.moveLensHolderIntoPath,
-			6:self.oneClickTest,
-			7:self.selectOutputFileFormat,
-			8:self.exit			# Leave exit as last index
+			3:self.updateReferenceImage,
+			4:self.updateLensFindingImage,
+			5:self.updatePowerReferenceImage,
+			6:self.moveLensHolderOutOfWay,
+			7:self.moveLensHolderIntoPath,
+			8:self.oneClickTest,
+			9:self.selectOutputFileFormat,
+			10:self.exit			# Leave exit as last index
 		}
 		for key, opt in self.myOpts.items():
 			print("\t%d. %s" % (key, opt.__name__))
@@ -67,7 +70,7 @@ class TestHandler():
 	#@rename("Take Photo With First Test Image")
 	def takePhotoNow(self):
 		self.log.info("user is storing image in: %s with test photo: %s" % (self.defOutFolder, self.testImages))
-		self.display.updateImage(self.testImages[0])
+# 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = self.defOutFolder)
 		self.log.info("photo saved at: %s" % target)
 
@@ -79,7 +82,7 @@ class TestHandler():
 		else:
 			currentOutFolder = self.defOutFolder
 		self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
-		self.display.updateImage(self.testImages[0])
+# 		self.display.updateImage(self.testImages[0])
 		target = self.camera.takePhoto(folderName = currentOutFolder, prefix = filePrefix)
 		self.log.info("photo saved at: %s" % target)
 		return target
@@ -98,11 +101,23 @@ class TestHandler():
 		bestName = betterName.replace('\"', '')
 		return bestName
 
-	def updateDisplayWithOtherImage(self):
+	def updateReferenceImage(self):
 		newImagePath = str(input("enter path to test image: (must be exact!)"))
 		self.log.info("user updated the test image path: %s" % (newImagePath))
 		self.testImages[0] = newImagePath
 		self.display.updateImage(self.testImages[0])
+		
+	def updateLensFindingImage(self):
+		newImagePath = str(input("enter path to lens finding image: (must be exact!)"))
+		self.log.info("user updated the lens finding image path: %s" % (newImagePath))
+		self.testImages[1] = newImagePath
+		self.display.updateImage(self.testImages[1])		
+
+	def updatePowerReferenceImage(self):
+		newImagePath = str(input("enter path to global power test image: (must be exact!)"))
+		self.log.info("user updated the global power test image path: %s" % (newImagePath))
+		self.testImages[2] = newImagePath
+		self.display.updateImage(self.testImages[2])	
 
 	def moveLensHolderOutOfWay(self):
 		self.log.info("moving linear actuator out of the way...")
@@ -121,6 +136,7 @@ class TestHandler():
 		cleanedFormat = cleanedFormat.lower()
 		if cleanedFormat[0] == 'j':
 			self.camera.adjustSettings('imagequality', 'JPEG Fine')
+			self.camera.adjustSettings('imagesize','6000x4000')
 			self.log.info('Camera Will save output as JPEG')
 		elif cleanedFormat[0] == 'n':
 			self.camera.adjustSettings('imagequality', 'NEF (Raw)')
@@ -129,11 +145,21 @@ class TestHandler():
 	def oneClickTest(self):
 		sampleFolderNameRaw = input("Enter Sample Name:")
 		#self._makeFolder(self.defOutFolder + "/" + self._cleanInputs(sampleFolderNameRaw))
-		self.display.updateImage(self.testImages[0])
 		self.moveLensHolderOutOfWay()
-		noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		self.display.updateImage(self.testImages[0])
+		self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		self.display.updateImage(self.testImages[2])
+		self._takePhotoNowReturnsName(filePrefix = "power_noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		# noLens = self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 		self.moveLensHolderIntoPath()
-		withLens = self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		# withLens = self._takePhotoNowReturnsName(filePrefix = "lensFinding_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		self.display.updateImage(self.testImages[0])
+		self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		self.display.updateImage(self.testImages[1])
+		self._takePhotoNowReturnsName(filePrefix = "lensFinding_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		self.display.updateImage(self.testImages[2])
+		self._takePhotoNowReturnsName(filePrefix = "power_withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+		# withLens = self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 		# undev = segmenter.extractObjectsPngJpg(noLens)
 		# print('undev segmented')
 		# dev = segmenter.extractObjectsPngJpg(withLens)
@@ -143,4 +169,3 @@ class TestHandler():
 		
 	def exit(self):
 		pass
-
