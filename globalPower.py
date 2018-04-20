@@ -1,5 +1,6 @@
 import lensFinder as lf
 
+
 # Function calculatePower()
 #  Given two cropped images of circles, one through the lens
 #  and one without the lens, return the manifying power of the lens.

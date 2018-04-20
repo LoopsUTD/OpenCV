@@ -84,7 +84,7 @@ def fourCorners(x,y,img):
 	return img
 
 if __name__ == '__main__':
-	image = np.zeros([1080,1920,3])
+	image = np.zeros([900,1920,3])
 	filledCircle(image.shape[0]//2,image.shape[1]//2,100,image[:,:,1])
 	cv2.imshow('circleTest',image)
 	cv2.waitKey(0)
