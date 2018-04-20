@@ -59,7 +59,8 @@ class LinearActuator(object):
         while(success):
             success=self.moveTo(self.current+1)
             self.top=self.current
-        self.home=(self.bottom+self.top)/2
+#         self.home=(self.bottom+self.top)/2
+		self.home = 24500	# Experimentally determined.  If you do not have a good value, try the commented-out line above
         self.moveTo(self.home)
     
         self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\tTop: ', self.top))
