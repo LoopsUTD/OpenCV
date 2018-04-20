@@ -29,7 +29,7 @@ class TestHandler():
 
 		#Set Default variables:
 		if testImages is None:
-			self.testImages = ['test.png','lensFinding.png','circle.png']
+			self.testImages = ['pixelGrid.png','solidGreen.png','circle.png']
 			print(self.testImages)
 		else:
 			self.testImages = testImages
