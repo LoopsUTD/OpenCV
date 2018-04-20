@@ -196,11 +196,20 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
 			#linearActuator = LinearActuator.getInstance()
 			#camera = Camera.getInstance()
-
-
-
-			# #TODO: Run Global Magnification
-			# #TODO: Alignment Calibration?
+			
+			# This section needs to be translated to methods supported by this UI
+# 			self.moveLensHolderOutOfWay()
+# 			self.display.updateImage(self.testImages[0])
+# 			self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+# 			self.display.updateImage(self.testImages[2])
+# 			self._takePhotoNowReturnsName(filePrefix = "power_noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+# 			self.moveLensHolderIntoPath()
+# 			self.display.updateImage(self.testImages[0])
+# 			self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+# 			self.display.updateImage(self.testImages[1])
+# 			self._takePhotoNowReturnsName(filePrefix = "lensFinding_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
+# 			self.display.updateImage(self.testImages[2])
+# 			self._takePhotoNowReturnsName(filePrefix = "power_withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 
 			#Move lens out of path:
 			# linearActuator.moveOutOfPath()

@@ -5,10 +5,10 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-def execute(map,name):
+def execute(map,dirname,shortname):
 	image=dictToImg(map,1.5)
 	image=downsample(image,fill=11,spotsize=55)
-	createVisualization(image,name)
+	createVisualization(image,dirname,shortname)
 	#image=imscale(image)
 	#cv2.imwrite("realData.png",image)
 #	cv2.imshow('image',image)
@@ -21,9 +21,8 @@ def downsample(image,fill,spotsize):
 #j	colored=cv2.applyColorMap(blurred,cv2.COLORMAP_JET)
 #jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
-def createVisualization(image,name):
-	namearr=name.split('/')
-	shortname=namearr[len(namearr)-1]
+def createVisualization(image,dirname,shortname):
+	name='{}/{}'.format(dirname,shortname)
 	plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
@@ -69,7 +68,7 @@ def dictToImg(map,m=2):
 if __name__=='__main__':
 	root = tk.Tk()
 	root.withdraw()
-	name=filedialog.askopenfilename()
+	name=filedialog.askopenfilename(title="Choose text data to visualize")
 	#name='lens3.txt'
 	file=open(name,"r")
 	map={}
