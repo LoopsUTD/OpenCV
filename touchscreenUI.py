@@ -343,7 +343,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "test1080x1920 period4.png"
+	shared_data['displayedImage'] = "test1080.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
