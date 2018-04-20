@@ -191,31 +191,41 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def runTest(self):
 			self.outputDirectory = App.get_running_app().config.get('Output','defaultpath')
 			#Ensure that the user "Validated their text"
-			outputFolder = self.cleanSampleFolderName
+			#outputFolder = self.cleanSampleFolderName
 
 			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
-			#linearActuator = LinearActuator.getInstance()
-			#camera = Camera.getInstance()
+			linearActuator = LinearActuator.getInstance()
+			camera = Camera.getInstance()
 			
-			# This section needs to be translated to methods supported by this UI
-# 			self.moveLensHolderOutOfWay()
-# 			self.display.updateImage(self.testImages[0])
-# 			self._takePhotoNowReturnsName(filePrefix = "noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
-# 			self.display.updateImage(self.testImages[2])
-# 			self._takePhotoNowReturnsName(filePrefix = "power_noLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
-# 			self.moveLensHolderIntoPath()
-# 			self.display.updateImage(self.testImages[0])
-# 			self._takePhotoNowReturnsName(filePrefix = "withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
-# 			self.display.updateImage(self.testImages[1])
-# 			self._takePhotoNowReturnsName(filePrefix = "lensFinding_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
-# 			self.display.updateImage(self.testImages[2])
-# 			self._takePhotoNowReturnsName(filePrefix = "power_withLens_", sampleFolder = self._cleanInputs(sampleFolderNameRaw))
 
-			#Move lens out of path:
-			# linearActuator.moveOutOfPath()
-			# self.ids.runConsole.text += "Captured Image: " + self._takePhotoNowReturnsName(filePrefix="noLens_", sampleFolder=outputFolder) + "\n"
-			# linearActuator.moveIntoPath()
-			# self.ids.runConsole.text += "Captured Image: " + self._takePhotoNowReturnsName(filePrefix="withLens_", sampleFolder=outputFolder) + "\n"
+			linearActuator.moveOutOfPath()
+			
+			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
+			sleep(0.3)
+			self.takePhoto("noLens_")
+
+			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
+			sleep(0.3)
+			self.takePhoto("power_noLens_")
+			
+	
+			linearActuator.moveIntoPath()
+		
+			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
+			sleep(0.3)
+			self.takePhoto("withLens_")
+
+			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','lensfindingtest')
+			sleep(0.3)
+			self.takePhoto("lensFinding_")
+			
+			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
+			sleep(0.3)
+			self.takePhoto("power_withLens_")
+			
+
+		def takePhoto(self, filepre, outputFolder):
+			self.ids.runConsole.text += self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName)
 
 		def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
 			if sampleFolder is not None:
@@ -352,7 +362,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "test1080x1920 period4.png"
+	shared_data['displayedImage'] = "test1080.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()

@@ -20,10 +20,24 @@
     },
     {
         "type": "path",
-        "title": "Test Image Path",
+        "title": "Detect Deviation Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
         "key": "defaulttestimage"
+    },
+    {
+        "type": "path",
+        "title": "Lens Finding Test Image",
+        "desc": "Select Testing Image",
+        "section": "Output",
+        "key": "lensfindingtest"
+    },
+    {
+        "type": "path",
+        "title": "Detect Global Magnification Test Image",
+        "desc": "Select Testing Image",
+        "section": "Output",
+        "key": "magnificationtest"
     }
 
 ]
