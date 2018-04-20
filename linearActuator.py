@@ -40,7 +40,7 @@ class LinearActuator(object):
             self.current=self.home
             self.goal=self.home
             self.findLimits()
-            self.manualAdjust(stepSize = 100)
+            #self.manualAdjust(stepSize = 100)
 
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
