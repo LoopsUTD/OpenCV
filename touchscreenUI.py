@@ -20,8 +20,8 @@ import logging
 from MySettings import Settings
 from MoreSettingOptions import SettingScrollOptions, LensHolderOptions
 
-#from linearActuator import LinearActuator
-#from cameraHandling import Camera
+from linearActuator import LinearActuator
+from cameraHandling import Camera
 
 log = logging.getLogger('uiApp')
 

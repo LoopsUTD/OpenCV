@@ -121,6 +121,7 @@ class TestHandler():
 		cleanedFormat = cleanedFormat.lower()
 		if cleanedFormat[0] == 'j':
 			self.camera.adjustSettings('imagequality', 'JPEG Fine')
+			self.camera.adjustSettings('imagesize','6000x4000')
 			self.log.info('Camera Will save output as JPEG')
 		elif cleanedFormat[0] == 'n':
 			self.camera.adjustSettings('imagequality', 'NEF (Raw)')
