@@ -193,7 +193,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			#Ensure that the user "Validated their text"
 			#outputFolder = self.cleanSampleFolderName
 
-			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
+			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, self.cleanSampleFolderName))
 			linearActuator = LinearActuator.getInstance()
 			camera = Camera.getInstance()
 			
