@@ -106,15 +106,15 @@ def main_process(shared_data_dict, is_master, exit_event):
 			shutter = App.get_running_app().config.get('Camera','shutterspeed')
 			imgqual = App.get_running_app().config.get('Camera','imagequality')
 
-			#camera.adjustSettings('capturetarget', ct)
-			#camera.adjustSettings('f-number', fnum)
-			# camera.adjustSettings('iso',iso)
-			# camera.adjustSettings('shutterspeed', shutter)
-			# camera.adjustSettings('imagequality', imgqual)
+			camera.adjustSettings('capturetarget', ct)
+			camera.adjustSettings('f-number', fnum)
+			camera.adjustSettings('iso',iso)
+			camera.adjustSettings('shutterspeed', shutter)
+			camera.adjustSettings('imagequality', imgqual)
 
-			# if "JPEG" in imgqual:
-			# 	imsize = App.get_running_app().config.get('Camera','imagesize')
-			# 	camera.adjustSettings('imagesize', imsize)
+			if "JPEG" in imgqual:
+				imsize = App.get_running_app().config.get('Camera','imagesize')
+				camera.adjustSettings('imagesize', imsize)
 
 			return True
 
@@ -122,8 +122,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 			#How to access: https://stackoverflow.com/questions/45663871/kivy-access-configuration-values-from-any-widget
 			pos = App.get_running_app().config.get('LensHolder','position')
 			print("Current Lin Actuator Config Pos: %d " % int(pos))
-			#actuator = LinearActuator.getInstance()
-			#actuator.move_to(int(pos))
+			actuator = LinearActuator.getInstance()
+			actuator.move_to(int(pos))
 			return True
 
 
@@ -195,6 +195,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, outputFolder))
 			#linearActuator = LinearActuator.getInstance()
 			#camera = Camera.getInstance()
+
+			
 
 			# #TODO: Run Global Magnification
 			# #TODO: Alignment Calibration?
@@ -319,8 +321,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 			if key in ['position']:
 				print('moving linear actuator to: %d'  % int(value))
 				#TODO: update linear actuator position
-				#actuator = LinearActuator.getInstance()
-				#actuator.move_to(value)
+				actuator = LinearActuator.getInstance()
+				actuator.move_to(value)
 
 			if key in ['defaulttestimage']:
 				print('updating Displayed Image to: %s ' % value)
@@ -330,8 +332,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 			if section in ['Camera']:
 				print('updating Camera Config: %s:%s' %(key, value))
 				#TODO: Update Camera Obj
-				#camera = Camera.getInstance()
-				#camera.adjustSettings(key, value)
+				camera = Camera.getInstance()
+				camera.adjustSettings(key, value)
 		
 	app = LoopsApp()
 	app.run()
