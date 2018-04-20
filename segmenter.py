@@ -20,11 +20,15 @@ program to crash.  However, our photos of screen pixels
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
-def extractObjectsPngJpg(image,thresh=None):
-    image = greenscale(image)
+
+def extractObjectsPngJpg(img,thresh=None):
+    print('Begin extraction.')
+    image = greenscale(img)
+    print('Grayscale image.')
     if thresh == None:
         thresh = 128
     image = threshold(image,thresh)
+    print('Thresholded image.')
     image = segment(image)
     foundBlobs = segmentInfo(image)
     return foundBlobs
@@ -39,8 +43,7 @@ def extractObjectsNef(image, thresh=None):
     return foundBlobs
 
 
-def loudExtractObjectsPngJpg(filename,thresh=None):
-    image = cv2.imread(filename)
+def loudExtractObjectsPngJpg(image,thresh=None):
     cv2.imshow("greenscale",image)
     cv2.waitKey(0)
     image = greenscale(image)
@@ -74,6 +77,7 @@ def greenscale(image):
         print("Error in segmentImg >> greenscale: image is not 1- or 3-channel")
         image = numpy.zeros(2,2)
     """
+    print(image.shape)
     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     return image
 
@@ -108,6 +112,7 @@ def fill(image,i,j,h,w,index):
 # OUTPUT: Image with isolated segments
 
 def segment(image):
+    print('Segmentation begun.')
     index = 256     # Starts at 256 because the largest number in the image will be 255
     h = len(image)
     w = len(image[1])

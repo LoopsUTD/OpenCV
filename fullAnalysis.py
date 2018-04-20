@@ -16,6 +16,7 @@ def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	start=time()
 	print(undevpath,devpath)
 	circle=getCropCircle(lensfind)
+	print ('Crop circle found in {} seconds'.format(time()-start))
 	pool=Pool(2)
 	asyncdev=pool.apply_async(seg,(devpath,start,circle))
 	asyncundev=pool.apply_async(seg,(undevpath,start,circle))
@@ -31,10 +32,12 @@ def seg(path,start,circle):
 		with rawpy.imread(path) as raw:
 			image = raw.postprocess(output_bps=8)
 		image=cropper.cropToCircle(image,circle)
+		print('Cropped NEFs in {} seconds'.format(time()-start))
 		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
 	else:	
 		image = cv2.imread(path)
 		image = cropper.cropToCircle(image,circle)
+		print('Cropped JPGs in {} seconds'.format(time()-start))
 		segmented=segmenter.extractObjectsPngJpg(image)
 	
 	print('{} segmented in {} seconds'.format(path,time()-start))
