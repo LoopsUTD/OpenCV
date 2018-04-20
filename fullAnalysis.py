@@ -18,9 +18,9 @@ def analyze(undevpath,devpath):
 	asyncundev=pool.apply_async(seg,(undevname,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	mapping=correlate.main(undev,dev,undevpath[:-4])
+	mapping=correlate.main(undev,dev,devpath[:-4])
 	print ('Images correlated in {} seconds'.format(time()-start))
-	visualize.execute(mapping,undevname)	
+	visualize.execute(mapping,devname)	
 	print('Visualization generated in {} seconds'.format(time()-start))
 def seg(image,start):
 	imgSplit = image.split('.')

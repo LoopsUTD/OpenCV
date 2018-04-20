@@ -22,15 +22,23 @@ def downsample(image,fill,spotsize):
 #jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
 def createVisualization(image,name):
+	namearr=name.split('/')
+	shortname=namearr[len(namearr)-1]
 	plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
 	plt.clim(0,10)
+	plt.title('Deviation Map for {}'.format(shortname[:-4]))
+	plt.xlabel('Horizontal pixel position')
+	plt.ylabel('Vertical pixel position')
 	plt.savefig('{}_heatmap.png'.format(name[:-4]))
 	plt.figure()
 	plt.hist(np.reshape(image,-1))
 	plt.draw()
+	plt.title('Deviation Histogram for {}'.format(shortname[:-4]))
+	plt.xlabel('Deviation intensity (Pixels moved)')
+	plt.ylabel('Number of Blobs')
 	plt.savefig('{}_histogram.png'.format(name[:-4]))
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
