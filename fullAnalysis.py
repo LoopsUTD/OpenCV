@@ -12,21 +12,20 @@ import cropper
 import rawpy
 import os
 
-def analyze(undevpath,devpath,dirname,lensfind):
+def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	start=time()
 	print(undevpath,devpath)
-	shortname=parseName(devpath)
+	circle=getCropCircle(lensfind)
 	pool=Pool(2)
-	asyncdev=pool.apply_async(seg,(devpath,start,lensfind))
-	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
+	asyncdev=pool.apply_async(seg,(devpath,start,circle))
+	asyncundev=pool.apply_async(seg,(undevpath,start,circle))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
 	mapping=correlate.main(undev,dev,devpath[:-4])
 	print ('Images correlated in {} seconds'.format(time()-start))
-	visualize.execute(mapping,dirname,shortname)	
+	visualize.execute(mapping,dirname,lensname,circle)	
 	print('Visualization generated in {} seconds'.format(time()-start))
-def seg(path,start,lensfind):	
-	circle=getCropCircle(lensfind)
+def seg(path,start,circle):	
 	imgSplit = path.split('.')
 	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
 		with rawpy.imread(path) as raw:
@@ -68,7 +67,8 @@ if __name__=="__main__":
 	undevpath='{}/{}'.format(indir,undevpath)
 	devpath=[f for f in files if f.startswith('withLens')][0]
 	devpath='{}/{}'.format(indir,devpath)
-
+	inarray=indir.split('/')
+	lensname=inarray[len(inarray)-1]
 	lensfind=[f for f in files if f.startswith('lensFinding')][0]
 	lensfind='{}/{}'.format(indir,lensfind)
 	"""
@@ -78,7 +78,7 @@ if __name__=="__main__":
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
-	analyze(undevpath,devpath,outdir, lensfind)
+	analyze(undevpath,devpath,outdir,lensfind, lensname)
 	
 
 

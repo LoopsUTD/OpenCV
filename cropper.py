@@ -20,6 +20,7 @@ def cropToCircle(img, circle):
 	newImg[:,:,0] = newImg[:,:,0] * img[:,:,0]
 	newImg[:,:,1] = newImg[:,:,1] * img[:,:,1]
 	newImg[:,:,2] = newImg[:,:,2] * img[:,:,2]
+#	newImg=newImg[(y-r):(y+r),(x-r):(x+r),:]
 	return newImg
 
 if __name__ == '__main__':

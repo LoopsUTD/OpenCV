@@ -5,10 +5,10 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-def execute(map,dirname,shortname):
+def execute(map,dirname,shortname,circle):
 	image=dictToImg(map,10)
 	image=downsample(image,fill=11,spotsize=55)
-	createVisualization(image,dirname,shortname)
+	createVisualization(image,dirname,shortname,circle)
 	#image=imscale(image)
 	#cv2.imwrite("realData.png",image)
 #	cv2.imshow('image',image)
@@ -21,7 +21,7 @@ def downsample(image,fill,spotsize):
 #j	colored=cv2.applyColorMap(blurred,cv2.COLORMAP_JET)
 #jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
-def createVisualization(image,dirname,shortname):
+def createVisualization(image,dirname,shortname,circle):
 	name='{}/{}'.format(dirname,shortname)
 	plt.interactive(True)
 	plt.figure()
@@ -31,19 +31,30 @@ def createVisualization(image,dirname,shortname):
 	plt.title('Deviation Map for {}'.format(shortname[:-4]))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
-	plt.savefig('{}_heatmap.png'.format(name[:-4]))
+	plt.savefig('{}_heatmap.png'.format(name[:-4]),dpi=1200)
 	plt.figure()
-	plt.hist(np.reshape(image,-1))
+	croppedData=selectCircle(image,circle)		
+	plt.hist(croppedData)
 	plt.draw()
 	plt.title('Deviation Histogram for {}'.format(shortname[:-4]))
 	plt.xlabel('Deviation intensity (Pixels moved)')
 	plt.ylabel('Number of Blobs')
-	plt.savefig('{}_histogram.png'.format(name[:-4]))
+	plt.savefig('{}_histogram.png'.format(name[:-4]),dpi=1200)
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
 #	print(np.unique(image.reshape(-1,image.shape[2]),axis=0))
 	#cv2.imwrite('{}.png'.format(name[:-4]),image)
-
+def selectCircle(image,circle):
+	onedim=[]
+	h = len(image)
+	w = len(image[1])
+	for i in range(h):
+		for j in range(w):
+			dist=pow(pow(j-circle[0],2)+pow(i-circle[1],2),0.5)	
+			if dist < circle[2]:
+				onedim.append(image[i,j])
+	
+	return np.asarray(onedim)
 def imscale(image):
 	scaleimg=np.zeros(image.shape,float)
 	scaleimg=255*(image/image.max())
@@ -64,8 +75,7 @@ def dictToImg(map,m=10):
 			image[int(key[0]),int(key[1]),:]=0
 	return image
 
-
-if __name__=='__main__':
+def readTextData():
 	root = tk.Tk()
 	root.withdraw()
 	name=filedialog.askopenfilename(title="Choose text data to visualize")
@@ -75,6 +85,9 @@ if __name__=='__main__':
 	for line in file:
 		linedat=line.split(",")
 		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+	return map,name
 
-	execute(map,name)
+if __name__=='__main__':
+	data=readTextData()	
+	execute(data[0],data[1])
 
