@@ -1,0 +1,29 @@
+[
+    {
+        "type": "title",
+        "title": "Output Formatting"
+    },
+    {
+        "type": "options",
+        "title": "Image Format",
+        "desc": "Choose Image Format",
+        "section": "Camera",
+        "key": "imagequality",
+        "options": ["JPEG Basic", "JPEG Normal", "JPEG Fine", "NEF (Raw)"]
+    },
+    {
+        "type": "path",
+        "title": "Default Output Save Path",
+        "desc": "Select Flashdrive to Save Data",
+        "section": "Output",
+        "key": "defaultpath"
+    },
+    {
+        "type": "path",
+        "title": "Test Image Path",
+        "desc": "Select Testing Image",
+        "section": "Output",
+        "key": "defaulttestimage"
+    }
+
+]

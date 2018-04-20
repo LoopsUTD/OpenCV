@@ -1,0 +1,38 @@
+[    
+    {
+        "type": "title",
+        "title": "Camera Settings"
+    },
+    {
+        "type": "options",
+        "title": "Capture Target",
+        "desc": "Set Intermediate Storage point",
+        "section": "Camera",
+        "key": "capturetarget",
+        "options": ["Internal RAM", "Memory card"] 
+    },
+    {
+        "type": "scrolloptions",
+        "title": "F-Stop Number",
+        "desc": "Set Camera F-Stop",
+        "section": "Camera",
+        "key": "f-number",
+        "options": ["f/5.6", "f/6.3", "f/7.1", "f/8", "f/9", "f/10", "f/11", "f/13", "f/14", "f/16", "f/18", "f/20", "f/22"]
+    },
+    {
+        "type": "scrolloptions",
+        "title": "ISO number",
+        "desc": "Set ISO",
+        "section": "Camera",
+        "key": "iso",
+        "options": ["100", "200", "400", "800"]
+    },
+    {
+        "type": "scrolloptions",
+        "title": "Shutter Speed",
+        "desc": "Set Shutter Speed",
+        "section": "Camera",
+        "key": "shutterspeed",
+        "options": ["0.0002s", "0.0003s", "0.0004s", "0.0005s", "0.0006s", "0.0008s", "0.0010s", "0.0012s", "0.0015s", "0.0020s", "0.0025s", "0.0031s", "0.0040s", "0.0050s", "0.0062s", "0.0080s", "0.0100s", "0.0125s", "0.0166s", "0.0200s", "0.0250s", "0.0333s", "0.0400s", "0.0500s", "0.0666s", "0.0769s", "0.1000s", "0.1250s", "0.1666s", "0.2000s", "0.2500s", "0.3333s", "0.4000s", "0.5000s", "0.6250s", "0.7692s", "1.0000s", "1.3000s", "1.6000s", "2.0000s", "2.5000s", "3.0000s", "4.0000s", "5.0000s", "6.0000s", "8.0000s", "10.0000s", "13.0000s", "15.0000s", "20.0000s", "25.0000s", "30.0000s", "Bulb", "Time"]
+    }
+]
