@@ -99,7 +99,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			return True
 
 		def initializeCamera(self):
-			#camera = Camera.getInstance()
+			camera = Camera.getInstance()
 			ct = App.get_running_app().config.get('Camera','capturetarget')
 			fnum = App.get_running_app().config.get('Camera','f-number')
 			iso = App.get_running_app().config.get('Camera','iso')
@@ -196,7 +196,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			#linearActuator = LinearActuator.getInstance()
 			#camera = Camera.getInstance()
 
-			
+
 
 			# #TODO: Run Global Magnification
 			# #TODO: Alignment Calibration?
