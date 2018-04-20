@@ -114,7 +114,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 			if "JPEG" in imgqual:
 				imsize = App.get_running_app().config.get('Camera','imagesize')
-				camera.adjustSettings('imagesize', imsize)
+				print("Image Size = %s " % imsize)
+				#camera.adjustSettings('imagesize', imsize)
 
 			return True
 
