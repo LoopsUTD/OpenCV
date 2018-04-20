@@ -8,19 +8,18 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 
-def analyze(undevpath,devpath):
+def analyze(undevpath,devpath,dirname):
 	start=time()
-	undevname=undevpath
-	devname=devpath
-	print(undevname,devname)
+	print(undevpath,devpath)
+	shortname=parseName(devpath)
 	pool=Pool(2)
-	asyncdev=pool.apply_async(seg,(devname,start))
-	asyncundev=pool.apply_async(seg,(undevname,start))
+	asyncdev=pool.apply_async(seg,(devpath,start))
+	asyncundev=pool.apply_async(seg,(undevpath,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
 	mapping=correlate.main(undev,dev,devpath[:-4])
 	print ('Images correlated in {} seconds'.format(time()-start))
-	visualize.execute(mapping,devname)	
+	visualize.execute(mapping,dirname,shortname)	
 	print('Visualization generated in {} seconds'.format(time()-start))
 def seg(image,start):
 	imgSplit = image.split('.')
@@ -34,12 +33,18 @@ def seg(image,start):
 #		print("u")
 #		print(blobs)
 	return segmented
+def parseName(devpath):
+	namearr=devpath.split('/')
+	shortname=namearr[len(namearr)-1]
+	shortname=shortname[:-4]	
+	return shortname 
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()
-	undevpath = filedialog.askopenfilename()
-	devpath = filedialog.askopenfilename()
-	analyze(undevpath,devpath)
+	undevpath = filedialog.askopenfilename(title="Select image without lens")
+	devpath = filedialog.askopenfilename(title="Select image with lens")
+	outdir=filedialog.askdirectory(title="Double click on desired output folder")
+	analyze(undevpath,devpath,outdir)
 	
 
 
