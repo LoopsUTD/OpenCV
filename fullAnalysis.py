@@ -15,29 +15,26 @@ import os
 def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	start=time()
 	print(undevpath,devpath)
-	circle=getCropCircle(lensfind)
-	print ('Crop circle found in {} seconds'.format(time()-start))
 	pool=Pool(2)
-	asyncdev=pool.apply_async(seg,(devpath,start,circle))
-	asyncundev=pool.apply_async(seg,(undevpath,start,circle))
+	asyncdev=pool.apply_async(seg,(devpath,start,lensfind))
+	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	mapping=correlate.main(undev,dev,devpath[:-4])
+	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
-	visualize.execute(mapping,dirname,lensname,circle)	
+	visualize.execute(mapping,dirname,lensname)	
 	print('Visualization generated in {} seconds'.format(time()-start))
-def seg(path,start,circle):	
+def seg(path,start,lensfind):	
+	circle=getCropCircle(lensfind)
 	imgSplit = path.split('.')
 	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
 		with rawpy.imread(path) as raw:
 			image = raw.postprocess(output_bps=8)
 		image=cropper.cropToCircle(image,circle)
-		print('Cropped NEFs in {} seconds'.format(time()-start))
 		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
 	else:	
 		image = cv2.imread(path)
 		image = cropper.cropToCircle(image,circle)
-		print('Cropped JPGs in {} seconds'.format(time()-start))
 		segmented=segmenter.extractObjectsPngJpg(image)
 	
 	print('{} segmented in {} seconds'.format(path,time()-start))
@@ -45,11 +42,6 @@ def seg(path,start,circle):
 #		print("u")
 #		print(blobs)
 	return segmented
-def parseName(devpath):
-	namearr=devpath.split('/')
-	shortname=namearr[len(namearr)-1]
-	shortname=shortname[:-4]	
-	return shortname 
 def getCropCircle(path):
 	imgSplit = path.split('.')
 	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
@@ -81,7 +73,7 @@ if __name__=="__main__":
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
-	analyze(undevpath,devpath,outdir,lensfind, lensname)
+	analyze(undevpath,devpath,outdir,lensfind,lensname)
 	
 
 

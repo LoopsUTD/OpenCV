@@ -5,9 +5,9 @@ import os.path
 from time import *
 from testData import *
 from multiprocessing import *
-def main(undeviated,deviated,name):
+def main(undeviated,deviated,dirname,name):
 
-	fname="{}{}".format(name,".txt")
+	fname="{}/{}{}".format(dirname,name,".txt")
 #	if(os.path.isfile(fname)):
 #		os.remove(fname)
 	undevdict,devdict=corr(undeviated,deviated)
@@ -34,7 +34,8 @@ def corr(undeviated,deviated):
 def writeToFile(mapping,name):
 	file=open(name,"w")
 	for value in mapping.items():
-		file.write("{},{},{}\n".format(value[0][0],value[0][1],value[1]))
+		line=("{},{},{}\n".format(value[0][0],value[0][1],value[1]))
+		file.write(line)
 	file.close()
 	
 def minDistSquared(item,array):
