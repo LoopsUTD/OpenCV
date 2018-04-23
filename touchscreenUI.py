@@ -15,6 +15,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.config import ConfigParser
 
 import os
+from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
 from MySettings import Settings
@@ -224,8 +225,8 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self.takePhoto("power_withLens_")
 			
 
-		def takePhoto(self, filepre, outputFolder):
-			self.ids.runConsole.text += self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName)
+		def takePhoto(self, filepre):
+			self.myRoot.updateRunConsole("Image Taken: %s \n" % self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName))
 
 		def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
 			if sampleFolder is not None:
@@ -277,19 +278,22 @@ def main_process(shared_data_dict, is_master, exit_event):
 	        #print("Source: %s" % self.src.value)
 	        self.src = shared_data_dict
 	        self.source = self.src['displayedImage']
-	        Clock.schedule_interval(self.update, 1/5.)
+	        Clock.schedule_interval(self.update, 1/24.)
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
+	        print(newVal == self.source)
 	        if newVal != self.source:
 		        print("Detected a Value Change! %s" % newVal)
 		        self.source = newVal
 	        	self.reload()
 
-	    def update(self, *args):
-	        print("Updating with... %s" % shared_data_dict['displayedImage'])
-	        self.source = shared_data_dict['displayedImage']
-	        self.reload()
+		def update(self, *args):
+			newVal = shared_data_dict['displayedImage']
+			if newVal != self.source:
+				print("Updating with... %s" % shared_data_dict['displayedImage'])
+				self.source = shared_data_dict['displayedImage']
+				self.reload()
 
 	class LoopsApp(App):
 		def __init__(self):
