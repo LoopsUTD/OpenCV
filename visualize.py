@@ -5,10 +5,10 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-def execute(map,dirname,shortname):
+def execute(map,dirname,shortname,circle):
 	image=dictToImg(map,10)
 	image=downsample(image,fill=11,spotsize=55)
-	createVisualization(image,dirname,shortname)
+	createVisualization(image,dirname,shortname,circle)
 	#image=imscale(image)
 	#cv2.imwrite("realData.png",image)
 #	cv2.imshow('image',image)
@@ -21,7 +21,7 @@ def downsample(image,fill,spotsize):
 #j	colored=cv2.applyColorMap(blurred,cv2.COLORMAP_JET)
 #jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
-def createVisualization(image,dirname,shortname):
+def createVisualization(image,dirname,shortname,circle):
 	name='{}/{}'.format(dirname,shortname)
 	plt.interactive(True)
 	plt.figure()
@@ -31,14 +31,14 @@ def createVisualization(image,dirname,shortname):
 	plt.title('Deviation Map for {}'.format(shortname))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
-	plt.savefig('{}_heatmap.png'.format(name[:-4]),dpi=1200)
+	plt.savefig('{}_heatmap.png'.format(name),dpi=1200)
 	plt.figure()
 	plt.hist(np.reshape(image,-1))
 	plt.draw()
 	plt.title('Deviation Histogram for {}'.format(shortname))
 	plt.xlabel('Deviation intensity (Pixels moved)')
 	plt.ylabel('Number of Blobs')
-	plt.savefig('{}_histogram.png'.format(name[:-4]),dpi=1200)
+	plt.savefig('{}_histogram.png'.format(name),dpi=1200)
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
 #	print(np.unique(image.reshape(-1,image.shape[2]),axis=0))
