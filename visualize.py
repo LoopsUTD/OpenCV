@@ -5,9 +5,17 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
+
+pixPerMM = 58
 def execute(map,dirname,shortname,circle):
+	
 	image=dictToImg(map,10)
-	image=downsample(image,fill=11,spotsize=55)
+	spotsize=5*pixPerMM
+	even=spotsize
+	if(even%2==0):
+		spotsize=int(spotsize+1)
+	fill=11
+	image=downsample(image,int(fill),int(spotsize))
 	createVisualization(image,dirname,shortname,circle)
 	#image=imscale(image)
 	#cv2.imwrite("realData.png",image)
@@ -25,24 +33,37 @@ def createVisualization(image,dirname,shortname,circle):
 	name='{}/{}'.format(dirname,shortname)
 	plt.interactive(True)
 	plt.figure()
+	image=image/(pixPerMM)	
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
-	plt.clim(0,10)
+	plt.clim(0,0.1)
 	plt.title('Deviation Map for {}'.format(shortname))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
 	plt.savefig('{}_heatmap.png'.format(name),dpi=1200)
 	plt.figure()
-	plt.hist(np.reshape(image,-1))
+	cropped=selectCircle(image,circle)
+	plt.hist(np.reshape(cropped,-1))
 	plt.draw()
 	plt.title('Deviation Histogram for {}'.format(shortname))
-	plt.xlabel('Deviation intensity (Pixels moved)')
-	plt.ylabel('Number of Blobs')
+	plt.xlabel('Deviation intensity (mm moved)')
+	plt.ylabel('Area of lens (3350 pixels = 1 square mm)')
 	plt.savefig('{}_histogram.png'.format(name),dpi=1200)
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
 #	print(np.unique(image.reshape(-1,image.shape[2]),axis=0))
 	#cv2.imwrite('{}.png'.format(name[:-4]),image)
+def selectCircle(image,circle):
+	onedim=[]
+	h = len(image)
+	w = len(image[1])
+	for i in range(h):
+		for j in range(w):
+			dist=pow(pow(j-circle[0],2)+pow(i-circle[1],2),0.5)
+			if dist < circle[2]:
+				onedim.append(image[i,j])
+
+	return np.asarray(onedim)
 
 def imscale(image):
 	scaleimg=np.zeros(image.shape,float)
@@ -64,17 +85,24 @@ def dictToImg(map,m=10):
 			image[int(key[0]),int(key[1]),:]=0
 	return image
 
-
-if __name__=='__main__':
-	root = tk.Tk()
-	root.withdraw()
-	name=filedialog.askopenfilename(title="Choose text data to visualize")
-	#name='lens3.txt'
+def readFromFile(name):
 	file=open(name,"r")
 	map={}
 	for line in file:
 		linedat=line.split(",")
 		map.update({(float(linedat[0]),float(linedat[1])):float((linedat[2][:-2]))})
+	return map,name
 
-	execute(map,name)
+if __name__=='__main__':
+	root = tk.Tk()
+	root.withdraw()
+	name=filedialog.askopenfilename(title="Choose text data to visualize")
+	map,name=readFromFile(name)
+	nmarray=name.split('/')
+	shortname=nmarray[len(nmarray)-2]
+	dirname=""
+	for i in range(len(nmarray)-1):
+		dirname+=nmarray[i]+"/"
+	print(shortname)	
+	execute(map,dirname,shortname,circle=None)
 
