@@ -15,6 +15,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.config import ConfigParser
 
 import os
+from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
 from MySettings import Settings
@@ -224,7 +225,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self.takePhoto("power_withLens_")
 			
 
-		def takePhoto(self, filepre, outputFolder):
+		def takePhoto(self, filepre):
 			self.ids.runConsole.text += self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName)
 
 		def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
@@ -277,7 +278,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 	        #print("Source: %s" % self.src.value)
 	        self.src = shared_data_dict
 	        self.source = self.src['displayedImage']
-	        Clock.schedule_interval(self.update, 1/5.)
+	        Clock.schedule_interval(self.update, 1/24.)
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
