@@ -20,9 +20,10 @@ def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
+	circle =  getCropCircle(lensfind)
 	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
-	visualize.execute(mapping,dirname,lensname)	
+	visualize.execute(mapping,dirname,lensname,circle)	
 	print('Visualization generated in {} seconds'.format(time()-start))
 def seg(path,start,lensfind):	
 	circle=getCropCircle(lensfind)
