@@ -226,7 +226,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			
 
 		def takePhoto(self, filepre):
-			self.ids.runConsole.text += self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName)
+			self.myRoot.updateRunConsole("Image Taken: %s \n" % self._takePhotoNowReturnsName(filePrefix = filepre, sampleFolder = self.cleanSampleFolderName))
 
 		def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
 			if sampleFolder is not None:
@@ -282,15 +282,18 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
+	        print(newVal == self.source)
 	        if newVal != self.source:
 		        print("Detected a Value Change! %s" % newVal)
 		        self.source = newVal
 	        	self.reload()
 
 	    def update(self, *args):
-	        print("Updating with... %s" % shared_data_dict['displayedImage'])
-	        self.source = shared_data_dict['displayedImage']
-	        self.reload()
+	        newVal = shared_data_dict['displayedImage']
+	        if newVal != self.source:
+				print("Updating with... %s" % shared_data_dict['displayedImage'])
+				self.source = shared_data_dict['displayedImage']
+				self.reload()
 
 	class LoopsApp(App):
 		def __init__(self):
