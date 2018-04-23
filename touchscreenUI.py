@@ -288,9 +288,9 @@ def main_process(shared_data_dict, is_master, exit_event):
 		        self.source = newVal
 	        	self.reload()
 
-	    def update(self, *args):
-	        newVal = shared_data_dict['displayedImage']
-	        if newVal != self.source:
+		def update(self, *args):
+			newVal = shared_data_dict['displayedImage']
+			if newVal != self.source:
 				print("Updating with... %s" % shared_data_dict['displayedImage'])
 				self.source = shared_data_dict['displayedImage']
 				self.reload()
