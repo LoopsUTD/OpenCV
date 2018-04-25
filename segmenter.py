@@ -22,13 +22,10 @@ program to crash.  However, our photos of screen pixels
 
 
 def extractObjects(img,thresh=None):
-	print('Begin extraction.')
 	image = greenscale(img)
-	print('Grayscale image.')
 	if thresh == None:
 		thresh = 128
 	image = threshold(image,thresh)
-	print('Thresholded image.')
 	image = segment(image)
 	foundBlobs = segmentInfo(image)
 	return foundBlobs
@@ -103,7 +100,6 @@ def fill(image,i,j,h,w,index):
 # OUTPUT: Image with isolated segments
 
 def segment(image):
-	print('Segmentation begun.')
 	index = 256	 # Starts at 256 because the largest number in the image will be 255
 	h = len(image)
 	w = len(image[1])
@@ -141,7 +137,3 @@ def segmentInfo(img):
 		blobs.append(newBlob)
 	return numpy.asarray(blobs)
 
-if __name__ == '__main__':
-	# this image name is not important.  I was just using what I had on my computer
-	array=loudExtractObjects('lens2_nolens_4pxG.png')   
-	print(array.shape)

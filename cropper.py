@@ -14,12 +14,12 @@ import lensFinder	# only used when ran as main
 #			region of interest copied over
 
 def cropToCircle(img, circle):
+	if len(img.shape)==3:
+		img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	(x,y,r) = circle
-	newImg = np.zeros(img.shape, dtype=np.uint8)
+	newImg = np.zeros(img.shape, dtype=img.dtype)
 	newImg = cv2.circle(newImg,(x,y),r,(1,1,1),-1)
-	newImg[:,:,0] = newImg[:,:,0] * img[:,:,0]
-	newImg[:,:,1] = newImg[:,:,1] * img[:,:,1]
-	newImg[:,:,2] = newImg[:,:,2] * img[:,:,2]
+	newImg[:,:] = newImg[:,:] * img[:,:]
 #	newImg=newImg[(y-r):(y+r),(x-r):(x+r),:]
 	return newImg
 

@@ -21,36 +21,37 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	lensFindImg=loadImage(lensFindPath)	
 	print('Finding circular mask...')
 	circle=lensFinder.findLens(lensFindImg)
-	print ('Circular mask found in {} seconds'.format(time()-start))
+	print ('Circular mask found in {} seconds.'.format(time()-start))
 	print('Determining magnification factor...')
 	unMag=loadImage(unMagPath)	
 	mag=loadImage(magPath)
 	unMag=cropper.cropToCircle(unMag,circle)
 	mag=cropper.cropToCircle(mag,circle)
 	magnification,power=globalPower.calculatePower(unMag,mag)
-	print('Magnification found in {} seconds.'.format(time()-start))
+	print('Magnification({}) found in {} seconds.'.format(magnification, time()-start))
 	print('Beginning parallel processing of images...')
 	asyncdev=pool.apply_async(seg,(devpath,circle,start))
 	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
 	print('Correcting for global power...')
-	dev=globalPower.demagnifiy(dev,circle,magnification)
+	dev=globalPower.demagnify(dev,circle,magnification)
 	print('Global power corrected in {} seconds.'.format(time()-start))
 	print('Correlating images...')
 	mapping=correlate.main(undev,dev,dirname,lensname)
-	print ('Images correlated in {} seconds'.format(time()-start))
+	print ('Images correlated in {} seconds.'.format(time()-start))
 	print('Creating data visualization...')
-	visualize.execute(mapping,dirname,lensname,circle)	
-	print('Visualization generated in {} seconds'.format(time()-start))
+	visualize.execute(mapping,dirname,lensname,circle,start)	
+	print('Visualization generated in {} seconds.'.format(time()-start))
 def seg(path,circle,start):	
 	image=loadImage(path)
 	print('Cropping to lens area...')
 	image=cropper.cropToCircle(image,circle)
-	print('Imge cropped in {} seconds'.format(time()-start))
+	print('Image cropped in {} seconds.'.format(time()-start))
 	print('Segmenting {}...'.format(path))
+	#cv2.imwrite('{}_segmented.png'.format(path),image)
 	segmented=segmenter.extractObjects(image) #Try the Raw files
-	print('{} segmented in {} seconds'.format(path,time()-start))
+	print('{} segmented in {} seconds.'.format(path,time()-start))
 	return segmented
 
 def loadImage(filename):
@@ -84,9 +85,9 @@ if __name__=="__main__":
 	devpath=[f for f in files if f.startswith('withLens')][0]
 	devpath='{}/{}'.format(indir,devpath)
 	unMagPath=[f for f in files if f.startswith('power_noLens')][0]
-	unMagPath=devpath='{}/{}'.format(indir,unMagPath)
+	unMagPath='{}/{}'.format(indir,unMagPath)
 	magPath=[f for f in files if f.startswith('power_withLens')][0]
-	magPath=devpath='{}/{}'.format(indir,magPath)
+	magPath='{}/{}'.format(indir,magPath)
 	inarray=indir.split('/')
 	lensname=inarray[len(inarray)-1]
 	lensfind=[f for f in files if f.startswith('lensFinding')][0]
