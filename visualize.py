@@ -7,6 +7,7 @@ from tkinter import filedialog
 
 
 pixPerMM = 58
+maxDev=0.1
 def execute(map,dirname,shortname,circle):
 	
 	image=dictToImg(map,10)
@@ -31,12 +32,12 @@ def downsample(image,fill,spotsize):
 	return blurred
 def createVisualization(image,dirname,shortname,circle):
 	name='{}/{}'.format(dirname,shortname)
-	plt.interactive(True)
+	#plt.interactive(True)
 	plt.figure()
 	image=image/(pixPerMM)	
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
-	plt.clim(0,0.1)
+	plt.clim(0,maxDev)
 	plt.title('Deviation Map for {}'.format(shortname))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
@@ -48,6 +49,7 @@ def createVisualization(image,dirname,shortname,circle):
 	plt.title('Deviation Histogram for {}'.format(shortname))
 	plt.xlabel('Deviation intensity (mm moved)')
 	plt.ylabel('Area of lens (3350 pixels = 1 square mm)')
+	plt.axis(0, 0.1, 0, 50000)
 	plt.savefig('{}_histogram.png'.format(name),dpi=1200)
 #	cv2.waitKey(0)	
 	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
