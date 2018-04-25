@@ -9,27 +9,44 @@ import tkinter as tk
 from tkinter import filedialog
 import lensFinder
 import cropper
+import globalPower
 import rawpy
 import os
 
-def analyze(undevpath,devpath,dirname,lensFindPath,lensname):
+def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	start=time()
 	print(undevpath,devpath)
-	pool=Pool(2)
-	lensFindImg,imgtype=loadImage(lensFindPath)	
+
+	lensFindImg=loadImage(lensFindPath)	
+	print('Finding circular mask...')
 	circle=lensFinder.findLens(lensFindImg)
 	print ('Circular mask found in {} seconds'.format(time()-start))
+	print('Determining magnification factor...')
+	unMag=loadImage(unMagPath)	
+	mag=loadImage(magPath)
+	unMag=cropper.cropToCircle(unMag,circle)
+	mag=cropper.cropToCircle(mag,circle)
+	magnification,power=globalPower.calculatePower(unMag,mag)
+	print('Magnification found in {} seconds.'.format(time()-start))
+	pool=Pool(2)
 	asyncdev=pool.apply_async(seg,(devpath,circle,start))
 	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
+	print('Correcting for global power...')
+	dev=globalPower.demagnifiy(dev,circle,magnification)
+	print('Global power corrected in {} seconds.'.format(time()-start))
+	print('Correlating images...')
+
 	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
+	print('Creating data visualization...')
 	visualize.execute(mapping,dirname,lensname,circle)	
 	print('Visualization generated in {} seconds'.format(time()-start))
 def seg(path,circle,start):	
-	image,imgtype=loadImage(path)
+	image=loadImage(path)
 	image=cropper.cropToCircle(image,circle)
+	print('Segmenting {}...'.format(path))
 	segmented=segmenter.extractObjects(image) #Try the Raw files
 	print('{} segmented in {} seconds'.format(path,time()-start))
 	return segmented
@@ -42,7 +59,7 @@ def loadImage(filename):
 			image = raw.postprocess(output_bps=8)
 	else:	
 		image = cv2.imread(filename)
-	return image,imgtype
+	return image
 
 def getCropCircle(path):
 	imgSplit = path.split('.')
@@ -64,6 +81,10 @@ if __name__=="__main__":
 	undevpath='{}/{}'.format(indir,undevpath)
 	devpath=[f for f in files if f.startswith('withLens')][0]
 	devpath='{}/{}'.format(indir,devpath)
+	unMagPath=[f for f in files if f.startswith('power_noLens')][0]
+	unMagPath=devpath='{}/{}'.format(indir,unMagPath)
+	magPath=[f for f in files if f.startswith('power_withLens')][0]
+	magPath=devpath='{}/{}'.format(indir,magPath)
 	inarray=indir.split('/')
 	lensname=inarray[len(inarray)-1]
 	lensfind=[f for f in files if f.startswith('lensFinding')][0]
@@ -73,7 +94,7 @@ if __name__=="__main__":
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
-	analyze(undevpath,devpath,outdir,lensfind,lensname)
+	analyze(undevpath,devpath,outdir,lensfind,lensname,unMagPath,magPath)
 	
 
 
