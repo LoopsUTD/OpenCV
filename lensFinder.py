@@ -3,6 +3,7 @@ import numpy as np
 import math
 
 def findLens(img, scaling = None):
+	img = img.copy()
 	if scaling == None:
 		scaling = 4
 	if len(img.shape) == 3:
@@ -35,7 +36,7 @@ def findLens(img, scaling = None):
 
 if __name__ == '__main__':
 	image = cv2.imread('withLens_DSC_0284.JPG')
-	circle = findLens(image.copy())
+	circle = findLens(image)
 	print(circle)
 	image = cv2.circle(image,(circle[0],circle[1]),circle[2],(0,0,255),3)
 	cv2.imshow('circles',image)
