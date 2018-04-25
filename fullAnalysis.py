@@ -15,6 +15,7 @@ import os
 
 def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	start=time()
+	pool=Pool(2)
 	print(undevpath,devpath)
 
 	lensFindImg=loadImage(lensFindPath)	
@@ -28,7 +29,7 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	mag=cropper.cropToCircle(mag,circle)
 	magnification,power=globalPower.calculatePower(unMag,mag)
 	print('Magnification found in {} seconds.'.format(time()-start))
-	pool=Pool(2)
+	print('Beginning parallel processing of images...')
 	asyncdev=pool.apply_async(seg,(devpath,circle,start))
 	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
 	undev=asyncundev.get()
@@ -37,7 +38,6 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	dev=globalPower.demagnifiy(dev,circle,magnification)
 	print('Global power corrected in {} seconds.'.format(time()-start))
 	print('Correlating images...')
-
 	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
 	print('Creating data visualization...')
@@ -45,7 +45,9 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	print('Visualization generated in {} seconds'.format(time()-start))
 def seg(path,circle,start):	
 	image=loadImage(path)
+	print('Cropping to lens area...')
 	image=cropper.cropToCircle(image,circle)
+	print('Imge cropped in {} seconds'.format(time()-start))
 	print('Segmenting {}...'.format(path))
 	segmented=segmenter.extractObjects(image) #Try the Raw files
 	print('{} segmented in {} seconds'.format(path,time()-start))

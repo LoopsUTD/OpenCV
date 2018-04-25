@@ -68,7 +68,6 @@ def greenscale(image):
 		print("Error in segmentImg >> greenscale: image is not 1- or 3-channel")
 		image = numpy.zeros(2,2)
 	"""
-	print(image.shape)
 	if len(image.shape) == 3:
 		image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 	return image
