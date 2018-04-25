@@ -203,26 +203,26 @@ def main_process(shared_data_dict, is_master, exit_event):
 			linearActuator.moveOutOfPath()
 			
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("noLens_")
 
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("power_noLens_")
 			
 	
 			linearActuator.moveIntoPath()
 		
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("withLens_")
 
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','lensfindingtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("lensFinding_")
 			
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("power_withLens_")
 			
 
@@ -369,7 +369,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "test1080.png"
+	shared_data['displayedImage'] = "RerenceImages/pixelGrid.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
