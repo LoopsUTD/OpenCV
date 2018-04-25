@@ -34,7 +34,7 @@ class LinearActuator(object):
 			LinearActuator._singletonInstance = self
 			self.log = logging.getLogger("mainApp")
 			self.log.info("Initializing the Linear Actuator...")
-			self.motor=stepperMotor.StepperMotor(15,22,37,33,31)
+			self.motor=stepperMotor.StepperMotor(11,15,37,33,31)
 			self.home=0
 			self.current=self.home
 			self.goal=self.home
