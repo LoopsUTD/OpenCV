@@ -12,38 +12,36 @@ import cropper
 import rawpy
 import os
 
-def analyze(undevpath,devpath,dirname,lensfind,lensname):
+def analyze(undevpath,devpath,dirname,lensFindPath,lensname):
 	start=time()
 	print(undevpath,devpath)
 	pool=Pool(2)
-	asyncdev=pool.apply_async(seg,(devpath,start,lensfind))
-	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
+	lensFindImg,imgtype=loadImage(lensFindPath)	
+	circle=lensFinder.findLens(lensFindImg)
+	asyncdev=pool.apply_async(seg,(devpath,circle,start))
+	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	circle = getCropCircle(lensfind)
 	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
 	visualize.execute(mapping,dirname,lensname,circle)	
 	print('Visualization generated in {} seconds'.format(time()-start))
-	
-def seg(path,start,lensfind):	
-	circle=getCropCircle(lensfind)
-	imgSplit = path.split('.')
-	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
+def seg(path,circle,start):	
+	image,imgtype=loadImage(path)
+	image=cropper.cropToCircle(image,circle)
+	segmented=segmenter.extractObjectsNef(image) #Try the Raw files
+	print('{} segmented in {} seconds'.format(path,time()-start))
+	return segmented
+
+def loadImage(filename):
+	imgSplit=filename.split('.')
+	imgtype=imgSplit[len(imgSplit) - 1].lower() 
+	if imgtype == 'nef':
 		with rawpy.imread(path) as raw:
 			image = raw.postprocess(output_bps=8)
-		image=cropper.cropToCircle(image,circle)
-		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
 	else:	
 		image = cv2.imread(path)
-		image = cropper.cropToCircle(image,circle)
-		segmented=segmenter.extractObjectsPngJpg(image)
-	
-	print('{} segmented in {} seconds'.format(path,time()-start))
-#	for blobs in undev:
-#		print("u")
-#		print(blobs)
-	return segmented
+	return image,imgtype
 
 def getCropCircle(path):
 	imgSplit = path.split('.')
@@ -55,7 +53,6 @@ def getCropCircle(path):
 		image=cv2.imread(path)
 	circle=lensFinder.findLens(image)	
 	return circle
-
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()
@@ -78,3 +75,6 @@ if __name__=="__main__":
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
 	analyze(undevpath,devpath,outdir,lensfind,lensname)
+	
+
+
