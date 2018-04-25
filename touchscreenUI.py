@@ -15,6 +15,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.config import ConfigParser
 
 import os
+import pathlib
 from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
@@ -196,32 +197,32 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 			self.myRoot.updateRunConsole("Test Running - values stored at: %s/%s" % (self.outputDirectory, self.cleanSampleFolderName))
 			linearActuator = LinearActuator.getInstance()
-			camera = Camera.getInstance()
+			self.camera = Camera.getInstance()
 			
 
 			linearActuator.moveOutOfPath()
 			
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("noLens_")
 
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("power_noLens_")
 			
 	
 			linearActuator.moveIntoPath()
 		
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','defaulttestimage')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("withLens_")
 
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','lensfindingtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("lensFinding_")
 			
 			shared_data_dict['displayedImage'] = App.get_running_app().config.get('Output','magnificationtest')
-			sleep(0.3)
+			sleep(2)
 			self.takePhoto("power_withLens_")
 			
 
@@ -234,10 +235,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 				self._makeFolder(currentOutFolder)
 			else:
 				currentOutFolder = self.outputDirectory
-			self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
-			self.display.updateImage(self.testImages[0])
+			#self.log.info("user is storing image in: %s with test photo: %s" % (currentOutFolder, self.testImages))
+			#self.display.updateImage(self.testImages[0])
 			target = self.camera.takePhoto(folderName = currentOutFolder, prefix = filePrefix)
-			self.log.info("photo saved at: %s" % target)
+			#self.log.info("photo saved at: %s" % target)
 			return target
 
 		def _makeFolder(self, dir_path):
@@ -278,22 +279,24 @@ def main_process(shared_data_dict, is_master, exit_event):
 	        #print("Source: %s" % self.src.value)
 	        self.src = shared_data_dict
 	        self.source = self.src['displayedImage']
-	        Clock.schedule_interval(self.update, 1/24.)
+	        Clock.schedule_interval(self.update, 1/30.)
 
 	    def on_src(self, instance, value):
 	        newVal = dict(value)['displayedImage']
 	        print(newVal == self.source)
 	        if newVal != self.source:
-		        print("Detected a Value Change! %s" % newVal)
-		        self.source = newVal
-	        	self.reload()
+	            print("Detected a Value Change! %s" % newVal)
+                    #self.s2ource = newVal
+	            #self.reload()
 
-		def update(self, *args):
-			newVal = shared_data_dict['displayedImage']
-			if newVal != self.source:
-				print("Updating with... %s" % shared_data_dict['displayedImage'])
-				self.source = shared_data_dict['displayedImage']
-				self.reload()
+	    def update(self, *args):
+	        self.source = shared_data_dict['displayedImage']
+	        self.reload()
+	        #newVal =
+	        #if newVal != self.source:
+		#        print("Updating with... %s" % shared_data_dict['displayedImage'])
+		#        self.source = shared_data_dict['displayedImage']
+		#        self.reload()
 
 	class LoopsApp(App):
 		def __init__(self):
@@ -366,7 +369,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "test1080.png"
+	shared_data['displayedImage'] = "ReferenceImages/pixelGrid.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
@@ -375,12 +378,3 @@ if __name__ == '__main__':
 	proc_master.start()
 	proc_slave.start()
 	proc_master.join()
-	proc_slave.join()
-		
-
-
-		
-
-		
-		
-		
