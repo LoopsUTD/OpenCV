@@ -9,7 +9,7 @@ class StepperMotor:
 	def __init__(self,stepPin,dirPin, limit1, limit2, eStop):
 		self.stepPin = stepPin
 		self.dirPin = dirPin
-	self.eStop = eStop
+		self.eStop = eStop
 		GPIO.setmode(GPIO.BOARD)
 		GPIO.setwarnings(False)
 		GPIO.setup(self.stepPin,GPIO.OUT)
@@ -18,10 +18,10 @@ class StepperMotor:
 		self.lim2=limit2
 		GPIO.setup(self.lim1,GPIO.IN)
 		GPIO.setup(self.lim2,GPIO.IN)
-	GPIO.setup(self.eStop,GPIO.IN)
+		GPIO.setup(self.eStop,GPIO.IN)
 		
 	def step(self,steps):	
-	if (GPIO.input(self.eStop)==0):
+		if (GPIO.input(self.eStop)==0):
 			stepsTaken = 0
 			if steps<0:
 					GPIO.output(self.dirPin,GPIO.LOW)
@@ -41,8 +41,8 @@ class StepperMotor:
 
 	   		 GPIO.output(self.stepPin,GPIO.LOW)
 			return True
-	else:
-		return False
+		else:
+			return False
 	
 if __name__ == "__main__":
 	motor = StepperMotor(17,22,37,33,31)
