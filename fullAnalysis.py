@@ -35,7 +35,7 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	undev=asyncundev.get()
 	dev=asyncdev.get()
 	print('Correcting for global power...')
-	dev=globalPower.demagnifiy(dev,circle,magnification)
+	dev=globalPower.demagnify(dev,circle,magnification)
 	print('Global power corrected in {} seconds.'.format(time()-start))
 	print('Correlating images...')
 	mapping=correlate.main(undev,dev,dirname,lensname)
