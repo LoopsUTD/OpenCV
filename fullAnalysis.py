@@ -18,6 +18,7 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname):
 	pool=Pool(2)
 	lensFindImg,imgtype=loadImage(lensFindPath)	
 	circle=lensFinder.findLens(lensFindImg)
+	print ('Circular mask found in {} seconds'.format(time()-start))
 	asyncdev=pool.apply_async(seg,(devpath,circle,start))
 	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
 	undev=asyncundev.get()
@@ -29,7 +30,7 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname):
 def seg(path,circle,start):	
 	image,imgtype=loadImage(path)
 	image=cropper.cropToCircle(image,circle)
-	segmented=segmenter.extractObjectsNef(image) #Try the Raw files
+	segmented=segmenter.extractObjects(image) #Try the Raw files
 	print('{} segmented in {} seconds'.format(path,time()-start))
 	return segmented
 
@@ -37,10 +38,10 @@ def loadImage(filename):
 	imgSplit=filename.split('.')
 	imgtype=imgSplit[len(imgSplit) - 1].lower() 
 	if imgtype == 'nef':
-		with rawpy.imread(path) as raw:
+		with rawpy.imread(filename) as raw:
 			image = raw.postprocess(output_bps=8)
 	else:	
-		image = cv2.imread(path)
+		image = cv2.imread(filename)
 	return image,imgtype
 
 def getCropCircle(path):
@@ -68,8 +69,6 @@ if __name__=="__main__":
 	lensfind=[f for f in files if f.startswith('lensFinding')][0]
 	lensfind='{}/{}'.format(indir,lensfind)
 	"""
-	
-	
 	undevpath = filedialog.askopenfilename(title="Select image without lens")
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")

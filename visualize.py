@@ -9,7 +9,6 @@ from tkinter import filedialog
 pixPerMM = 58
 maxDev=0.1
 def execute(map,dirname,shortname,circle):
-	
 	image=dictToImg(map,10)
 	spotsize=5*pixPerMM
 	even=spotsize
@@ -18,17 +17,10 @@ def execute(map,dirname,shortname,circle):
 	fill=11
 	image=downsample(image,int(fill),int(spotsize))
 	createVisualization(image,dirname,shortname,circle)
-	#image=imscale(image)
-	#cv2.imwrite("realData.png",image)
-#	cv2.imshow('image',image)
 def downsample(image,fill,spotsize):
 	kernel = np.ones((5,5),np.uint8)
 	dilated = cv2.dilate(image,kernel,iterations = fill)
-#	cv2.imwrite('{}_dilated.png'.format(name[:-4]),dilated)
 	blurred=cv2.medianBlur(dilated, spotsize)
-#	cv2.imwrite('{}_blurred.png'.format(name[:-4]),blurred)	
-#j	colored=cv2.applyColorMap(blurred,cv2.COLORMAP_JET)
-#jjjj	cv2.imwrite('{}_colored.png'.format(name[:-4]),colored)
 	return blurred
 def createVisualization(image,dirname,shortname,circle):
 	name='{}/{}'.format(dirname,shortname)
@@ -49,12 +41,7 @@ def createVisualization(image,dirname,shortname,circle):
 	plt.title('Deviation Histogram for {}'.format(shortname))
 	plt.xlabel('Deviation intensity (mm moved)')
 	plt.ylabel('Area of lens (3350 pixels = 1 square mm)')
-	plt.axis(0, 0.1, 0, 50000)
 	plt.savefig('{}_histogram.png'.format(name),dpi=1200)
-#	cv2.waitKey(0)	
-	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
-#	print(np.unique(image.reshape(-1,image.shape[2]),axis=0))
-	#cv2.imwrite('{}.png'.format(name[:-4]),image)
 def selectCircle(image,circle):
 	onedim=[]
 	h = len(image)
