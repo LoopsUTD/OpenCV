@@ -378,4 +378,4 @@ if __name__ == '__main__':
 	proc_master.start()
 	proc_slave.start()
 	proc_master.join()
-	p
+	proc_slave.join()
