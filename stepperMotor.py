@@ -44,7 +44,7 @@ class StepperMotor:
 			return False
 	
 if __name__ == "__main__":
-	motor = StepperMotor(17,22,37,33,31)
+	motor = StepperMotor(11,15,37,33,31)
 	motor.step(3200)
 	motor.step(-3200)
 	time.sleep(1)
