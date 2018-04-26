@@ -55,6 +55,7 @@ class LinearActuator(object):
 		self.bottom=self.current
 
 		success= self.moveTo(self.bottom+1000)
+		self.top=self.current
 		while(success):
 			success=self.moveTo(self.current+1)
 			self.top=self.current
