@@ -34,7 +34,7 @@ class LinearActuator(object):
 			LinearActuator._singletonInstance = self
 			self.log = logging.getLogger("mainApp")
 			self.log.info("Initializing the Linear Actuator...")
-			self.motor=stepperMotor.StepperMotor(11,15,37,33,31)
+			self.motor=stepperMotor.StepperMotor(29,31,5,3,32)
 			self.home=0
 			self.current=self.home
 			self.goal=self.home
@@ -57,7 +57,7 @@ class LinearActuator(object):
 		success= self.moveTo(self.bottom+1000)
 		while(success):
 			success=self.moveTo(self.current+1)
-		self.top=self.current
+			self.top=self.current
 		#		 self.home=(self.bottom+self.top)/2
 		self.home = 27500	# Experimentally determined.  If you do not have a good value, try the commented-out line above
 		self.moveTo(self.home)
