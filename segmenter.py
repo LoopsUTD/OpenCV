@@ -20,7 +20,6 @@ program to crash.  However, our photos of screen pixels
 # OUTPUT: array of found blob objects
 # FILE I/O: loads image from file of given name
 
-
 def extractObjects(img,thresh=None):
 	image = greenscale(img)
 	if thresh == None:
@@ -52,7 +51,7 @@ def loudExtractObjects(image,thresh=None):
 
 # INPUT:  array representation of image, 1- or 3-channel
 # OUTPUT: 1-channel representation of image
-# Instead of true greyscale, we use greenscale(since all test images are green)		--- This will be changing soon, when we switch to 3-color pixel groups
+# Instead of true greyscale, we use greenscale(since all test images are green)        --- This will be changing soon, when we switch to 3-color pixel groups
 
 def greenscale(image):
 	"""
@@ -73,28 +72,28 @@ def greenscale(image):
 # OUTPUT: Array containing only 0 (low values) or 255 (high values) in each entry
 
 def threshold(image,thresh):
-	for a in numpy.nditer(image, op_flags=['readwrite']):
-		if a >= thresh:
-			a[...] = 255
-		else:
-			a[...] = 0
-	return image
+    for a in numpy.nditer(image, op_flags=['readwrite']):
+        if a >= thresh:
+            a[...] = 255
+        else:
+            a[...] = 0
+    return image
 
 # INPUT:  Pixel location of part of blob\
 # TASK:   Recursively "Fills" a blob from one found pixel
 # OUTPUT: None per se, but it checks all neighbors
 
 def fill(image,i,j,h,w,index):
-	image[i,j] = index
-	if i > 0 and image[i-1,j] == 255:
-		fill(image,i-1,j,h,w,index)
-	if i+1 < h and image[i+1,j] == 255:
-		fill(image,i+1,j,h,w,index)
-	if j > 0 and image[i,j-1] == 255:
-		fill(image,i,j-1,h,w,index)
-	if j+1 < w and image[i,j+1] == 255:
-		fill(image,i,j+1,h,w,index)
-	return
+    image[i,j] = index
+    if i > 0 and image[i-1,j] == 255:
+        fill(image,i-1,j,h,w,index)
+    if i+1 < h and image[i+1,j] == 255:
+        fill(image,i+1,j,h,w,index)
+    if j > 0 and image[i,j-1] == 255:
+        fill(image,i,j-1,h,w,index)
+    if j+1 < w and image[i,j+1] == 255:
+        fill(image,i,j+1,h,w,index)
+    return
 
 # INPUT:  Thresholded image
 # OUTPUT: Image with isolated segments
@@ -117,23 +116,22 @@ def segment(image):
 # OUTPUT: Array of blob objects
 
 def segmentInfo(img):
-	h = len(img)
-	w = len(img[1])
-	b = {}
-	
-	for i in range(h):
-		for j in range(w):
-			if img[i,j] != 0:
-				if img[i,j] not in b:
-					b[img[i,j]] = [1,i,j]
-				else:
-					b[img[i,j]] = [b[img[i,j]][0]+1,b[img[i,j]][1]+i,b[img[i,j]][2]+j]
-	blobs = list()
-	for key in b:
-		ssn = key
-		x   = b[key][1] // b[key][0]
-		y   = b[key][2] // b[key][0]
-		newBlob = Blob(ssn,x,y)
-		blobs.append(newBlob)
-	return numpy.asarray(blobs)
-
+    h = len(img)
+    w = len(img[1])
+    b = {}
+    
+    for i in range(h):
+        for j in range(w):
+            if img[i,j] != 0:
+                if img[i,j] not in b:
+                    b[img[i,j]] = [1,i,j]
+                else:
+                    b[img[i,j]] = [b[img[i,j]][0]+1,b[img[i,j]][1]+i,b[img[i,j]][2]+j]
+    blobs = list()
+    for key in b:
+        ssn = key
+        x   = b[key][1] // b[key][0]
+        y   = b[key][2] // b[key][0]
+        newBlob = Blob(ssn,x,y)
+        blobs.append(newBlob)
+    return numpy.asarray(blobs)

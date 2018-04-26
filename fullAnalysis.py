@@ -13,11 +13,11 @@ import globalPower
 import rawpy
 import os
 
+
 def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	start=time()
 	pool=Pool(2)
 	print(undevpath,devpath)
-
 	lensFindImg=loadImage(lensFindPath)	
 	print('Finding circular mask...')
 	circle=lensFinder.findLens(lensFindImg)
@@ -59,7 +59,10 @@ def loadImage(filename):
 	imgtype=imgSplit[len(imgSplit) - 1].lower() 
 	if imgtype == 'nef':
 		with rawpy.imread(filename) as raw:
+
 			image = raw.postprocess(output_bps=8)
+		image=cropper.cropToCircle(image,circle)
+		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
 	else:	
 		image = cv2.imread(filename)
 	return image

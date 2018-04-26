@@ -1,6 +1,5 @@
 import lensFinder as lf
-import blob
-import numpy as np
+
 
 # Function calculatePower()
 #  Given two cropped images of circles, one through the lens
