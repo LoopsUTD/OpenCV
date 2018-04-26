@@ -44,12 +44,8 @@ class StepperMotor:
 		#	return False
 	
 if __name__ == "__main__":
-<<<<<<< HEAD
-	motor = StepperMotor(11,15,37,33,31)
-=======
 	motor = StepperMotor(29,31,5,3,32)
 	#motor = StepperMotor(17,22,37,33,31)
->>>>>>> parent of 2491662... Implementing Proper Fix Attempt 1
 	motor.step(3200)
 	motor.step(-3200)
 	time.sleep(1)
