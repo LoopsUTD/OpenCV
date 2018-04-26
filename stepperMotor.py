@@ -14,6 +14,7 @@ class StepperMotor:
 		GPIO.setwarnings(False)
 		GPIO.setup(self.stepPin,GPIO.OUT)
 		GPIO.setup(self.dirPin,GPIO.OUT)
+		GPIO.setup(self.eStop,GPIO.IN)
 		self.lim1=limit1
 		self.lim2=limit2
 		GPIO.setup(self.lim1,GPIO.IN)
