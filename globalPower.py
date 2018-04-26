@@ -1,6 +1,6 @@
 import lensFinder as lf
-import blob				# the input array in demagnify uses the blob object from this file
-import numpy as np		# The input array in demagnify is a numpy array
+import blob
+import numpy as np
 
 # Function calculatePower()
 #  Given two cropped images of circles, one through the lens
@@ -32,6 +32,6 @@ def calculatePower(noLens,wLens):
 def demagnify(blobs,lensCircle,magnification):
 	blobs = blobs.copy()
 	for b in blobs:
-		b.value[0] = (b.value[0]-lensCircle[0])/magnification + lensCircle[0]	# New X-position
-		b.value[1] = (b.value[1]-lensCircle[1])/magnification + lensCircle[1]	# New Y-position
+		b.value[0] = (b.value[0]-lensCircle[0])/magnification + b.value[0]	# New X-position
+		b.value[1] = (b.value[1]-lensCircle[1])/magnification + b.value[1]	# New Y-position
 	return blobs
