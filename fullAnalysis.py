@@ -14,58 +14,36 @@ import rawpy
 import os
 
 
-def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
+def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	start=time()
 	pool=Pool(2)
-	print(undevpath,devpath)
-	lensFindImg=loadImage(lensFindPath)	
-	print('Finding circular mask...')
-	circle=lensFinder.findLens(lensFindImg)
-	print ('Circular mask found in {} seconds.'.format(time()-start))
-	print('Determining magnification factor...')
-	unMag=loadImage(unMagPath)	
-	mag=loadImage(magPath)
-	unMag=cropper.cropToCircle(unMag,circle)
-	mag=cropper.cropToCircle(mag,circle)
-	magnification,power=globalPower.calculatePower(unMag,mag)
-	print('Magnification({}) found in {} seconds.'.format(magnification, time()-start))
-	print('Beginning parallel processing of images...')
-	asyncdev=pool.apply_async(seg,(devpath,circle,start))
-	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
+	asyncdev=pool.apply_async(seg,(devpath,start,lensfind))
+	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	print('Correcting for global power...')
-	dev=globalPower.demagnify(dev,circle,magnification)
-	print('Global power corrected in {} seconds.'.format(time()-start))
-	print('Correlating images...')
+	circle =  getCropCircle(lensfind)
 	mapping=correlate.main(undev,dev,dirname,lensname)
-	print ('Images correlated in {} seconds.'.format(time()-start))
-	print('Creating data visualization...')
-	visualize.execute(mapping,dirname,lensname,circle,start)	
-	print('Visualization generated in {} seconds.'.format(time()-start))
-def seg(path,circle,start):	
-	image=loadImage(path)
-	print('Cropping to lens area...')
-	image=cropper.cropToCircle(image,circle)
-	print('Image cropped in {} seconds.'.format(time()-start))
-	print('Segmenting {}...'.format(path))
-	#cv2.imwrite('{}_segmented.png'.format(path),image)
-	segmented=segmenter.extractObjects(image) #Try the Raw files
-	print('{} segmented in {} seconds.'.format(path,time()-start))
-	return segmented
-
-def loadImage(filename):
-	imgSplit=filename.split('.')
-	imgtype=imgSplit[len(imgSplit) - 1].lower() 
-	if imgtype == 'nef':
-		with rawpy.imread(filename) as raw:
-
+	print ('Images correlated in {} seconds'.format(time()-start))
+	visualize.execute(mapping,dirname,lensname,circle)	
+	print('Visualization generated in {} seconds'.format(time()-start))
+def seg(path,start,lensfind):	
+	circle=getCropCircle(lensfind)
+	imgSplit = path.split('.')
+	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
+		with rawpy.imread(path) as raw:
 			image = raw.postprocess(output_bps=8)
 		image=cropper.cropToCircle(image,circle)
 		segmented=segmenter.extractObjectsNef(image) #Try the Raw files
 	else:	
-		image = cv2.imread(filename)
-	return image
+		image = cv2.imread(path)
+		image = cropper.cropToCircle(image,circle)
+		segmented=segmenter.extractObjectsPngJpg(image)
+	
+	print('{} segmented in {} seconds'.format(path,time()-start))
+#	for blobs in undev:
+#		print("u")
+#		print(blobs)
+	return segmented
 
 def getCropCircle(path):
 	imgSplit = path.split('.')
@@ -77,6 +55,7 @@ def getCropCircle(path):
 		image=cv2.imread(path)
 	circle=lensFinder.findLens(image)	
 	return circle
+
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()

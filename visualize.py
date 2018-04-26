@@ -8,9 +8,8 @@ from time import *
 import cropper
 
 pixPerMM = 58
-maxDev=0.1
-def execute(map,dirname,shortname,circle,start):
-	print('Creating sparse heatmap...')
+def execute(map,dirname,shortname,circle):
+	
 	image=dictToImg(map,10)
 	print('Deviation map generated in {} seconds.'.format(time()-start))
 	spotsize=5*pixPerMM
@@ -30,12 +29,11 @@ def downsample(image,fill,spotsize):
 def createVisualization(image,dirname,shortname,circle,start):
 	print('Creating heatmap...')
 	name='{}/{}'.format(dirname,shortname)
-	#image=image/(pixPerMM)	
-	#plt.interactive(True)
+	plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
-	#plt.clim(0,maxDev)
+	plt.clim(0,0.1)
 	plt.title('Deviation Map for {}'.format(shortname))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
@@ -50,9 +48,11 @@ def createVisualization(image,dirname,shortname,circle,start):
 	plt.title('Deviation Histogram for {}'.format(shortname))
 	plt.xlabel('Deviation intensity (mm moved)')
 	plt.ylabel('Area of lens (3350 pixels = 1 square mm)')
-	plt.savefig('{}_histogram.png'.format(name),bbox_inches='tight',dpi=1200)
-	print('Histogram created in {} seconds.'.format(time()-start))
-	
+	plt.savefig('{}_histogram.png'.format(name),dpi=1200)
+#	cv2.waitKey(0)	
+	#dst,blurred=cv2.threshold(blurred,15,0,cv2.THRESH_TOZERO_INV)
+#	print(np.unique(image.reshape(-1,image.shape[2]),axis=0))
+	#cv2.imwrite('{}.png'.format(name[:-4]),image)
 def selectCircle(image,circle):
 	onedim=[]
 	h = len(image)
