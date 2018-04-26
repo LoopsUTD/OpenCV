@@ -13,7 +13,6 @@ import globalPower
 import rawpy
 import os
 
-
 def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	start=time()
 	pool=Pool(2)
@@ -21,11 +20,12 @@ def analyze(undevpath,devpath,dirname,lensfind,lensname):
 	asyncundev=pool.apply_async(seg,(undevpath,start,lensfind))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
-	circle =  getCropCircle(lensfind)
+	circle = getCropCircle(lensfind)
 	mapping=correlate.main(undev,dev,dirname,lensname)
 	print ('Images correlated in {} seconds'.format(time()-start))
 	visualize.execute(mapping,dirname,lensname,circle)	
 	print('Visualization generated in {} seconds'.format(time()-start))
+
 def seg(path,start,lensfind):	
 	circle=getCropCircle(lensfind)
 	imgSplit = path.split('.')
@@ -79,7 +79,4 @@ if __name__=="__main__":
 	devpath = filedialog.askopenfilename(title="Select image with lens")
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
-	analyze(undevpath,devpath,outdir,lensfind,lensname,unMagPath,magPath)
-	
-
-
+	analyze(undevpath,devpath,outdir,lensfind,lensname)
