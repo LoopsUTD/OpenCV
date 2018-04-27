@@ -93,13 +93,13 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self.outputDirectory = App.get_running_app().config.get('Output','defaultpath')
 			content = BoxLayout(orientation='vertical')
 			cameraPop = popup = Popup(content=content, title="Set Camera Focus", size_hint=(0.7, 0.9),  auto_dismiss=True)        
-        	popup.open()
+			popup.open()
 
-        	#Display Test Image Pattern
-        	shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.jpg"
-        	sleep(.5)
-        	self.curImg = Image()#Path to test pattern)
-        	content.add(self.curImg)
+			#Display Test Image Pattern
+			shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.jpg"
+			sleep(.5)
+			self.curImg = Image()#Path to test pattern)
+			content.add(self.curImg)
 			# 2 buttons are created for accept or cancel the current value
 			btnlayout = BoxLayout(size_hint_y=None, height='50dp', spacing='5dp')
 			btn = Button(text='Ok')
