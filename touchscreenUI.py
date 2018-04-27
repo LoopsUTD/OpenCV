@@ -19,7 +19,7 @@ import pathlib
 from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
-from MySettings import Settings
+from MySettings import Settings, SettingsWithSidebar
 from MoreSettingOptions import SettingScrollOptions, LensHolderOptions, FileBrowserIconView
 
 from linearActuator import LinearActuator
@@ -110,6 +110,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			btnlayout.add_widget(btn)
 			content.add_widget(btnlayout)
 
+			instance.text = "Initialized Camera"
 
 
 			return
@@ -345,7 +346,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def build_config(self, config):
 			if is_master:
-				# self.settings_cls=SettingsWithTabbedPanel
+				self.settings_cls=SettingsWithSidebar
 				config.read('loops.ini')
 			else:
 				self.config = None
