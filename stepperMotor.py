@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 class StepperMotor:
-   
+
 	#StepPin: Pin to send signal to pulse pin on stepper driver
 	#diePin: Pin to send signal to dir pin on stepper driver
 	#lim1: Pin to read limit swtich 1
@@ -14,37 +14,38 @@ class StepperMotor:
 		GPIO.setwarnings(False)
 		GPIO.setup(self.stepPin,GPIO.OUT)
 		GPIO.setup(self.dirPin,GPIO.OUT)
+		GPIO.setup(self.eStop,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 		self.lim1=limit1
 		self.lim2=limit2
-		GPIO.setup(self.lim1,GPIO.IN)
-		GPIO.setup(self.lim2,GPIO.IN)
-		GPIO.setup(self.eStop,GPIO.IN)
-		
-	def step(self,steps):	
-		if (GPIO.input(self.eStop)==0):
+		GPIO.setup(self.lim1,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+		GPIO.setup(self.lim2,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+
+	def step(self,steps):
+		if GPIO.input(self.eStop)==0:
 			stepsTaken = 0
 			if steps<0:
-					GPIO.output(self.dirPin,GPIO.LOW)
-					limit=self.lim1
+				GPIO.output(self.dirPin,GPIO.LOW)
+				limit=self.lim1
 			if steps>0:
-					limit=self.lim2
-					GPIO.output(self.dirPin,GPIO.HIGH)
-					while stepsTaken<abs(steps):
-						if GPIO.input(limit)==1:
-							GPIO.output(self.stepPin,GPIO.HIGH)
-							time.sleep(.0000050)
-							GPIO.output(self.stepPin,GPIO.LOW)
-							time.sleep(.00005)
-						else:
-							return False
-						stepsTaken = stepsTaken +1  
+				limit=self.lim2
+				GPIO.output(self.dirPin,GPIO.HIGH)
+			while stepsTaken<abs(steps):
+				print(GPIO.input(limit))
+				if GPIO.input(limit)==0:
+					GPIO.output(self.stepPin,GPIO.HIGH)
+					time.sleep(.0000050)
+					GPIO.output(self.stepPin,GPIO.LOW)
+					time.sleep(.00005)
+				else:
+					return False
+				stepsTaken = stepsTaken +1  
+
 			GPIO.output(self.stepPin,GPIO.LOW)
 			return True
 		else:
 			return False
-	
+
 if __name__ == "__main__":
-#	motor = StepperMotor(29,31,5,3,32)
 	motor = StepperMotor(11,15,37,33,31)
 	motor.step(3200)
 	motor.step(-3200)
