@@ -19,9 +19,9 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	print(undevpath,devpath)
 
 	lensFindImg=loadImage(lensFindPath)	
-	print('Finding circular mask...')
+#	print('Finding circular mask...')
 	circle=lensFinder.findLens(lensFindImg)
-	print ('Circular mask found in {} seconds.'.format(time()-start))
+#	print ('Circular mask found in {} seconds.'.format(time()-start))
 	print('Determining magnification factor...')
 	unMag=loadImage(unMagPath)	
 	mag=loadImage(magPath)
@@ -45,9 +45,9 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	print('Visualization generated in {} seconds.'.format(time()-start))
 def seg(path,circle,start):	
 	image=loadImage(path)
-	print('Cropping to lens area...')
+#	print('Cropping to lens area...')
 	image=cropper.cropToCircle(image,circle)
-	print('Image cropped in {} seconds.'.format(time()-start))
+#	print('Image cropped in {} seconds.'.format(time()-start))
 	print('Segmenting {}...'.format(path))
 	#cv2.imwrite('{}_segmented.png'.format(path),image)
 	segmented=segmenter.extractObjects(image) #Try the Raw files
