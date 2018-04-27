@@ -96,10 +96,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 			popup.open()
 
 			#Display Test Image Pattern
-			shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.jpg"
+			shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.png"
 			sleep(.5)
 			self.curImg = Image()#Path to test pattern)
-			content.add(self.curImg)
+			content.add_widget(self.curImg)
 			# 2 buttons are created for accept or cancel the current value
 			btnlayout = BoxLayout(size_hint_y=None, height='50dp', spacing='5dp')
 			btn = Button(text='Ok')
