@@ -54,13 +54,14 @@ def createVisualization(image,dirname,shortname,circle,start):
 	print('Histogram created in {} seconds.'.format(time()-start))
 	
 def selectCircle(image,circle):
+	(x,y,r)=circle
 	onedim=[]
 	h = len(image)
 	w = len(image[1])
-	for i in range(h):
-		for j in range(w):
-			dist=pow(pow(j-circle[0],2)+pow(i-circle[1],2),0.5)
-			if dist < circle[2]:
+	for i in range(y-r,y+r):
+		for j in range(x-r,x+r):
+			dist=pow(pow(j-x,2)+pow(i-y,2),0.5)
+			if dist < r:
 				onedim.append(image[i,j])
 	#cropped=cropper.cropToCircle(image,circle)
 	#cv2.imwrite('croppedheatmap.png',cropped)
