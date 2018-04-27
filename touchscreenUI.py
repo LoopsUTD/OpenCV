@@ -19,7 +19,7 @@ import pathlib
 from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
-from MySettings import Settings
+from MySettings import Settings, SettingsWithSidebar
 from MoreSettingOptions import SettingScrollOptions, LensHolderOptions, FileBrowserIconView
 
 from linearActuator import LinearActuator
@@ -96,10 +96,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 			popup.open()
 
 			#Display Test Image Pattern
-			shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.jpg"
+			shared_data_dict['displayedImage'] = "/home/pi/LoopsUTD/OpenCV/ReferenceImages/indianHeadTestPattern.png"
 			sleep(.5)
 			self.curImg = Image()#Path to test pattern)
-			content.add(self.curImg)
+			content.add_widget(self.curImg)
 			# 2 buttons are created for accept or cancel the current value
 			btnlayout = BoxLayout(size_hint_y=None, height='50dp', spacing='5dp')
 			btn = Button(text='Ok')
@@ -110,6 +110,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			btnlayout.add_widget(btn)
 			content.add_widget(btnlayout)
 
+			instance.text = "Initialized Camera"
 
 
 			return
@@ -345,7 +346,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def build_config(self, config):
 			if is_master:
-				# self.settings_cls=SettingsWithTabbedPanel
+				self.settings_cls=SettingsWithSidebar
 				config.read('loops.ini')
 			else:
 				self.config = None

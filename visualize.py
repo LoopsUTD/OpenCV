@@ -37,11 +37,13 @@ def createVisualization(image,dirname,shortname,circle,start):
 	#plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
-	plt.colorbar()
-	plt.clim(0,maxDev)
+	cbar=plt.colorbar()
+	cbar.ax.get_yaxis().labelpad = 15
+	cbar.ax.set_ylabel('Spatial Deviation (mm)', rotation=270)
+	plt.clim(0,maxDev) 
 	plt.title('Deviation Map for {}'.format(shortname))
-	plt.xlabel('Horizontal pixel position')
-	plt.ylabel('Vertical pixel position')
+	plt.xlabel('Horizontal Pixel Position')
+	plt.ylabel('Vertical Pixel Position')
 	plt.savefig('{}_heatmap.png'.format(name),bbox_inches='tight',dpi=1200)
 	cv2.imwrite('After heatmap.png',image)
 	print('Heatmap created in {} seconds.'.format(time()-start))
@@ -51,19 +53,20 @@ def createVisualization(image,dirname,shortname,circle,start):
 	plt.hist(cropped)
 	plt.draw()
 	plt.title('Deviation Histogram for {}'.format(shortname))
-	plt.xlabel('Deviation intensity (mm moved)')
-	plt.ylabel('Area of lens (3350 pixels = 1 square mm)')
+	plt.xlabel('Deviation Intensity (mm moved)')
+	plt.ylabel('Area of Lens (3350 Pixels = 1 $mm^2$)')
 	plt.savefig('{}_histogram.png'.format(name),bbox_inches='tight',dpi=1200)
 	print('Histogram created in {} seconds.'.format(time()-start))
 	
 def selectCircle(image,circle):
+	(x,y,r)=circle
 	onedim=[]
 	h = len(image)
 	w = len(image[1])
-	for i in range(h):
-		for j in range(w):
-			dist=pow(pow(j-circle[0],2)+pow(i-circle[1],2),0.5)
-			if dist < circle[2]:
+	for i in range(y-r,y+r):
+		for j in range(x-r,x+r):
+			dist=pow(pow(j-x,2)+pow(i-y,2),0.5)
+			if dist < r:
 				onedim.append(image[i,j])
 	#cropped=cropper.cropToCircle(image,circle)
 	#cv2.imwrite('croppedheatmap.png',cropped)

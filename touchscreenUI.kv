@@ -165,20 +165,21 @@ RootWidget:
 			size_hint: (1,1)
 			Button:
 				id: btnDisplay
-				text: "Initializing Display..."
+				text: "Initialized Display"
 				disabled: True
 				#on_release: root.onDisplay(self)
 				#TODO: get "green light" from other process, reading the shared dict
 
 			Button:
 				id: camInitialize
-				text: "Initializing Camera..."
+				text: "Set Camera Focus..."
 				on_release:
 					#print(root.ids)
-					root.updateInfoBox("\nAdding Stuff to Camera!")
+					root.updateInfoBox("\nSetting Camera Focus!")
+					root.setCameraFocus(self)
 			Button:
 				id: lensInitialize
-				text: "Initializing Lens Holder..."
+				text: "Initialized Lens Holder"
 		# BoxLayout:
 		# 	name: 	'cameraInitializationButtons'
 		# 	size_hint: (.5, 1)
