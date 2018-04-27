@@ -14,11 +14,11 @@ class StepperMotor:
 		GPIO.setwarnings(False)
 		GPIO.setup(self.stepPin,GPIO.OUT)
 		GPIO.setup(self.dirPin,GPIO.OUT)
-		GPIO.setup(self.eStop,GPIO.IN)
+		GPIO.setup(self.eStop,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 		self.lim1=limit1
 		self.lim2=limit2
-		GPIO.setup(self.lim1,GPIO.IN)
-		GPIO.setup(self.lim2,GPIO.IN)
+		GPIO.setup(self.lim1,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+		GPIO.setup(self.lim2,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 	def step(self,steps):
 		if GPIO.input(self.eStop)==0:
