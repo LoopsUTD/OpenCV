@@ -110,4 +110,4 @@ class LinearActuator(object):
 	def moveIntoPath(self):
 		self.moveTo(self.home)
 	def moveOutOfPath(self):
-		self.moveTo(self.bottom+100)
+		self.moveTo(self.bottom)
