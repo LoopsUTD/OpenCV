@@ -5,6 +5,7 @@ import os.path
 from time import *
 from testData import *
 from multiprocessing import *
+
 def main(undeviated,deviated,dirname,name):
 
 	fname="{}/{}{}".format(dirname,name,".txt")
@@ -14,6 +15,7 @@ def main(undeviated,deviated,dirname,name):
 	devmap=compare(undevdict,devdict)
 	writeToFile(devmap,fname)
 	return devmap	
+
 def compare(undevdict,devdict):
 	devmap={}
 	for key,value in undevdict.items():
