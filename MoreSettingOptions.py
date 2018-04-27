@@ -1,7 +1,9 @@
 from MySettings import SettingOptions, SettingString, SettingPath
 from kivy.uix.gridlayout import GridLayout 
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.widget import Widget 
+from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 from MySettings import SettingSpacer
 from kivy.uix.button import Button
@@ -49,14 +51,45 @@ class SettingScrollOptions(SettingOptions):
 class FileBrowserIconView(SettingPath):
     def _create_popup(self, instance):
 
-        content = BoxLayout()
-        self.popup   = popup = Popup(content=content, title=self.title, size_hint=(0.5, 0.9),  auto_dismiss=True)        
-
+        #Main Container
+        content = BoxLayout(orientation='vertical')
+        
+        self.popup   = popup = Popup(content=content, title=self.title, size_hint=(0.7, 0.9),  auto_dismiss=True)        
         popup.open()
 
-        browser = FileChooserIconView(path=self.value, size_hint=(1,1), dirselect=True, show_hidden=False)
+        #Header with Current Path - enter a new value and press return
+        header = BoxLayout(size_hint_y=None, height='35dp', spacing='5dp')
+        btn1 = Button(text="Path: ", size_hint=(.1,1))
+        btn1.bind(on_release=self._updatePath)
+        header.add_widget(btn1)
+        #TODO: Uncomment for production
+        #header.add_widget(Label(text="Current Path: ", size_hint=(.1,1)))
+
+        #Current Path Input
+        self.pathInput = TextInput(text=self.value, size_hint=(.9,1), multiline=False)
+        self.pathInput.bind(on_text_validate=self._updatePath)
+        header.add_widget(self.pathInput)
+        content.add_widget(header)
+        
+
+        content.add_widget(SettingSpacer())
+        self.textinput = FileChooserIconView(path=self.value, size_hint=(1,1), dirselect=True, show_hidden=False)
         self.textinput.bind(on_path=self._validate)
-        content.add_widget(broswer)
+        content.add_widget(self.textinput)
+
+         # 2 buttons are created for accept or cancel the current value
+        btnlayout = BoxLayout(size_hint_y=None, height='50dp', spacing='5dp')
+        btn = Button(text='Ok')
+        btn.bind(on_release=self._validate)
+        btnlayout.add_widget(btn)
+        btn = Button(text='Cancel')
+        btn.bind(on_release=self._dismiss)
+        btnlayout.add_widget(btn)
+        content.add_widget(btnlayout)
+
+    def _updatePath(self, instance):
+        print(self.pathInput.text)
+        self.textinput.path = self.pathInput.text
 
 class LensHolderOptions(SettingString):
 
