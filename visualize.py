@@ -11,17 +11,17 @@ pixPerMM = 58
 maxDev=0.2
 
 def execute(map,dirname,shortname,circle,start):
-	print('Creating sparse heatmap...')
+#	print('Creating sparse heatmap...')
 	image=dictToImg(map,10)
-	print('Deviation map generated in {} seconds.'.format(time()-start))
+#	print('Deviation map generated in {} seconds.'.format(time()-start))
 	spotsize=1*pixPerMM
 	even=spotsize
 	if(even%2==0):
 		spotsize=int(spotsize+1)
 	fill=11
-	print('Downsampling to correct resolution...')
+#	print('Downsampling to correct resolution...')
 	image=downsample(image,int(fill),int(spotsize))
-	print('Downsampled in {} seconds.'.format(time()-start))
+#	print('Downsampled in {} seconds.'.format(time()-start))
 	createVisualization(image,dirname,shortname,circle,start)
 
 def downsample(image,fill,spotsize):
