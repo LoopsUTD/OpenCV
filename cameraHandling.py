@@ -58,7 +58,7 @@ class Camera(object):
                         choicelist.append(choice)
                 self.mainConfigs[child.get_name()] = [child.get_value(), choicelist]
         # self._updateCaptureMode()
-        # self.log.debug(str(self.mainConfigs))
+        self.log.debug(str(self.mainConfigs))
         # with open('configs.txt', 'w') as configs:
         #     configs.write(str(self.mainConfigs))
         #self.log.debug("imagequality = %s " % str(self.mainConfigs['imagequality'][0]))
@@ -77,14 +77,18 @@ class Camera(object):
         #TODO: ensure capture target is properly setup?
         #self.adjustSettings('capturetarget', 1)
         file_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
+        self.log.debug("Capture Path: %s %s" % (file_path.folder, file_path.name))
         if prefix is not None:
-            target = os.path.join(folderName, str(prefix) + file_path.name )
+            target = os.path.join(folderName, str(prefix) + file_path.name)
         else:
             target = os.path.join(folderName, file_path.name)
+
+        self.log.debug(target)
         
         if str(self.mainConfigs['imagequality'][0]).lower()[0] == 'j':
             self.log.info("Capturing JPEG...")
             camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL))
+            self.log.info(camera_file)
             gp.check_result(gp.gp_file_save(camera_file, target))       
         elif str(self.mainConfigs['imagequality'][0]).lower()[0] == 'n':
             self.log.info("Capturing NEF...")
