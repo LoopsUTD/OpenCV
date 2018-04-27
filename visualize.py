@@ -13,7 +13,7 @@ def execute(map,dirname,shortname,circle,start):
 	print('Creating sparse heatmap...')
 	image=dictToImg(map,10)
 	print('Deviation map generated in {} seconds.'.format(time()-start))
-	spotsize=5*pixPerMM
+	spotsize=1*pixPerMM
 	even=spotsize
 	if(even%2==0):
 		spotsize=int(spotsize+1)
@@ -30,12 +30,12 @@ def downsample(image,fill,spotsize):
 def createVisualization(image,dirname,shortname,circle,start):
 	print('Creating heatmap...')
 	name='{}/{}'.format(dirname,shortname)
-	#image=image/(pixPerMM)	
+	image=image/(pixPerMM)	
 	#plt.interactive(True)
 	plt.figure()
 	plt.imshow(image,cmap='viridis')
 	plt.colorbar()
-	#plt.clim(0,maxDev)
+	plt.clim(0,maxDev)
 	plt.title('Deviation Map for {}'.format(shortname))
 	plt.xlabel('Horizontal pixel position')
 	plt.ylabel('Vertical pixel position')
