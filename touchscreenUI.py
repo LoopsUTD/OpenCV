@@ -51,20 +51,20 @@ def main_process(shared_data_dict, is_master, exit_event):
 			print(self)
 			print(self.ids)
 
-			# if self.initializeDisplay():
-			# 	self.updateLabelColor(self.ids.btnDisplay)
-			# else:
-			# 	self.updateInfoBox("\nFATAL ERROR: Display Not Working!")
+			if self.initializeDisplay():
+				self.updateLabelColor(self.ids.btnDisplay)
+			else:
+				self.updateInfoBox("\nFATAL ERROR: Display Not Working!")
 
-			# if self.initializeCamera():
-			# 	self.updateLabelColor(self.ids.camInitialize)
-			# else:
-			# 	self.updateInfoBox("\nFATAL ERROR: Camear Not Connected!")
+			if self.initializeCamera():
+				self.updateLabelColor(self.ids.camInitialize)
+			else:
+				self.updateInfoBox("\nFATAL ERROR: Camear Not Connected!")
 
-			# if self.initializeLensHolder():
-			# 	self.updateLabelColor(self.ids.lensInitialize)
-			# else:
-			# 	self.updateInfoBox("\nFATAL ERROR: Camear Not Connected!")
+			if self.initializeLensHolder():
+				self.updateLabelColor(self.ids.lensInitialize)
+			else:
+				self.updateInfoBox("\nFATAL ERROR: Camear Not Connected!")
 
 		def updateLabelColor(self,instance):
 			print('updating Label...') #TODO: implement logger
@@ -265,20 +265,20 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def _finish_init(self, dt):
 			print("RootWidget finish Init!")
 
-			if self.ids.initializeScreen.initializeDisplay():
-				self.ids.initializeScreen.updateLabelColor(self.ids.btnDisplay)
-			else:
-				self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Display Not Working!")
+			# if self.ids.initializeScreen.initializeDisplay():
+			# 	self.ids.initializeScreen.updateLabelColor(self.ids.btnDisplay)
+			# else:
+			# 	self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Display Not Working!")
 
-			if self.ids.initializeScreen.initializeCamera():
-				self.ids.initializeScreen.updateLabelColor(self.ids.camInitialize)
-			else:
-				self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Camera Not Connected!")
+			# if self.ids.initializeScreen.initializeCamera():
+			# 	self.ids.initializeScreen.updateLabelColor(self.ids.camInitialize)
+			# else:
+			# 	self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Camera Not Connected!")
 
-			#if self.ids.initializeScreen.initializeLensHolder():
-			#	self.ids.initializeScreen.updateLabelColor(self.ids.lensInitialize)
-			#else:
-			self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Linear Actuator Not Connected!")
+			# #if self.ids.initializeScreen.initializeLensHolder():
+			# #	self.ids.initializeScreen.updateLabelColor(self.ids.lensInitialize)
+			# #else:
+			# self.ids.initializeScreen.updateInfoBox("\nFATAL ERROR: Linear Actuator Not Connected!")
 
 
 		def updateInfoLabel(self, text):
