@@ -1,4 +1,4 @@
-from MySettings import SettingOptions, SettingString
+from MySettings import SettingOptions, SettingString, SettingPath
 from kivy.uix.gridlayout import GridLayout 
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.widget import Widget 
@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.metrics import dp
 from kivy.uix.popup import Popup
+from kivy.uix.filechooser import FileChooserIconView
 
 #FROM: https://github.com/kivy/kivy/wiki/Scollable-Options-in-Settings-panel
 
@@ -44,6 +45,18 @@ class SettingScrollOptions(SettingOptions):
         btn = Button(text='Cancel', size=(popup.width, dp(50)),size_hint=(0.9, None))
         btn.bind(on_release=popup.dismiss)
         content.add_widget(btn)
+
+class FileBrowserIconView(SettingPath):
+    def _create_popup(self, instance):
+
+        content = BoxLayout()
+        self.popup   = popup = Popup(content=content, title=self.title, size_hint=(0.5, 0.9),  auto_dismiss=True)        
+
+        popup.open()
+
+        browser = FileChooserIconView(path=self.value, size_hint=(1,1), dirselect=True, show_hidden=False)
+        self.textinput.bind(on_path=self._validate)
+        content.add_widget(broswer)
 
 class LensHolderOptions(SettingString):
 
