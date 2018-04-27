@@ -74,7 +74,7 @@ class FileBrowserIconView(SettingPath):
 
         content.add_widget(SettingSpacer())
         self.textinput = FileChooserIconView(path=self.value, size_hint=(1,1), dirselect=True, show_hidden=False)
-        self.textinput.bind(on_path=self._validate)
+        self.textinput.bind(on_path=self.val)
         content.add_widget(self.textinput)
 
          # 2 buttons are created for accept or cancel the current value
@@ -86,6 +86,10 @@ class FileBrowserIconView(SettingPath):
         btn.bind(on_release=self._dismiss)
         btnlayout.add_widget(btn)
         content.add_widget(btnlayout)
+
+    def val(self):
+        self.value = self.textinput
+        self._validate()
 
     def _updatePath(self, instance):
         print(self.pathInput.text)
