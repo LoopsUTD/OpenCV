@@ -102,11 +102,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 			content.add_widget(self.curImg)
 			# 2 buttons are created for accept or cancel the current value
 			btnlayout = BoxLayout(size_hint_y=None, height='50dp', spacing='5dp')
-			btn = Button(text='Ok')
+			btn = Button(text='Take Photo')
 			btn.bind(on_release=lambda x:self._bindNewImage())
 			btnlayout.add_widget(btn)
 			btn = Button(text='Cancel')
-			btn.bind(on_release=self.popup.dismiss)
+			btn.bind(on_release=popup.dismiss)
 			btnlayout.add_widget(btn)
 			content.add_widget(btnlayout)
 

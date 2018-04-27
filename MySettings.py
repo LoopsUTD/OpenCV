@@ -392,10 +392,10 @@ class SettingString(SettingItem):
     def _create_popup(self, instance):
         # create popup layout
         content = BoxLayout(orientation='vertical', spacing='5dp')
-        popup_width = min(0.95 * Window.width, dp(500))
+        #popup_width = min(0.95 * Window.width, dp(500))
         self.popup = popup = Popup(
-            title=self.title, content=content, size_hint=(None, None),
-            size=(popup_width, '250dp'))
+            title=self.title, content=content, size_hint=(.7, .9))
+            #size=(popup_width, '250dp'))
 
         # create the textinput used for numeric input
         self.textinput = textinput = TextInput(
@@ -493,10 +493,9 @@ class SettingPath(SettingItem):
     def _create_popup(self, instance):
         # create popup layout
         content = BoxLayout(orientation='vertical', spacing=5)
-        popup_width = min(0.95 * Window.width, dp(500))
+        #popup_width = min(0.95 * Window.width, dp(500))
         self.popup = popup = Popup(
-            title=self.title, content=content, size_hint=(None, 0.9),
-            width=popup_width)
+            title=self.title, content=content, size_hint=(0.7, 0.9))
 
         # create the filechooser
         initial_path = self.value or os.getcwd()
@@ -581,10 +580,10 @@ class SettingOptions(SettingItem):
     def _create_popup(self, instance):
         # create the popup
         content = BoxLayout(orientation='vertical', spacing='5dp')
-        popup_width = min(0.95 * Window.width, dp(500))
+        #popup_width = min(0.95 * Window.width, dp(500))
         self.popup = popup = Popup(
-            content=content, title=self.title, size_hint=(None, None),
-            size=(popup_width, '400dp'))
+            content=content, title=self.title, size_hint=(.5, .9))
+            #size=(popup_width, '400dp'))
         popup.height = len(self.options) * dp(55) + dp(150)
 
         # add all the options

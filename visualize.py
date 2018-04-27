@@ -9,6 +9,7 @@ import cropper
 
 pixPerMM = 58
 maxDev=0.1
+
 def execute(map,dirname,shortname,circle,start):
 	print('Creating sparse heatmap...')
 	image=dictToImg(map,10)
@@ -22,11 +23,13 @@ def execute(map,dirname,shortname,circle,start):
 	image=downsample(image,int(fill),int(spotsize))
 	print('Downsampled in {} seconds.'.format(time()-start))
 	createVisualization(image,dirname,shortname,circle,start)
+
 def downsample(image,fill,spotsize):
 	kernel = np.ones((5,5),np.uint8)
 	dilated = cv2.dilate(image,kernel,iterations = fill)
 	blurred=cv2.medianBlur(dilated, spotsize)
 	return blurred
+
 def createVisualization(image,dirname,shortname,circle,start):
 	print('Creating heatmap...')
 	name='{}/{}'.format(dirname,shortname)
