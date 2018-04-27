@@ -13,6 +13,7 @@ import cv2
 #			region of interest copied over
 
 def cropToCircle(img, circle):
+	img = img.copy()
 	if len(img.shape)==3:
 		img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	(x,y,r) = circle
