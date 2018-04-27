@@ -28,14 +28,7 @@ RootWidget:
                 on_press:
                     print("Attempt to open settings " + str(root.ids.sm.current))
                     app.open_settings()
-                	# root.ids.sm.transition.direction: 'right' if root.ids.sm.current == 'initialize' else 'left'
-                	# root.ids.sm.current = 'prepare'
-            # Button:
-            #     text: 'Prepare'
-            #     on_press:
-            #         print(str(root.ids.sm.current))
-            #     	root.ids.sm.transition.direction: 'right' if root.ids.sm.current == 'initialize' else 'left'
-            #     	root.ids.sm.current = 'prepare'
+
             Button:
                 text: 'Run'
                 on_press:
@@ -92,49 +85,7 @@ RootWidget:
             		pos: self.pos  
     		
     		InitializeScreen:
-    			# id: initializeScreen
-    			# #self.myInfoLabel = root.ids.infoTextlabel
-   
-    			
-				# name: 'initialize'
-				# id: initializeScreen
-				# myInfoLabel: root.ids.infoTextLabel 
-				# BoxLayout:
-				# 	orientation: 'horizontal'
-				# 	padding: 25,10,25,10
-				# 	BoxLayout:
-				# 		#TODO: Get the buttons from below, create then on the python file, and do the "things" necessary to activate them.
-				# 		name:	'progressBarContainer'
-				# 		orientation: 'vertical'
-				# 		padding: 50, 50, 80, 25
-				# 		spacing: 70
-				# 		size_hint: (.5,1)
-				# 		Button:
-				# 			id: btnDisplay2
-				# 			text: "Display"
-				# 			disabled: True
-				# 			on_release: root.ids.initializeScreen.onDisplay(self)
-				# 			#TODO: get "green light" from other process, reading the shared dict
-
-				# 		Button:
-				# 			text: "camera"
-				# 			on_release: 
-				# 				root.ids.infoTextLabel.text += root.ids.initializeScreen.onCameraUpdate()
-				# 		Button:
-				# 			text: "Lens Holder"
-				# 			disabled: True
-				# 	BoxLayout:
-				# 		name: 	'cameraInitializationButtons'
-				# 		size_hint: (.5, 1)
-				# 		orientation: 'vertical'
-				# 		padding: 50, 50, 20, 50 #left, top, right bottom
-				# 		spacing: 50
-				# 		Button:
-				# 			text: 'Set Camera Focus'
-				# 			#TODO: Camera Popup Definition
-				# 		Button:
-				# 			text: 'Alignment Calibration'
-				# 			#TODO: Alert while Alignment automatically occurs.
+    			id: initializeScreen
 
     		RunTestScreen:
     			name: 'runtest'
@@ -201,9 +152,7 @@ RootWidget:
 
 <InitializeScreen>:
 	name: 'initialize'
-	#id: initializeScreen
-	#myInfoLabel: root.ids.infoTextlabel
-	
+
 	BoxLayout:
 		orientation: 'horizontal'
 		padding: 25,10,25,10
@@ -213,7 +162,7 @@ RootWidget:
 			orientation: 'vertical'
 			padding: 50, 50, 80, 25
 			spacing: 40
-			size_hint: (.5,1)
+			size_hint: (1,1)
 			Button:
 				id: btnDisplay
 				text: "Initializing Display..."
@@ -229,100 +178,25 @@ RootWidget:
 					root.updateInfoBox("\nAdding Stuff to Camera!")
 			Button:
 				id: lensInitialize
-				text: "Initializing Lens Holder"
-		BoxLayout:
-			name: 	'cameraInitializationButtons'
-			size_hint: (.5, 1)
-			orientation: 'vertical'
-			padding: 50, 50, 20, 50 #left, top, right bottom
-			spacing: 50
-			Button:
-				text: 'Set Camera Focus'
-				#TODO: Camera Popup Definition
-			Button:
-				text: 'Alignment Calibration'
-				#TODO: Alert while Alignment automatically occurs.
-
-# <ConfigureScreen>:
-# 	name:	'configure'
-# 	BoxLayout:
-# 		orientation: 'horizontal'
-# 		padding: 25,150,25,150 #left, top, right, bottom
-# 		spacing: 50
-
-# 		#TODO: define these buttons and their handlers in the python file
-# 		Button:
-# 			text: "Set Lens Holder Home Position"
-# 		Button:
-# 			text: "Adjust Camera Settings"
-# 		Button:
-# 			text: "Save/Load Profile"
-
-# <PrepareScreen>:
-# 	name: 'prepare'
-# 	Button:
-# 		on_release: app.open_settings()
-# 		# SettingsWithTabbedPanel:
-# 		# 	orientation: 'horizontal'
-# 		# 	padding: 25 #,150,25,150 #left, top, right, bottom
-# 		# 	spacing: 50
+				text: "Initializing Lens Holder..."
+		# BoxLayout:
+		# 	name: 	'cameraInitializationButtons'
+		# 	size_hint: (.5, 1)
+		# 	orientation: 'vertical'
+		# 	padding: 50, 50, 20, 50 #left, top, right bottom
+		# 	spacing: 50
+		# 	Button:
+		# 		text: 'Set Camera Focus'
+		# 		on_release:
+		# 			root.setCameraFocus(self)
+		# 		#TODO: Camera Popup Definition
+		# 	Button:
+		# 		text: 'Alignment Calibration'
+		# 		#TODO: Alert while Alignment automatically occurs.
 
 <RunTestScreen>:
 	name: 'runtest'
-# 	GridLayout:
-# 		cols: 2
-# 		rows: 1
-# 		padding: 25,10,25,10
-# 		spacing: 5
 
-# 		BoxLayout:
-# 			orientation: 'vertical'
-# 			Widget:
-# 				#pos_hint: {'top', 1}
-# 				size_hint: (.2,1)
-# 			BoxLayout:
-# 				orientation: 'horizontal'
-# 				Label:
-# 					text: "Enter Sample Name:"
-# 				TextInput:
-# 					id: sampleNameInput
-# 					text: "lens1"
-# 					multiline: False
-# 					focus: True
-# 					on_text_validate: root.validateText(self)
-# 					on_focus: root.ids.runTest.disabled = True
-# 			Widget:
-# 				size_hint: (.2, 1)
-# 			Button:
-# 				id: runTest
-
-# 				text: "Run Test"
-# 				background_normal: ""
-# 				background_color: (1, 0, 0, .8)
-# 		ScrollView:
-# 			pos_hint: {'bottom': 1}
-# 			do_scroll_x: False
-# 			scroll_y: 0
-# 			canvas.before:
-# 	    		Color:
-# 	    			rgba: 0,0,0,1
-# 	    		Rectangle:
-# 	    			pos: self.pos
-# 	    			size: self.size 
-# 			Label:
-# 				id: runConsole
-# 				text: "[CONSOLE DIALOG]\nLoad Sample in Lens Holder\nClose the Door.\nClick Run Test.\n"
-# 				text_size: self.width, None
-# 				font_size: 15 
-# 				height: self.texture_size[1]
-# 				size_hint_y: None
-# 				halign: "left"
-# 				padding: (20,20)
-
-# <LensHomeScreen>:
-# 	name: 'lensHome'
-# 	FloatLayout:
-		
 
 
 

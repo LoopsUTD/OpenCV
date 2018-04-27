@@ -12,28 +12,28 @@
         "options": ["JPEG Basic", "JPEG Normal", "JPEG Fine", "NEF (Raw)"]
     },
     {
-        "type": "path",
+        "type": "filebrowse",
         "title": "Default Output Save Path",
         "desc": "Select Flashdrive to Save Data",
         "section": "Output",
         "key": "defaultpath"
     },
     {
-        "type": "path",
+        "type": "filebrowse",
         "title": "Detect Deviation Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
         "key": "defaulttestimage"
     },
     {
-        "type": "path",
+        "type": "filebrowse",
         "title": "Lens Finding Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
         "key": "lensfindingtest"
     },
     {
-        "type": "path",
+        "type": "filebrowse",
         "title": "Detect Global Magnification Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
