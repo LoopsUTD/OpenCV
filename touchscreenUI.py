@@ -234,7 +234,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 			self._updateConsoleTrigger("Image Taken: %s \n" % imgFilePath)
 
 		def updateRootConsole(self, *largs):
-			print largs
+			print(largs)
 			self.myRoot.updateRunConsole("TESTING TRIGGER\n")
 
 
