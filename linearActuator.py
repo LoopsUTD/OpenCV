@@ -38,7 +38,8 @@ class LinearActuator(object):
 			self.home=0
 			self.current=self.home
 			self.goal=self.home
-			self.findLimits()
+			self.bottom=-25000
+			#self.findLimits()
 			#self.manualAdjust(stepSize = 100)
 
 	#Returns boolean statement corresponding to whether goal was reached
