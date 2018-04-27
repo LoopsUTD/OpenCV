@@ -23,24 +23,21 @@
         "title": "Detect Deviation Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
-        "key": "defaulttestimage",
-        "filters": ["\*.png", "\*.jpg", "\*.jpeg"]
+        "key": "defaulttestimage"
     },
     {
         "type": "filebrowse",
         "title": "Lens Finding Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
-        "key": "lensfindingtest",
-        "filters": ["*.png", "*.jpg", "*.jpeg"]
+        "key": "lensfindingtest"
     },
     {
         "type": "filebrowse",
         "title": "Detect Global Magnification Test Image",
         "desc": "Select Testing Image",
         "section": "Output",
-        "key": "magnificationtest",
-        "filters": ["*.png", "*.jpg", "*.jpeg"]
+        "key": "magnificationtest"
     }
 
 ]
