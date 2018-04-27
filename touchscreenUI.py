@@ -236,7 +236,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 
 		def updateRootConsole(self, *largs):
 			print(largs)
-			self.myRoot.updateRunConsole("TESTING TRIGGER\n")
+			self.myRoot.updateRunConsole("Testing Finished\n")
 
 
 		def _takePhotoNowReturnsName(self, filePrefix = None, sampleFolder = None):
@@ -387,7 +387,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "ReferenceImages/pixelGrid.png"
+	shared_data['displayedImage'] = "ReferenceImages/indianHeadTestPattern.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
