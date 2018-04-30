@@ -8,7 +8,7 @@ from time import *
 import cropper
 
 pixPerMM = 58
-maxDev=0.2
+maxDev=0.3
 
 def execute(map,dirname,shortname,circle,start):
 #	print('Creating sparse heatmap...')
