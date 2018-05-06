@@ -38,7 +38,6 @@ class StepperMotor:
 				limit=self.lim2
 				GPIO.output(self.dirPin,GPIO.HIGH)
 			while stepsTaken<abs(steps):
-				print(GPIO.input(limit))
 				if GPIO.input(limit)==0:
 					GPIO.output(self.stepPin,GPIO.HIGH)
 					time.sleep(.0000050)

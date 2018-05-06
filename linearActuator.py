@@ -36,7 +36,7 @@ class LinearActuator(object):
 			LinearActuator._singletonInstance = self
 			self.log = logging.getLogger("mainApp")
 			self.log.info("Initializing the Linear Actuator...")
-			self.motor=stepperMotor.StepperMotor(11,15,37,29,31)
+			self.motor=stepperMotor.StepperMotor(11,15,37,33,31)
 			self.home=0
 			self.current=self.home
 			self.goal=self.home
@@ -53,20 +53,20 @@ class LinearActuator(object):
 	def findLimits(self):
 		numCounts=0	
 		success=self.moveTo(self.current)
-		while(numCounts<10):
+		while(numCounts<50):
 			success=self.moveTo(self.current-1)
-			if(!success):
-				numCounts++
+			if(success==False):
+                                numCounts=numCounts+1
 		self.current=0
 		self.bottom=self.current
 		numCounts=0		
 
 		success= self.moveTo(self.bottom+1000)
 		self.top=self.current
-		while(numCounts<10):
+		while(numCounts<50):
 			success=self.moveTo(self.current+1)
-			if(!success):
-				numCounts++
+			if(success==False):
+                                numCounts=numCounts+1
 	
 			self.top=self.current
 		#		 self.home=(self.bottom+self.top)/2
