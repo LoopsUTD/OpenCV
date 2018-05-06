@@ -43,12 +43,12 @@ class LinearActuator(object):
     
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
-        success,stepsTaken=self.motor.step(target-self.current)
-        if (target-self.current)>0:
-		self.current=self.current+stepsTaken
-	else
-		self.current=self.current-stepsTaken
-        print(self.current)
+        distance=target-self.current
+        success,stepsTaken=self.motor.step(distance,self.current)
+        if (distance)>0:
+            self.current=self.current+stepsTaken
+        else:
+            self.current=self.current-stepsTaken
         return success
 
     def findLimits(self):
@@ -58,8 +58,8 @@ class LinearActuator(object):
                 success=self.moveTo(self.current-1)
                 if(success==False):
                     numCounts=numCounts+1
-                    self.current=0
-                self.bottom=self.current
+                    self.current=-40
+                self.bottom=self.current+40
                 
             numCounts=0
             #success= self.moveTo(self.bottom+1000)
@@ -68,9 +68,9 @@ class LinearActuator(object):
                 success=self.moveTo(self.current+1)
                 if(success==False):
                     numCounts=numCounts+1
-                self.top=self.current
+                self.top=self.current-40
                 #self.home=(self.bottom+self.top)/2
-            self.home=6875
+            self.home=3440
             self.moveTo(self.home)
                 #self.log.debug('{}{}{}{}'.format('Bottom: ', self.bottom,'\tTop: ', self.top))
     def moveUp(self,event,step):
