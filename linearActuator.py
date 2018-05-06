@@ -40,8 +40,8 @@ class LinearActuator(object):
 			self.home=0
 			self.current=self.home
 			self.goal=self.home
-			self.bottom=-25000
-			#self.findLimits()
+			#self.bottom=-25000
+			self.findLimits()
 			#self.manualAdjust(stepSize = 100)
 
 	#Returns boolean statement corresponding to whether goal was reached
@@ -51,16 +51,23 @@ class LinearActuator(object):
 		return success
 
 	def findLimits(self):
+		numCounts=0	
 		success=self.moveTo(self.current)
-		while(success):
+		while(numCounts<10):
 			success=self.moveTo(self.current-1)
+			if(!success):
+				numCounts++
 		self.current=0
 		self.bottom=self.current
+		numCounts=0		
 
 		success= self.moveTo(self.bottom+1000)
 		self.top=self.current
-		while(success):
+		while(numCounts<10):
 			success=self.moveTo(self.current+1)
+			if(!success):
+				numCounts++
+	
 			self.top=self.current
 		#		 self.home=(self.bottom+self.top)/2
 		self.home = 27500	# Experimentally determined.  If you do not have a good value, try the commented-out line above
