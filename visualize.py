@@ -7,6 +7,13 @@ from tkinter import filedialog
 from time import *
 import cropper
 
+"""
+This script is called by fullAnalysis.py to create data visualization from the raw data created by correlate.py. It creats a histogram of the deviations as well as a heatmap.
+"""
+
+#INPUT: dictionary of {(x,y):distance}, output directory name, name of lens, circular region of image, time of execution start
+#OUTPUT: none
+#FILE I/O: writes a heatmap.png and a histogram.png to output directory 
 pixPerMM = 58
 maxDev=0.3
 
@@ -14,7 +21,7 @@ def execute(map,dirname,shortname,circle,start):
 #	print('Creating sparse heatmap...')
 	image=dictToImg(map,10)
 #	print('Deviation map generated in {} seconds.'.format(time()-start))
-	spotsize=1*pixPerMM
+	spotsize=5*pixPerMM
 	even=spotsize
 	if(even%2==0):
 		spotsize=int(spotsize+1)
@@ -73,12 +80,6 @@ def selectCircle(image,circle):
 	#onedim=np.reshape(cropped,-1)
 	
 	return np.asarray(onedim)
-
-def imscale(image):
-	scaleimg=np.zeros(image.shape,float)
-	scaleimg=255*(image/image.max())
-	image=np.rint(scaleimg)
-	return image
 
 def dictToImg(map,m=10):
 	image=np.zeros((4016,6016),np.uint8)

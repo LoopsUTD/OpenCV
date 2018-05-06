@@ -5,7 +5,14 @@ import os.path
 from time import *
 from testData import *
 from multiprocessing import *
+"""
+This script takes in two numpy arrays containing the 
+centroids and ids of the blobs in the deviated and undeviated images. It finds the pairs of blobs with the shortest distance between them and stores that distance as the deviation value at the position of the undeviated blob.
+"""
 
+#INPUT: 2 x numpy arrays corresponding to segmented blob positions, output directory, name of lens
+#OUTPUT: python dictionary containing an entry for every blob with a partner, of the form {(xposition, yposition):distance}
+#FILE I/O: writes .txt file containing the output dictionary to output directory
 def main(undeviated,deviated,dirname,name):
 
 	fname="{}/{}{}".format(dirname,name,".txt")
