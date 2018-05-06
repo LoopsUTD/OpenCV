@@ -1,11 +1,19 @@
 import RPi.GPIO as GPIO
 import time
+"""
+Low level control for stepper motor. Directly reads and writes to GPIO pins on the Raspberry Pi (RPi). 
+Can be instantiated as a stepper motor object in other files (LinearActuator.py in this project).
+
+"""
+#INPUT: 5 pins outlining the stepper motor leads, limit switches and eStop connection
+#OUTPIT: Physical motion of the stepper motor
 class StepperMotor:
 
 	#StepPin: Pin to send signal to pulse pin on stepper driver
-	#diePin: Pin to send signal to dir pin on stepper driver
+	#dirPin: Pin to send signal to dir pin on stepper driver
 	#lim1: Pin to read limit swtich 1
 	#lim2: Pin to read limit switch 2
+	#eStop: Pin to read emergency stop
 	def __init__(self,stepPin,dirPin, limit1, limit2, eStop):
 		self.stepPin = stepPin
 		self.dirPin = dirPin

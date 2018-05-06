@@ -1,13 +1,7 @@
 import sys
-
-def main():
-	if len(sys.argv)==1:
-		blob1=Blob(0,0,0)
-	else:
-		blob1=Blob(sys.argv[1],sys.argv[2],sys.argv[3])
-	print(blob1.id)
-	print(blob1.value)
-
+"""
+This class is the base unit of data storage for the deviation maps. Each blob is a segmented pixel which stores centroid and ID. 
+"""
 class Blob:
 	def __init__(self,id,x,y):
 		self.id=id
@@ -15,5 +9,3 @@ class Blob:
 	def __str__(self):
 		return '{}{}'.format(self.id,self.value)
 
-if __name__ == '__main__':
-	main()

@@ -3,11 +3,13 @@ import sys
 from tkinter import *
 import logging
 
-# Class LinActHolder(object):
-#	 _shared_state = {}
-#	 def __init__(self):
-#		 self.__dict__ = _shared_state
-
+"""
+High level controller for linear actuator.
+Manual adjustment as well as automated motion are enabled by this class.
+INPUT: User controlled input
+OUTPUT: commands to stepper motor
+FILE I/O: logs to file for display in UI
+"""
 class LinearActuator(object):
 	_singletonInstance = None
 	#stepperMotor class from stepperMotor.py
@@ -81,7 +83,7 @@ class LinearActuator(object):
 		self.moveTo(self.home)
 	
 	def manualAdjust(self,stepSize):
-		try: #I HATE MYSELF
+		try: 
 			root = Tk()
 			frame = Frame(root,width=100,height=100)
 			label = Label(root,text='Move with arrow keys, Press x to set home. Press space to got home.')
@@ -100,7 +102,7 @@ class LinearActuator(object):
 
 
 			#https://stackoverflow.com/questions/29158220/tkinter-understanding-mainloop
-			while(True): ##PLS HELP ME THIS IS REALLY BAD AND UNSAFE
+			while(True):
 				root.update()
 				root.update_idletasks()
 				#self.log.debug("Home Value: %d" % self.home)
