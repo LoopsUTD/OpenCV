@@ -113,3 +113,7 @@ class LinearActuator(object):
 		self.moveTo(self.home)
 	def moveOutOfPath(self):
 		self.moveTo(self.bottom)
+if __name__=='__main__':
+        la=LinearActuator.getInstance()
+        la.manualAdjust(100)   
+
