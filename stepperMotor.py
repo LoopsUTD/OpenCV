@@ -40,9 +40,9 @@ class StepperMotor:
 			while stepsTaken<abs(steps):
 				if GPIO.input(limit)==0:
 					GPIO.output(self.stepPin,GPIO.HIGH)
-					time.sleep(.0000050)
+					time.sleep(.0001)
 					GPIO.output(self.stepPin,GPIO.LOW)
-					time.sleep(.00005)
+					time.sleep(.0001)
 				else:
 					return False
 				stepsTaken = stepsTaken +1  
