@@ -1,3 +1,15 @@
+"""
+This script runs all of the relevant analysis code. 
+Given an input folder containing 5 files:
+noLens*
+withLens*
+power_noLens*
+power_withLens*
+lensFinding*
+
+This will write a .txt file containing the raw data,
+a histogram, and a heatmap to the folder indicated as the output folder.
+"""
 import segmenter
 import correlate
 import visualize
