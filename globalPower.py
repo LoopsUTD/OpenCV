@@ -1,4 +1,4 @@
-import lensFinder as lf
+import shapeFinder as lf
 import blob				# the input array in demagnify uses the blob object from this file
 import numpy as np		# The input array in demagnify is a numpy array
 
@@ -12,8 +12,8 @@ import numpy as np		# The input array in demagnify is a numpy array
 #  power - floating-point number representing magnifying power of lens
 
 def calculatePower(noLens,wLens):
-	original = lf.findLens(noLens)	# returns (x,y,r) of circle
-	magnified = lf.findLens(wLens)	# returns (x,y,r) of circle
+	original = lf.findCircle(noLens)	# returns (x,y,r) of circle
+	magnified = lf.findCircle(wLens)	# returns (x,y,r) of circle
 	distLensToCamera = 0.3			# In meters, accurate within 0.03
 	magnification = magnified[2]/original[2]
 	power = (1 - magnified[2]/original[2])/distLensToCamera

@@ -4,9 +4,9 @@ import math
 
 """
 -------------------
-Function findLens()
+Function findCircle()
 -------------------
-Given an image containing a number of contours, this function
+Given an image containing a number of distinct objects, this function
 finds all the contours in the image.  It then uses approximations
 of pi using perimeter and area to determine which contour is most
 circular.  It then calculates the approximate radius and center
@@ -20,7 +20,7 @@ OUTPUT:
     r represents the average radius of that contour
 """
 
-def findLens(img, scaling = None):
+def findCircle(img, scaling = None):
 	# Input handling
 	img = img.copy()
 	if scaling == None:
@@ -35,13 +35,13 @@ def findLens(img, scaling = None):
 	
 	# blur, threshold, and erode/dilate the image	
 	img = cv2.medianBlur(img,9)
-	ret, img = cv2.threshold(img,64,255,cv2.THRESH_BINARY)
+	ret, img = cv2.threshold(img,64,255,cv2.THRESH_BINARY)	# This function returns two values, but only 1 is used
 	kernel = np.ones((9,9),np.uint8)
 	img = cv2.erode(img,kernel,iterations=1)
 	img = cv2.dilate(img,kernel,iterations=1)
 	
 	# Find the contours
-	im2, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+	im2, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)	# this function returns 3 values, but only the second is used
 	
 	# Determine which contour is most circular by finding which contour's
 	#   perimeter and area most closely approximate pi
@@ -66,12 +66,13 @@ def findLens(img, scaling = None):
 	return (x,y,r)
 
 """
+# Demonstration code
 if __name__ == '__main__':
-	image = cv2.imread('withLens_DSC_0284.JPG')
-	circle = findLens(image)
+	image = cv2.imread('filename.JPG')		# change this to a solid-green-background test image name
+	circle = findCircle(image)
 	print(circle)
 	image = cv2.circle(image,(circle[0],circle[1]),circle[2],(0,0,255),3)
-	cv2.imshow('circles',image)
+	cv2.imshow('foundCircle',image)
 	cv2.imwrite('foundCircle.png',image)
 	cv2.waitKey(0)
 """

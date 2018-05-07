@@ -19,7 +19,7 @@ from multiprocessing import Pool,Process
 import os
 import tkinter as tk
 from tkinter import filedialog
-import lensFinder
+import shapeFinder
 import cropper
 import globalPower
 import rawpy
@@ -32,7 +32,7 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 
 	lensFindImg=loadImage(lensFindPath)	
 #	print('Finding circular mask...')
-	circle=lensFinder.findLens(lensFindImg)
+	circle=shapeFinder.findCircle(lensFindImg)
 #	print ('Circular mask found in {} seconds.'.format(time()-start))
 	print('Determining magnification factor...')
 	unMag=loadImage(unMagPath)	
@@ -84,7 +84,7 @@ def getCropCircle(path):
 
 	else:
 		image=cv2.imread(path)
-	circle=lensFinder.findLens(image)	
+	circle=shapeFinder.findCircle(image)	
 	return circle
 if __name__=="__main__":	
 	root=tk.Tk()
