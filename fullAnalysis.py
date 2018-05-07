@@ -10,6 +10,7 @@ lensFinding*
 This will write a .txt file containing the raw data,
 a histogram, and a heatmap to the folder indicated as the output folder.
 """
+
 import segmenter
 import correlate
 import visualize
@@ -23,7 +24,6 @@ import shapeFinder
 import cropper
 import globalPower
 import rawpy
-import os
 
 def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	start=time()
@@ -55,13 +55,11 @@ def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
 	print('Creating data visualization...')
 	visualize.execute(mapping,dirname,lensname,circle,start)	
 	print('Visualization generated in {} seconds.'.format(time()-start))
+
 def seg(path,circle,start):	
 	image=loadImage(path)
-#	print('Cropping to lens area...')
 	image=cropper.cropToCircle(image,circle)
-#	print('Image cropped in {} seconds.'.format(time()-start))
 	print('Segmenting {}...'.format(path))
-	#cv2.imwrite('{}_segmented.png'.format(path),image)
 	segmented=segmenter.extractObjects(image) #Try the Raw files
 	print('{} segmented in {} seconds.'.format(path,time()-start))
 	return segmented
@@ -86,6 +84,7 @@ def getCropCircle(path):
 		image=cv2.imread(path)
 	circle=shapeFinder.findCircle(image)	
 	return circle
+
 if __name__=="__main__":	
 	root=tk.Tk()
 	root.withdraw()
@@ -110,6 +109,3 @@ if __name__=="__main__":
 	lensfind = filedialog.askopenfilename(title="Select lens finding")
 	"""
 	analyze(undevpath,devpath,outdir,lensfind,lensname,unMagPath,magPath)
-	
-
-
