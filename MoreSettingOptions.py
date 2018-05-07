@@ -1,11 +1,11 @@
-from MySettings import SettingOptions, SettingString, SettingPath
+from settingsWidget import SettingOptions, SettingString, SettingPath
 from kivy.uix.gridlayout import GridLayout 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView 
 from kivy.uix.widget import Widget 
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
-from MySettings import SettingSpacer
+from settingsWidget import SettingSpacer
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.metrics import dp
