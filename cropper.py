@@ -20,5 +20,4 @@ def cropToCircle(img, circle):
 	newImg = np.zeros(img.shape, dtype=img.dtype)
 	newImg = cv2.circle(newImg,(x,y),r,(1,1,1),-1)
 	newImg[:,:] = newImg[:,:] * img[:,:]
-#	newImg=newImg[(y-r):(y+r),(x-r):(x+r),:]
 	return newImg

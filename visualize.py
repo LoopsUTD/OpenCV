@@ -74,11 +74,7 @@ def selectCircle(image,circle):
 		for j in range(x-r,x+r):
 			dist=pow(pow(j-x,2)+pow(i-y,2),0.5)
 			if dist < r:
-				onedim.append(image[i,j])
-	#cropped=cropper.cropToCircle(image,circle)
-	#cv2.imwrite('croppedheatmap.png',cropped)
-	#onedim=np.reshape(cropped,-1)
-	
+				onedim.append(image[i,j])	
 	return np.asarray(onedim)
 
 def dictToImg(map,m=10):
