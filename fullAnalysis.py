@@ -25,48 +25,51 @@ import cropper
 import globalPower
 import rawpy
 
-def analyze(undevpath,devpath,dirname,lensFindPath,lensname,unMagPath,magPath):
-	start=time()
-	pool=Pool(2)
-	print(undevpath,devpath)
+def analyze(lensname,dirname,lensFindPath,unMagPath,magPath,undevPath,devPath):
+	start = time()
+	pool  = Pool(2)
+	print(undevPath,devPath)
 
-	lensFindImg=loadImage(lensFindPath)	
-#	print('Finding circular mask...')
-	circle=shapeFinder.findCircle(lensFindImg)
-#	print ('Circular mask found in {} seconds.'.format(time()-start))
+	lensFindImg = loadImage(lensFindPath)	
+	circle = shapeFinder.findCircle(lensFindImg)
 	print('Determining magnification factor...')
-	unMag=loadImage(unMagPath)	
-	mag=loadImage(magPath)
-	unMag=cropper.cropToCircle(unMag,circle)
-	mag=cropper.cropToCircle(mag,circle)
-	magnification,power=globalPower.calculatePower(unMag,mag)
+
+	unMag = loadImage(unMagPath)	
+	mag   = loadImage(magPath)
+	unMag = cropper.cropToCircle(unMag,circle)
+	mag   = cropper.cropToCircle(mag,circle)
+	magnification, power = globalPower.calculatePower(unMag,mag)	# returns magnification ratio and dioptic power (dioptic power currently unused)
 	print('Magnification({}) found in {} seconds.'.format(magnification, time()-start))
+
 	print('Beginning parallel processing of images...')
-	asyncdev=pool.apply_async(seg,(devpath,circle,start))
-	asyncundev=pool.apply_async(seg,(undevpath,circle,start))
+	asyncdev=pool.apply_async(seg,(devPath,circle,start))
+	asyncundev=pool.apply_async(seg,(undevPath,circle,start))
 	undev=asyncundev.get()
 	dev=asyncdev.get()
+
 	print('Correcting for global power...')
-	dev=globalPower.demagnify(dev,circle,magnification)
+	dev = globalPower.demagnify(dev,circle,magnification)
 	print('Global power corrected in {} seconds.'.format(time()-start))
+
 	print('Correlating images...')
-	mapping=correlate.main(undev,dev,dirname,lensname)
-	print ('Images correlated in {} seconds.'.format(time()-start))
+	mapping = correlate.main(undev,dev,dirname,lensname)
+	print('Images correlated in {} seconds.'.format(time()-start))
+
 	print('Creating data visualization...')
 	visualize.execute(mapping,dirname,lensname,circle,start)	
 	print('Visualization generated in {} seconds.'.format(time()-start))
 
 def seg(path,circle,start):	
-	image=loadImage(path)
-	image=cropper.cropToCircle(image,circle)
+	image = loadImage(path)
+	image = cropper.cropToCircle(image,circle)
 	print('Segmenting {}...'.format(path))
-	segmented=segmenter.extractObjects(image) #Try the Raw files
+	segmented = segmenter.extractObjects(image)
 	print('{} segmented in {} seconds.'.format(path,time()-start))
 	return segmented
 
 def loadImage(filename):
-	imgSplit=filename.split('.')
-	imgtype=imgSplit[len(imgSplit) - 1].lower() 
+	imgSplit = filename.split('.')
+	imgtype  = imgSplit[len(imgSplit) - 1].lower() 
 	if imgtype == 'nef':
 		with rawpy.imread(filename) as raw:
 			image = raw.postprocess(output_bps=8)
@@ -74,38 +77,33 @@ def loadImage(filename):
 		image = cv2.imread(filename)
 	return image
 
-def getCropCircle(path):
-	imgSplit = path.split('.')
-	if imgSplit[len(imgSplit) - 1].lower() == 'nef':
-		with rawpy.imread(path) as raw:
-			image = raw.postprocess(output_bps=8)
-
-	else:
-		image=cv2.imread(path)
-	circle=shapeFinder.findCircle(image)	
-	return circle
-
-if __name__=="__main__":	
-	root=tk.Tk()
+if __name__=="__main__":
+	# Initialize UI Framework for file selection
+	root = tk.Tk()
 	root.withdraw()
-	indir=filedialog.askdirectory(title="Double click on folder containing test images")
-	outdir=filedialog.askdirectory(title="Double click on desired output folder")
-	files=os.listdir(indir)
-	undevpath=[f for f in files if f.startswith('noLens')][0]
-	undevpath='{}/{}'.format(indir,undevpath)
-	devpath=[f for f in files if f.startswith('withLens')][0]
-	devpath='{}/{}'.format(indir,devpath)
-	unMagPath=[f for f in files if f.startswith('power_noLens')][0]
-	unMagPath='{}/{}'.format(indir,unMagPath)
-	magPath=[f for f in files if f.startswith('power_withLens')][0]
-	magPath='{}/{}'.format(indir,magPath)
-	inarray=indir.split('/')
-	lensname=inarray[len(inarray)-1]
-	lensfind=[f for f in files if f.startswith('lensFinding')][0]
-	lensfind='{}/{}'.format(indir,lensfind)
-	"""
-	undevpath = filedialog.askopenfilename(title="Select image without lens")
-	devpath = filedialog.askopenfilename(title="Select image with lens")
-	lensfind = filedialog.askopenfilename(title="Select lens finding")
-	"""
-	analyze(undevpath,devpath,outdir,lensfind,lensname,unMagPath,magPath)
+	
+	# Ask the user for input and output directories
+	indir  = filedialog.askdirectory(title="Double click on folder containing test images")
+	outdir = filedialog.askdirectory(title="Double click on desired output folder")
+	
+	# Determine lens name using directory name
+	inarray = indir.split('/')
+	lensname = inarray[len(inarray)-1]
+
+	# Locate the file names of each of the five images used in analysis
+	files  = os.listdir(indir)
+	lensFindPath = [f for f in files if f.startswith('lensFinding')][0]
+	unMagPath    = [f for f in files if f.startswith('power_noLens')][0]
+	magPath      = [f for f in files if f.startswith('power_withLens')][0]
+	undevpath    = [f for f in files if f.startswith('noLens')][0]
+	devpath      = [f for f in files if f.startswith('withLens')][0]
+	
+	# Append the input directory name to the image names
+	lensFindPath = '{}/{}'.format(indir,lensFindPath)
+	unMagPath    = '{}/{}'.format(indir,unMagPath)
+	magPath      = '{}/{}'.format(indir,magPath)
+	undevpath    = '{}/{}'.format(indir,undevpath)
+	devpath      = '{}/{}'.format(indir,devpath)
+
+	# Run analysis code
+	analyze(lensname,outdir,lensFindPath,unMagPath,magPath,undevpath,devpath)
