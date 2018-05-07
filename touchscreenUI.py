@@ -19,7 +19,7 @@ import pathlib
 from time import sleep
 from multiprocessing import Process, Manager, Event
 import logging
-from MySettings import Settings, SettingsWithSidebar
+from settingsWidget import Settings, SettingsWithSidebar
 from MoreSettingOptions import SettingScrollOptions, LensHolderOptions, FileBrowserIconView
 
 from linearActuator import LinearActuator
