@@ -1,6 +1,5 @@
 import cv2
 import numpy
-import rawpy
 from blob import Blob
 
 # WARNING: UNEXPECTED BEHAVIOR MAY OCCUR #
@@ -50,25 +49,18 @@ def loudExtractObjects(image,thresh=None):
 
 # Sub-functions
 
+# GREENSCALE()
 # INPUT:  array representation of image, 1- or 3-channel
 # OUTPUT: 1-channel representation of image
-# Instead of true greyscale, we use greenscale(since all test images are green)		--- This will be changing soon, when we switch to 3-color pixel groups
+# This is a wrapper function that checks whether grayscale needs to be run or not
+#   Its name originates from when the only color of interest in the images was green
 
 def greenscale(image):
-	"""
-	channels = len(image.shape)
-	if channels == 1:
-		image = image
-	elif channels == 3:
-		image = image[:,:,2]
-	else:
-		print("Error in segmentImg >> greenscale: image is not 1- or 3-channel")
-		image = numpy.zeros(2,2)
-	"""
 	if len(image.shape) == 3:
 		image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 	return image
 
+# THRESHOLD()
 # INPUT:  1-channel array representing an image
 # OUTPUT: Array containing only 0 (low values) or 255 (high values) in each entry
 
@@ -80,6 +72,7 @@ def threshold(image,thresh):
 			a[...] = 0
 	return image
 
+# FILL()
 # INPUT:  Pixel location of part of blob\
 # TASK:   Recursively "Fills" a blob from one found pixel
 # OUTPUT: None per se, but it checks all neighbors
@@ -96,6 +89,7 @@ def fill(image,i,j,h,w,index):
 		fill(image,i,j+1,h,w,index)
 	return
 
+# SEGMENT()
 # INPUT:  Thresholded image
 # OUTPUT: Image with isolated segments
 
@@ -113,6 +107,7 @@ def segment(image):
 
 	return image
 
+# SEGMENTINFO()
 # INPUT:  Image with isolated and labeled segments
 # OUTPUT: Array of blob objects
 
@@ -136,4 +131,3 @@ def segmentInfo(img):
 		newBlob = Blob(ssn,x,y)
 		blobs.append(newBlob)
 	return numpy.asarray(blobs)
-
