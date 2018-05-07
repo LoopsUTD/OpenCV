@@ -43,8 +43,11 @@ class LinearActuator(object):
     
     #Returns boolean statement corresponding to whether goal was reached
     def moveTo(self,target):
-        success=self.motor.step(target-self.current)
-        self.current=target
+        success,stepsTaken=self.motor.step(target-self.current)
+        if (target-self.current)>0:
+		self.current=self.current+stepsTaken
+	else
+		self.current=self.current-stepsTaken
         print(self.current)
         return success
 

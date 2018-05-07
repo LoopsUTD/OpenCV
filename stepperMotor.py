@@ -29,7 +29,7 @@ class StepperMotor:
 		GPIO.setup(self.lim2,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 	def step(self,steps):
-		if GPIO.input(self.eStop)==0:
+		if True || GPIO.input(self.eStop)==0:
 			stepsTaken = 0
 			if steps<0:
 				GPIO.output(self.dirPin,GPIO.LOW)
@@ -48,9 +48,9 @@ class StepperMotor:
 				stepsTaken = stepsTaken +1  
 
 			GPIO.output(self.stepPin,GPIO.LOW)
-			return True
+			return True,stepsTaken
 		else:
-			return False
+			return False,stepsTaken
 
 if __name__ == "__main__":
 	motor = StepperMotor(11,15,37,33,31)
