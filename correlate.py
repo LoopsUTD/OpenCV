@@ -3,7 +3,6 @@ import numpy as np
 from math import *
 import os.path
 from time import *
-from testData import *
 from multiprocessing import *
 """
 This script takes in two numpy arrays containing the 
