@@ -27,12 +27,23 @@ from cameraHandling import Camera
 
 log = logging.getLogger('uiApp')
 
+"""
+Main Thread for Our Device is Launched from here. User Interface on the touchscreen is controlled
+by one thread, launched by the ProcessManager in the def __main__() function below
+
+"""
+
 def main_process(shared_data_dict, is_master, exit_event):
 
 	if is_master:
 		os.environ["KIVY_BCM_DISPMANX_ID"] = "4"
 	else:
 		os.environ["KIVY_BCM_DISPMANX_ID"] = "5"
+
+"""
+Initialization Screen - Displays the initialization screen?
+
+"""
 
 	class InitializeScreen(Screen):
 		myInfoLabel = ObjectProperty()
@@ -164,7 +175,11 @@ def main_process(shared_data_dict, is_master, exit_event):
 			actuator = LinearActuator.getInstance()
 			actuator.moveTo(int(pos))
 			return True
+"""
+Screen for Running Tests
 
+
+"""
 	class RunTestScreen(Screen):
 		"""docstring for RunTestScreen"""
 		def __init__(self, **kwargs):
@@ -190,6 +205,12 @@ def main_process(shared_data_dict, is_master, exit_event):
 			betterName = goodName.replace("\'", '')
 			bestName = betterName.replace('\"', '')
 			return bestName
+"""
+Run the Actual Test 
+Check the Config 
+
+
+"""
 
 		def runTest(self):
 			self.outputDirectory = App.get_running_app().config.get('Output','defaultpath')
@@ -347,7 +368,7 @@ def main_process(shared_data_dict, is_master, exit_event):
 		def build_config(self, config):
 			if is_master:
 				self.settings_cls=SettingsWithSidebar
-				config.read('loops.ini')
+				config.read('loopsutd.ini')
 			else:
 				self.config = None
 			#app.open_settings()
@@ -387,7 +408,7 @@ if __name__ == '__main__':
 	# LoopsUTDApp().run()
 	m = Manager()
 	shared_data = m.dict() #This creates a managed proxy object that will update between the two processes
-	shared_data['displayedImage'] = "ReferenceImages/pixelGrid.png"#"ReferenceImages/indianHeadTestPattern.png"
+	shared_data['displayedImage'] = "ReferenceImages/circle.png"#"ReferenceImages/indianHeadTestPattern.png"
 	#Link for the Proxy Object Documentation:
 	#https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
 	ev = Event()
