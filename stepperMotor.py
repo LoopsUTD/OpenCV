@@ -48,7 +48,7 @@ class StepperMotor:
 				else:
 					return False,stepsTaken
 				stepsTaken = stepsTaken +1  
-				print(start+direction*stepsTaken) 
+				#print(start+direction*stepsTaken) 
 
 			GPIO.output(self.stepPin,GPIO.LOW)
 			return (True,stepsTaken)
