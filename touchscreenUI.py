@@ -40,10 +40,10 @@ def main_process(shared_data_dict, is_master, exit_event):
 	else:
 		os.environ["KIVY_BCM_DISPMANX_ID"] = "5"
 
-"""
-Initialization Screen - Displays the initialization screen?
+	"""
+	Initialization Screen - Displays the initialization screen?
 
-"""
+	"""
 
 	class InitializeScreen(Screen):
 		myInfoLabel = ObjectProperty()
@@ -175,11 +175,11 @@ Initialization Screen - Displays the initialization screen?
 			actuator = LinearActuator.getInstance()
 			actuator.moveTo(int(pos))
 			return True
-"""
-Screen for Running Tests
+	"""
+	Screen for Running Tests
 
 
-"""
+	"""
 	class RunTestScreen(Screen):
 		"""docstring for RunTestScreen"""
 		def __init__(self, **kwargs):
@@ -205,12 +205,12 @@ Screen for Running Tests
 			betterName = goodName.replace("\'", '')
 			bestName = betterName.replace('\"', '')
 			return bestName
-"""
-Run the Actual Test 
-Check the Config 
+		"""
+		Run the Actual Test 
+		Check the Config 
 
 
-"""
+		"""
 
 		def runTest(self):
 			self.outputDirectory = App.get_running_app().config.get('Output','defaultpath')
