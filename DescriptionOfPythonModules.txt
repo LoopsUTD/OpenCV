@@ -1,0 +1,32 @@
+1.  blob.py
+-Stores centroid and id information for pixels in segmented images
+2.  cameraHandling.py
+-Controls the camera. Sends the commands to take and store pictures. 
+3.  correlate.py
+-Takes 2 arrays of blobs and matches them pairwise according to closest neighbor. Finds deviation numbers for each pair and writes to text file.
+4.  cropper.py
+-Crops images down to the region outlined by the circular mask placed in front of the lens. 
+5.  fullAnalysis.py
+-Calls other modules in sequence to create data results from the images produced by the testing device.
+6.  generatorCenteredFeatures.py
+-Creates the image used for reference in global power corrections.
+7.  generatorRefImage.py
+-Creates the image used for reference in deviation extraction
+8.  globalPower.py
+-Determines the global power of the lens from two reference images.
+9.  linearActuator.py
+-Tracks the position of the lens holder, interfaces with the stepper motor.
+10. MoreSettingOptions.py
+-Tracks settings for the user interface, controlling button labels, scrolling options etc.
+11. segmenter.py
+-Extracts arrays of blob objects from pictures of reference image.
+12. settingsWidget.py
+-Modifies settings for user interface.
+13. shapeFinder.py
+-Finds the position and size of the circular mask, for cropping purposes.
+14. stepperMotor.py
+-Interfaces with the GPIO pins of the RPi. Reads from the limit switches and writes to the stepper motor. 
+15. touchscreenUI.py
+-Runs the user interface for the testing device. The primary script to launch in order to collect data.
+16. visualize.py
+-Creates visualizations of the deviation data. Writes a histogram and heatmap to file.
