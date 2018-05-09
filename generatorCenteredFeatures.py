@@ -1,4 +1,5 @@
 import numpy as np	# Useful because incoming images are numpy arrays
+# import cv2		# Only used when run as main script
 
 # A NOTE ON NOTATION:
 # The way numpy numbers its arrays is
@@ -48,13 +49,12 @@ def filledCircle(x,y,r,img):
 				img[i,j] = 255
 	return img
 
-"""
+
 if __name__ == '__main__':
 	import cv2
-	image = np.zeros([900,1920,3])
+	image = np.zeros([1080,1920,3])
 	filledCircle(image.shape[0]//2,image.shape[1]//2,100,image[:,:,1])
 	cv2.imshow('circleTest',image)
 	cv2.waitKey(0)
-	cv2.imwrite('circle.png',image)
+	cv2.imwrite('ReferenceImages/circle.png',image)
 	cv2.destroyAllWindows()
-"""

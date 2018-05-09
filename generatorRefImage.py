@@ -96,7 +96,7 @@ for i in range(1,rsize):
 Save Image
 """
 
-cv2.imwrite('test.png',img)
+cv2.imwrite('ReferenceImages/test.png',img)
 
 """
 Display generated image
