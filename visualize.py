@@ -21,7 +21,7 @@ def execute(map,dirname,shortname,circle,start):
 #	print('Creating sparse heatmap...')
 	image=dictToImg(map,10)
 #	print('Deviation map generated in {} seconds.'.format(time()-start))
-	spotsize=5*pixPerMM
+	spotsize=1*pixPerMM
 	even=spotsize
 	if(even%2==0):
 		spotsize=int(spotsize+1)

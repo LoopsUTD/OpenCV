@@ -4,6 +4,7 @@ from math import *
 import os.path
 from time import *
 from multiprocessing import *
+import sys
 """
 This script takes in two numpy arrays containing the 
 centroids and ids of the blobs in the deviated and undeviated images. It finds the pairs of blobs with the shortest distance between them and stores that distance as the deviation value at the position of the undeviated blob.
