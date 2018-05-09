@@ -61,7 +61,7 @@ def createVisualization(image,dirname,shortname,circle,start):
 	plt.draw()
 	plt.title('Deviation Histogram for {}'.format(shortname))
 	plt.xlabel('Deviation Intensity (mm moved)')
-	plt.ylabel('Area of Lens (3350 Pixels = 1 $mm^2$)')
+	plt.ylabel('Area of Lens ({} Pixels = 1 $mm^2$)'.format(pixPerMM*pixPerMM))
 	plt.savefig('{}_histogram.png'.format(name),bbox_inches='tight',dpi=1200)
 	print('Histogram created in {} seconds.'.format(time()-start))
 	
