@@ -1,10 +1,12 @@
 cycler==0.10.0
 matplotlib==2.1.2
 numpy==1.14.0
-opencv-python==3.4.0.12
 pyparsing==2.2.0
 python-dateutil==2.6.1
 pytz==2018.3
 rawpy==0.10.1
-RPi.GPIO==0.6.3
 six==1.11.0
+# Below is the preferred opencv version,
+#  but it cannot be installed via pip.
+#  It must be built from source.
+# opencv-python==3.4.0.12
